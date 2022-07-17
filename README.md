@@ -10,15 +10,15 @@ Brief description
 
   - #### First Time Visitor Goals
 
-    1. As a First Time Visitor, I want to easily create an account and log in.
-    2. As a First Time Visitor, I want to be able to find the cheapest fuel prices in a given area without needing to login.
-    3. As a First Time Visitor, I want to be able to easily visualize the the cheapest prices on a map.
+    1. As a First Time Visitor, I want to easily create an account and log in so that I can update fuel station prices.
+    2. As a First Time Visitor, I want to be able to find the cheapest fuel prices in a given area without needing to login so that I know where the cheapest fuel can be bought.
+    3. As a First Time Visitor, I want to be able to easily visualize fules prices on a map to find the cheapest one.
 
   - #### Returning Visitor Goals
 
-    1. As a Returning Visitor, I want to be able to log in and update fuel station the prices.
-    2. As a Returning Visitor, I want to be able to edit my account information.
-    3. As a Returning Visitor, I want to find contact information about the developer.
+    1. As a Returning Visitor, I want to be able to log in to be able to update fuel station the prices.
+    2. As a Returning Visitor, I want to be able to edit my account information to keep it up to date.
+    3. As a Returning Visitor, I want to find contact information about the developer to give feedback or make inquiries.
 
 - ### Design
   - #### Colour Scheme
@@ -29,7 +29,7 @@ Brief description
     - Imagery used to make up ...
   - #### Wireframe
     - This wireframe was used initially to get an idea of the style and layout of the app would be:
-      [Wireframe Screenshot](https://github.com/RobTheThief/ci-4-blugold/assets/media/ci-4-blugold.png)
+      [Wireframe Screenshot](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/media/ci-4-blugold.png)
 
 ## FEATURES
 
