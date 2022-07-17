@@ -10,26 +10,26 @@ Brief description
 
   - #### First Time Visitor Goals
 
-    1. As a First Time Visitor, I want to easily ....
-    2. As a First Time Visitor, I want to be able to easily ...
-    3. As a First Time Visitor, I want to be able to easily ....
-    
+    1. As a First Time Visitor, I want to easily create an account and log in.
+    2. As a First Time Visitor, I want to be able to find the cheapest fuel prices in a given area without needing to login.
+    3. As a First Time Visitor, I want to be able to easily visualize the the cheapest prices on a map.
+
   - #### Returning Visitor Goals
 
-    1. As a Returning Visitor, I want to be able to ...
-    2. As a Returning Visitor, I want to be able to ...
-    3. As a Returning Visitor, I want to find contact information.
+    1. As a Returning Visitor, I want to be able to log in and update fuel station the prices.
+    2. As a Returning Visitor, I want to be able to edit my account information.
+    3. As a Returning Visitor, I want to find contact information about the developer.
 
 - ### Design
   - #### Colour Scheme
     - The main colour used throughout is ...
   - #### Typography
-    - The Amatic SC font is the main font used throughout the .... and why...
+    - The .... font is the main font used throughout the .... and why...
   - #### Imagery
     - Imagery used to make up ...
   - #### Wireframe
-    - This wireframe was used initially to get an idea of the style and layout of the page would be:
-      [Wireframe Screenshot](./assets/media/ci-4-blugold.png)
+    - This wireframe was used initially to get an idea of the style and layout of the app would be:
+      [Wireframe Screenshot](https://github.com/RobTheThief/ci-4-blugold/assets/media/ci-4-blugold.png)
 
 ## FEATURES
 
@@ -40,8 +40,6 @@ Brief description
   - description
 
   ![Feature](Feature.png)
-
-
 
 ## Technologies Used
 
@@ -62,8 +60,7 @@ Brief description
 1. [GitHub:](https://github.com/)
    - GitHub is used to store the projects code after being pushed from Git.
 1. [GIMP:](https://www.gimp.org/)
-   - GIMP was used for resizing images and for creating the games drawings of the letter underscores, stickman, gallows, and border.
-
+   - GIMP was used for resizing images.
 
 ### FUTURE FEATURES
 
@@ -92,7 +89,6 @@ Brief description
 
 #### Solved Bugs
 
-
 ### Further Testing
 
 - The Website was tested on Google Chrome, Firefox, Microsoft Edge, Brave Browser, Ecosia and Safari.
@@ -116,20 +112,21 @@ Brief description
 ## Deployment
 
 - Local deployment was achieved with with Python from the console. The game was  
-developed on a Ubuntu OS and so was already installed. Steps are as follows:
+  developed on a Ubuntu OS and so was already installed. Steps are as follows:
+
   - Run `python3 run.py` in the terminal with root directory of the project.
 
 - Heroku Deployment:
-    - Create a new Heroku app.
-    - Set the build packs to `Python` and `NodeJS` in that order.
-    - Set Config Vars key value pairs for:
-      1. `PORT`: `8000`
-      1. `CREDS`: `{CREDS Object}` where {CREDS Object} is from the credentials file
-      dowoloaded from Google Cloud Platform.
-    - Enter `heroku login -i` command in the terminal with root directory of the project.
-    - Enter Heroku username and password.
-    - Enter `git push --set-upstream https://git.heroku.com/ci-4-blugold.git` to deploy.
-    - Enter `git push --set-upstream https://github.com/RobTheThief/ci-4-blugold.git main` to reset upstream to github.
+  - Create a new Heroku app.
+  - Set the build packs to `Python` and `NodeJS` in that order.
+  - Set Config Vars key value pairs for:
+    1. `PORT`: `8000`
+    1. `CREDS`: `{CREDS Object}` where {CREDS Object} is from the credentials file
+       dowoloaded from Google Cloud Platform.
+  - Enter `heroku login -i` command in the terminal with root directory of the project.
+  - Enter Heroku username and password.
+  - Enter `git push --set-upstream https://git.heroku.com/ci-4-blugold.git` to deploy.
+  - Enter `git push --set-upstream https://github.com/RobTheThief/ci-4-blugold.git main` to reset upstream to github.
 
 The live link can be found here - https://ci-4-blugold.git.herokuapp.com/
 
@@ -138,4 +135,3 @@ The live link can be found here - https://ci-4-blugold.git.herokuapp.com/
 ### Content
 
 ### Media
-
