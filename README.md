@@ -1,6 +1,7 @@
 # Blugold
 
-Brief description
+A web app for finding the cheapest fuel prices in your area. It uses a Geo visualization of the fuel stations and their prices to display the information the user is lookng for. The database is kept up to date by the users.
+The main technologies used are [React](https://reactjs.org/), [Django](https://www.djangoproject.com/), [Djangorestframwork](https://www.django-rest-framework.org/), [Postgresql](https://www.postgresql.org/) and [Deck.gl](https://deck.gl/).
 
 ![Responsive Mockup](./assets/media/responsivemockup.png)
 
