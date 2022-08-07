@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
+import dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,8 +86,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'blugolddb',
+        'USER': 'rob',
+        'PASSWORD': 'thereur69',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -136,6 +143,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
 CORS_ALLOWED_ORIGINS = [
     'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
     'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
@@ -144,3 +157,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'https://127.0.0.1:8000'
 ]
+
+django_heroku.settings(locals())
+
+options = DATABASES['default'].get('OPTIONS', {})
+options.pop('sslmode', None)
