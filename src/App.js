@@ -5,6 +5,7 @@ import { LineLayer } from 'deck.gl';
 import Map from 'react-map-gl';
 import { useEffect } from 'react';
 import useSWR from 'swr';
+import "mapbox-gl/dist/mapbox-gl.css";
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
