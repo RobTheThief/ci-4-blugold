@@ -1,24 +1,41 @@
 import logo from './logo.svg';
 import './App.css';
+import DeckGL from 'deck.gl';
+import { LineLayer } from 'deck.gl';
+import Map from 'react-map-gl';
+import { useEffect } from 'react';
+
+// Viewport settings
+const INITIAL_VIEW_STATE = {
+  longitude: -122.41669,
+  latitude: 37.7853,
+  zoom: 13,
+  pitch: 0,
+  bearing: 0
+};
+
+const data = [
+  { sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781] }
+];
 
 function App() {
+  let linelayer = new LineLayer({ id: 'line-layer', data })
+
+ useEffect(() => {
+  
+ },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DeckGL
+      initialViewState={INITIAL_VIEW_STATE}
+      controller={true}
+      layers={linelayer}
+    >
+     <Map
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+      />
+    </DeckGL>
   );
 }
 
