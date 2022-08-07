@@ -149,6 +149,8 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
+CSRF_TRUSTED_ORIGINS=['https://8000-robthethief-ci4blugold-svw8w9h2zxj.ws-eu54.gitpod.io']
+
 CORS_ALLOWED_ORIGINS = [
     'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
     'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
