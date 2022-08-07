@@ -26,8 +26,9 @@ function App() {
   let linelayer = new LineLayer({ id: 'line-layer', data })
 
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
-  const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/', fetcher, { refreshInterval: 10000 })
-
+  //const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/', fetcher, { refreshInterval: 10000 }) // dev
+  const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
+  
   useEffect(() => {
     console.log(apiData, bluApiData)
  },[apiData, bluApiData])
