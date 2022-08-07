@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$pau@8ba97*xu93(&#+%-k=)5l7wbqg+eqtqg$i$tx^+wuw46h'
+SECRET_KEY = 'django-insecure-zj4*ov2e5o77e=hf_ky=e54=&1p_o56ldkhz2i5-6qjw_(uf-y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -162,3 +162,5 @@ django_heroku.settings(locals())
 
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
+
+ALLOWED_HOSTS = ['*'] # Set to open for all access
