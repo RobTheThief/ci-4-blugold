@@ -37,8 +37,8 @@ class StationDetail(generics.RetrieveAPIView):
 
 class StationUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Station record to be updated.
-    serializer_class = StationSerializer
     queryset = Station.objects.all()
+    serializer_class = StationSerializer
 
 class StationDelete(generics.RetrieveDestroyAPIView):
     # API endpoint that allows a Station record to be deleted.

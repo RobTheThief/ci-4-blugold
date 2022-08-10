@@ -154,6 +154,8 @@ CSRF_TRUSTED_ORIGINS=['https://8000-robthethief-ci4blugold-svw8w9h2zxj.ws-eu54.g
 CORS_ALLOWED_ORIGINS = [
     'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
     'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
+    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
     'http://localhost:8000',
     'https://localhost:8000',
     'http://127.0.0.1:8000',
@@ -167,3 +169,9 @@ options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
 
 ALLOWED_HOSTS = ['*'] # Set to open for all access
+
+""" CSRF_TRUSTED_ORIGINS=[
+    'https://8000-robthethief-ci4blugold-svw8w9h2zxj.ws-eu54.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io',
+    ]
+ """

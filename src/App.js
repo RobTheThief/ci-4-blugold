@@ -26,12 +26,95 @@ function App() {
   let linelayer = new LineLayer({ id: 'line-layer', data })
 
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
-  //const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/', fetcher, { refreshInterval: 10000 }) // dev
-  const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
+  const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/', fetcher, { refreshInterval: 10000 }) // dev
+  //const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
   
+function createStation() {
+  console.log('running');
+  fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/create/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      {
+        "station": "Test",
+        "petrol": "199",
+        "diesel": "200"
+    })
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+    })
+    .catch(error => {
+      console.log('error',error);
+    })
+}
+
+function updateStation() {
+  console.log('running');
+  fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/update/1/', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      {
+        "station": "retest",
+        "petrol": "199",
+        "diesel": "200"
+    })
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+    })
+    .catch(error => {
+      console.log('error',error);
+    })
+}
+
+function deleteStation() {
+  console.log('running');
+  fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/delete/1/', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+    })
+    .catch(error => {
+      console.log('error',error);
+    })
+}
+
+function getStation() {
+  console.log('running');
+  fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu59.gitpod.io/api/2/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+    })
+    .catch(error => {
+      console.log('error',error);
+    })
+}
+
   useEffect(() => {
     console.log(apiData, bluApiData)
  },[apiData, bluApiData])
+
+ useEffect(() => {
+ //createStation();
+ //updateStation()
+ //deleteStation()
+ console.log(getStation())
+},[])
 
   return (
     <DeckGL
