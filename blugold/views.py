@@ -3,8 +3,17 @@ from rest_framework import viewsets, generics
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
 import os       
-from .serializers import StationSerializer     
+from .serializers import StationSerializer, CreateUserSerializer    
 from .models import Station                     
+from . import serializers
+from rest_framework import permissions
+from rest_framework import views
+from rest_framework.response import Response
+from django.contrib.auth import login, logout
+from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
+from braces.views import CsrfExemptMixin
+from django.contrib.auth.models import User
 
 class BlugoldView(viewsets.ModelViewSet):
     serializer_class = StationSerializer          
@@ -44,3 +53,28 @@ class StationDelete(generics.RetrieveDestroyAPIView):
     # API endpoint that allows a Station record to be deleted.
     serializer_class = StationSerializer
     queryset = Station.objects.all()
+
+class LoginView(CsrfExemptMixin, views.APIView):
+    # This view should be accessible also for unauthenticated users.
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = []
+
+    def post(self, request, format=None):
+        serializer = serializers.LoginSerializer(data=self.request.data,
+            context={ 'request': self.request })
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return Response(None, status=status.HTTP_202_ACCEPTED)
+
+class ProfileView(generics.RetrieveAPIView):
+    serializer_class = serializers.UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
+    authentication_classes = []
+    queryset = User.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = CreateUserSerializer

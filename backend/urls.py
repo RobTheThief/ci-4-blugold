@@ -16,9 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
+from blugold import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),         
+    path('admin/', admin.site.urls),      
+    path('login/', views.LoginView.as_view()),
+    path('profile/', views.ProfileView.as_view()),
+    path('register/', views.CreateUserView.as_view(), name='auth_register'),
     path('api/', include('blugold.urls')),
     re_path('.*', TemplateView.as_view(template_name='index.html')),
 ]
