@@ -16,6 +16,13 @@
   z-index: 1000;
 }
 
+.logout-button {
+  position: absolute;
+  top: 10rem;
+  left: 10rem;
+  z-index: 1000;
+}
+
 .login-form {
   position: absolute;
   top: 0;

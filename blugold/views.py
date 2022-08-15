@@ -36,6 +36,7 @@ class StationCreate(generics.CreateAPIView):
 
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.
+    permission_classes = (permissions.AllowAny,)
     serializer_class = StationSerializer
     queryset = Station.objects.all()
 
@@ -66,6 +67,14 @@ class LoginView(CsrfExemptMixin, views.APIView):
         user = serializer.validated_data['user']
         login(request, user)
         return Response(None, status=status.HTTP_202_ACCEPTED)
+
+
+class LogoutView(CsrfExemptMixin, views.APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = []
+    def post(self, request, format=None):
+        logout(request)
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer

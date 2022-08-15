@@ -150,10 +150,11 @@ if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
 CSRF_TRUSTED_ORIGINS= [
-    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
-    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
-    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
+    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
     'http://localhost:8000',
     'https://localhost:8000',
     'http://127.0.0.1:8000',
@@ -162,16 +163,28 @@ CSRF_TRUSTED_ORIGINS= [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
-    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
-    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io',
+    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
     'http://localhost:8000',
     'https://localhost:8000',
     'http://127.0.0.1:8000',
     'https://127.0.0.1:8000',
     'https://blugold.herokuapp.com',
 ]
+
+CORS_ORIGIN_WHITELIST = ['https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'http://localhost:8000',
+    'https://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://127.0.0.1:8000',
+    'https://blugold.herokuapp.com',]
 
 django_heroku.settings(locals())
 

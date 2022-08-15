@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import DeckGL from 'deck.gl';
 import { LineLayer } from 'deck.gl';
@@ -26,7 +25,7 @@ function App() {
   let linelayer = new LineLayer({ id: 'line-layer', data })
 
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
-  const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/api/', fetcher, { refreshInterval: 10000 }) // dev
+  const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/', fetcher, { refreshInterval: 10000 }) // dev
   //const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
 
   const [user, setUser] = useState();
@@ -38,7 +37,7 @@ function App() {
 
   function createStation() {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/api/create/', {
+    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/create/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -60,7 +59,7 @@ function App() {
 
   function updateStation() {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/api/update/1/', {
+    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/update/1/', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -82,7 +81,7 @@ function App() {
 
   function deleteStation() {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/api/delete/1/', {
+    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/delete/1/', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -98,7 +97,7 @@ function App() {
 
   function getStation() {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/api/2/', {
+    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/2/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -120,12 +119,12 @@ function App() {
     formdata.append("password", pass);
 
     var requestOptions = {
-      credentials: "include",
+      //credentials: "include",
       method: 'POST',
       body: formdata,
     };
 
-    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/login/", requestOptions)
+    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/login/", requestOptions)
       .then(response => response)
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -148,7 +147,19 @@ function App() {
       body: formdata,
     };
 
-    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu60.gitpod.io/register/", requestOptions)
+    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/register/", requestOptions)
+      .then(response => response)
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
+
+  const logout = () => {
+    var requestOptions = {
+      credentials: "include",
+      method: 'POST',
+    };
+
+    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/logout/", requestOptions)
       .then(response => response)
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -190,6 +201,7 @@ function App() {
       </form>
       <button className='login-button' onClick={login}>Login</button>
       <button className='register-button' onClick={register}>Register</button>
+      <button className='logout-button' onClick={logout}>Logout</button>
       <DeckGL
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
