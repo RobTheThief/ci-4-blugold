@@ -16,21 +16,33 @@ import django_heroku
 import dotenv
 import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+ORIGINS_TO_ALLOW = [
+    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
+    'https://localhost:8000',
+    'https://127.0.0.1:8000',
+    'https://blugold.herokuapp.com',
+    ]
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BACKEND_DIR = BASE_DIR
+FRONTEND_DIR = BASE_DIR.parent
 
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zj4*ov2e5o77e=hf_ky=e54=&1p_o56ldkhz2i5-6qjw_(uf-y'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_ENV') == 'development'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework', 
@@ -48,8 +61,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,7 +78,8 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'DIRS': [FRONTEND_DIR / 'ci-4-blugold' / 'build'],
+        #'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,7 +94,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -89,12 +102,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'blugolddb',
         'USER': 'rob',
-        'PASSWORD': 'thereur69',
+        'PASSWORD': str(os.getenv('DB_PASSWORD')),
         'HOST': 'localhost',
         'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -132,59 +144,25 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
-]
+#This may need to be changed for deploy
+STATICFILES_DIRS = [FRONTEND_DIR / 'ci-4-blugold' / 'build' / 'static']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BACKEND_DIR / 'static'
+
+#This may need to be changed for deploy
+WHITENOISE_ROOT = FRONTEND_DIR / 'ci-4-blugold' / 'build' / 'root'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+CSRF_TRUSTED_ORIGINS = ORIGINS_TO_ALLOW
 
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+CORS_ALLOWED_ORIGINS = ORIGINS_TO_ALLOW
 
-CSRF_TRUSTED_ORIGINS= [
-    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://localhost:8000',
-    'https://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://127.0.0.1:8000',
-    'https://blugold.herokuapp.com',
-]
-
-CORS_ALLOWED_ORIGINS = [
-    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://localhost:8000',
-    'https://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://127.0.0.1:8000',
-    'https://blugold.herokuapp.com',
-]
-
-CORS_ORIGIN_WHITELIST = ['https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io',
-    'http://localhost:8000',
-    'https://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://127.0.0.1:8000',
-    'https://blugold.herokuapp.com',]
+CORS_ORIGIN_WHITELIST = ORIGINS_TO_ALLOW
 
 django_heroku.settings(locals())
 

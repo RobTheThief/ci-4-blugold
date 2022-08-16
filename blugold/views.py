@@ -15,13 +15,41 @@ from django.views.decorators.csrf import csrf_exempt
 from braces.views import CsrfExemptMixin
 from django.contrib.auth.models import User
 
+import urllib.request
+from django.conf import settings
+from django.http import HttpResponse
+from django.template import engines
+from django.views.generic import TemplateView
+
+def catchall_dev(request, upstream='http://localhost:3000'):
+    upstream_url = upstream + request.path
+    with urllib.request.urlopen(upstream_url) as response:
+        content_type = response.headers.get('Content-Type')
+
+        if content_type == 'text/html; charset=UTF-8':
+            response_text = response.read().decode()
+            content = engines['django'].from_string(response_text).render()
+        else:
+            content = response.read()
+
+        return HttpResponse(
+            content,
+            content_type=content_type,
+            status=response.status,
+            reason=response.reason,
+        )
+
+catchall_prod = TemplateView.as_view(template_name='index.html')
+
+catchall = catchall_dev if settings.DEBUG else catchall_prod
+
 class BlugoldView(viewsets.ModelViewSet):
     serializer_class = StationSerializer          
     queryset = Station.objects.all()
 
 class Assets(View):
     def get(self, _request, filename):
-        path = os.path.join(os.path.dirname(__file__), 'static', filename)
+        path = os.path.join(os.path.dirname(__file__), 'public', filename)
 
         if os.path.isfile(path):
             with open(path, 'rb') as file:
@@ -36,7 +64,7 @@ class StationCreate(generics.CreateAPIView):
 
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.
-    permission_classes = (permissions.AllowAny,)
+    #permission_classes = (permissions.AllowAny,)
     serializer_class = StationSerializer
     queryset = Station.objects.all()
 
@@ -78,7 +106,7 @@ class LogoutView(CsrfExemptMixin, views.APIView):
 
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
-
+    #permission_classes = (permissions.AllowAny,)
     def get_object(self):
         return self.request.user
 

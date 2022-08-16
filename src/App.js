@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import "mapbox-gl/dist/mapbox-gl.css";
 
+const BASE_URL = 'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io';
+
 // Viewport settings
 const INITIAL_VIEW_STATE = {
   longitude: -122.41669,
@@ -25,7 +27,7 @@ function App() {
   let linelayer = new LineLayer({ id: 'line-layer', data })
 
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
-  const { data: bluApiData, error: bluError } = useSWR('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/', fetcher, { refreshInterval: 10000 }) // dev
+  const { data: bluApiData, error: bluError } = useSWR(`${BASE_URL}/api/`, fetcher, { refreshInterval: 10000 }) // dev
   //const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
 
   const [user, setUser] = useState();
@@ -35,18 +37,18 @@ function App() {
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
 
-  function createStation() {
+  function createStation( station, petrolPrice, dieselPrice) {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/create/', {
+    fetch(`${BASE_URL}/api/create/`, { 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(
         {
-          "station": "Test",
-          "petrol": "199",
-          "diesel": "200"
+          "station": station,
+          "petrol": petrolPrice,
+          "diesel": dieselPrice
         })
     })
       .then(res => {
@@ -57,18 +59,18 @@ function App() {
       })
   }
 
-  function updateStation() {
+  function updateStation(id, station, petrolPrice, dieselPrice) {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/update/1/', {
+    fetch(`${BASE_URL}/api/update/${id}/`, { 
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(
         {
-          "station": "retest",
-          "petrol": "199",
-          "diesel": "200"
+          "station": station,
+          "petrol": petrolPrice,
+          "diesel": dieselPrice
         })
     })
       .then(res => {
@@ -79,9 +81,9 @@ function App() {
       })
   }
 
-  function deleteStation() {
+  function deleteStation(id) {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/delete/1/', {
+    fetch(`${BASE_URL}/api/delete/${id}/`, { 
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -95,9 +97,9 @@ function App() {
       })
   }
 
-  function getStation() {
+  function getStation(id) {
     console.log('running');
-    fetch('https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/api/2/', {
+    fetch(`${BASE_URL}/api/${id}/`, { 
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -119,13 +121,12 @@ function App() {
     formdata.append("password", pass);
 
     var requestOptions = {
-      //credentials: "include",
       method: 'POST',
       body: formdata,
     };
 
-    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/login/", requestOptions)
-      .then(response => response)
+    fetch(`${BASE_URL}/login/`, requestOptions) 
+      .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
@@ -147,8 +148,8 @@ function App() {
       body: formdata,
     };
 
-    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/register/", requestOptions)
-      .then(response => response)
+    fetch(`${BASE_URL}/register/`, requestOptions) 
+      .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
@@ -159,8 +160,23 @@ function App() {
       method: 'POST',
     };
 
-    fetch("https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io/logout/", requestOptions)
+    fetch(`${BASE_URL}/logout/`, requestOptions) 
       .then(response => response)
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
+
+  const getProfile = () => {
+    var requestOptions = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: "include",
+      method: 'GET',
+    };
+
+    fetch(`${BASE_URL}/profile/`, requestOptions) 
+      .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
@@ -175,6 +191,7 @@ function App() {
     //deleteStation()
     //console.log(getStation())
     //login();
+    getProfile();
   }, [])
 
   return (
@@ -209,12 +226,12 @@ function App() {
       >
         <Map
           mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          mapStyle="mapbox://styles/mapbox/streets-v11"
+          mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
+          //mapStyle="mapbox://styles/mapbox/streets-v11"
         />
       </DeckGL>
     </>
   );
 }
-
 
 export default App;

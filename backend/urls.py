@@ -25,5 +25,6 @@ urlpatterns = [
     path('profile/', views.ProfileView.as_view()),
     path('register/', views.CreateUserView.as_view(), name='auth_register'),
     path('api/', include('blugold.urls')),
-    re_path('.*', TemplateView.as_view(template_name='index.html')),
+    #re_path('.*', TemplateView.as_view(template_name='index.html')),
+    re_path(r'', views.catchall),
 ]
