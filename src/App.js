@@ -1,12 +1,12 @@
 import './App.css';
 import DeckGL from 'deck.gl';
-import { LineLayer } from 'deck.gl';
+import { IconLayer } from 'deck.gl';
 import Map from 'react-map-gl';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import {bluConsoleLog} from './components/bluConsoleLog';
+import { bluConsoleLog } from './helpers';
 
 const BASE_URL = 'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io';
 
@@ -19,14 +19,31 @@ const INITIAL_VIEW_STATE = {
   bearing: 0
 };
 
-const data = [
-  { sourcePosition: [-6.267469638550943, 53.34521353452406 ], targetPosition: [-6.263469638550943, 53.34521353452406] }
-];
+const iconLayerData= [{name: 'Colma (COLM)', address: '365 D Street, Colma CA 94014', exits: 4214, coordinates: [-6.263469638550943, 53.34521353452406]},]
+
+const ICON_MAPPING = {
+  marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+};
+
+const iconLayer = new IconLayer({
+  id: 'icon-layer',
+  data: iconLayerData,
+  pickable: true,
+  // iconAtlas and iconMapping are required
+  // getIcon: return a string
+  iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+  iconMapping: ICON_MAPPING,
+  getIcon: d => 'marker',
+
+  sizeScale: 15,
+  getPosition: d => d.coordinates,
+  getSize: d => 5,
+  getColor: d => [Math.sqrt(d.exits), 140, 0]
+});
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function App() {
-  let linelayer = new LineLayer({ id: 'line-layer', data, getColor: d => [Math.sqrt(d.inbound + d.outbound), 140, 0]})
 
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
   const { data: bluApiData, error: bluError } = useSWR(`${BASE_URL}/api/`, fetcher, { refreshInterval: 10000 }) // dev
@@ -39,9 +56,9 @@ function App() {
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
 
-  function createStation( station, petrolPrice, dieselPrice) {
+  function createStation(station, petrolPrice, dieselPrice) {
     bluConsoleLog('running', new Error().lineNumber);
-    fetch(`${BASE_URL}/api/create/`, { 
+    fetch(`${BASE_URL}/api/create/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -63,7 +80,7 @@ function App() {
 
   function updateStation(id, station, petrolPrice, dieselPrice) {
     bluConsoleLog('running');
-    fetch(`${BASE_URL}/api/update/${id}/`, { 
+    fetch(`${BASE_URL}/api/update/${id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -85,7 +102,7 @@ function App() {
 
   function deleteStation(id) {
     bluConsoleLog('running');
-    fetch(`${BASE_URL}/api/delete/${id}/`, { 
+    fetch(`${BASE_URL}/api/delete/${id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -101,7 +118,7 @@ function App() {
 
   function getStation(id) {
     bluConsoleLog('running');
-    fetch(`${BASE_URL}/api/${id}/`, { 
+    fetch(`${BASE_URL}/api/${id}/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -127,8 +144,8 @@ function App() {
       body: formdata,
     };
 
-    fetch(`${BASE_URL}/login/`, requestOptions) 
-      .then(response => response.json())
+    fetch(`${BASE_URL}/login/`, requestOptions)
+      .then(response => response)
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
@@ -150,7 +167,7 @@ function App() {
       body: formdata,
     };
 
-    fetch(`${BASE_URL}/register/`, requestOptions) 
+    fetch(`${BASE_URL}/register/`, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -162,7 +179,7 @@ function App() {
       method: 'POST',
     };
 
-    fetch(`${BASE_URL}/logout/`, requestOptions) 
+    fetch(`${BASE_URL}/logout/`, requestOptions)
       .then(response => response)
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -177,7 +194,7 @@ function App() {
       method: 'GET',
     };
 
-    fetch(`${BASE_URL}/profile/`, requestOptions) 
+    fetch(`${BASE_URL}/profile/`, requestOptions)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -185,7 +202,7 @@ function App() {
 
   useEffect(() => {
     var debug = console.log.bind(window.console)
-   bluConsoleLog({apiData, bluApiData}, debug)
+    bluConsoleLog(apiData, bluApiData, debug)
   }, [apiData, bluApiData])
 
   useEffect(() => {
@@ -225,7 +242,7 @@ function App() {
       <DeckGL
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
-        layers={linelayer}
+        layers={iconLayer}
       >
         <Map
           mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
