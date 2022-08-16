@@ -6,25 +6,27 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import "mapbox-gl/dist/mapbox-gl.css";
 
+import {bluConsoleLog} from './components/bluConsoleLog';
+
 const BASE_URL = 'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu61.gitpod.io';
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
-  longitude: -122.41669,
-  latitude: 37.7853,
+  longitude: -6.267469638550943,
+  latitude: 53.34523915464418,
   zoom: 13,
-  pitch: 0,
+  pitch: 45,
   bearing: 0
 };
 
 const data = [
-  { sourcePosition: [-122.41669, 37.7853], targetPosition: [-122.41669, 37.781] }
+  { sourcePosition: [-6.267469638550943, 53.34521353452406 ], targetPosition: [-6.263469638550943, 53.34521353452406] }
 ];
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function App() {
-  let linelayer = new LineLayer({ id: 'line-layer', data })
+  let linelayer = new LineLayer({ id: 'line-layer', data, getColor: d => [Math.sqrt(d.inbound + d.outbound), 140, 0]})
 
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
   const { data: bluApiData, error: bluError } = useSWR(`${BASE_URL}/api/`, fetcher, { refreshInterval: 10000 }) // dev
@@ -38,7 +40,7 @@ function App() {
   const [lastName, setLastName] = useState();
 
   function createStation( station, petrolPrice, dieselPrice) {
-    console.log('running');
+    bluConsoleLog('running', new Error().lineNumber);
     fetch(`${BASE_URL}/api/create/`, { 
       method: 'POST',
       headers: {
@@ -60,7 +62,7 @@ function App() {
   }
 
   function updateStation(id, station, petrolPrice, dieselPrice) {
-    console.log('running');
+    bluConsoleLog('running');
     fetch(`${BASE_URL}/api/update/${id}/`, { 
       method: 'PUT',
       headers: {
@@ -82,7 +84,7 @@ function App() {
   }
 
   function deleteStation(id) {
-    console.log('running');
+    bluConsoleLog('running');
     fetch(`${BASE_URL}/api/delete/${id}/`, { 
       method: 'DELETE',
       headers: {
@@ -98,7 +100,7 @@ function App() {
   }
 
   function getStation(id) {
-    console.log('running');
+    bluConsoleLog('running');
     fetch(`${BASE_URL}/api/${id}/`, { 
       method: 'GET',
       headers: {
@@ -114,7 +116,7 @@ function App() {
   }
 
   const login = () => {
-    console.log(user, pass)
+    bluConsoleLog(user, pass)
 
     var formdata = new FormData();
     formdata.append("username", user);
@@ -132,7 +134,7 @@ function App() {
   }
 
   const register = () => {
-    console.log(user, pass, pass2, email, firstName, lastName)
+    bluConsoleLog(user, pass, pass2, email, firstName, lastName)
 
     var formdata = new FormData();
     formdata.append("username", user);
@@ -182,7 +184,8 @@ function App() {
   }
 
   useEffect(() => {
-    console.log(apiData, bluApiData)
+    var debug = console.log.bind(window.console)
+   bluConsoleLog({apiData, bluApiData}, debug)
   }, [apiData, bluApiData])
 
   useEffect(() => {
@@ -226,8 +229,8 @@ function App() {
       >
         <Map
           mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
-          //mapStyle="mapbox://styles/mapbox/streets-v11"
+          //mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
+          mapStyle="mapbox://styles/mapbox/streets-v11"
         />
       </DeckGL>
     </>
