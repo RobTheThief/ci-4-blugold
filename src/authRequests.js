@@ -1,8 +1,6 @@
 import baseUrl from './baseUrl';
 
 const login = (user, pass) => (e) => {
-    bluConsoleLog(user, pass)
-
     var formdata = new FormData();
     formdata.append("username", user);
     formdata.append("password", pass);
@@ -19,8 +17,6 @@ const login = (user, pass) => (e) => {
   }
 
   const register = (user, pass, pass2, email, firstName, lastName) => (e) => {
-    bluConsoleLog(user, pass, pass2, email, firstName, lastName)
-
     var formdata = new FormData();
     formdata.append("username", user);
     formdata.append("password", pass);

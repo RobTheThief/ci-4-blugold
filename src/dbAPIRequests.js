@@ -1,84 +1,103 @@
 import baseUrl from './baseUrl';
+import { bluConsoleLog } from './helpers';
 
 function createStation(station, petrolPrice, dieselPrice) {
-    bluConsoleLog('running', new Error().lineNumber);
-    fetch(`${baseUrl}/api/create/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(
-        {
-          "station": station,
-          "petrol": petrolPrice,
-          "diesel": dieselPrice
-        })
+  fetch(`${baseUrl}/api/create/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      {
+        "station": station,
+        "petrol": petrolPrice,
+        "diesel": dieselPrice
+      })
+  })
+    .then(res => {
+      if (res.ok) return res.json()
     })
-      .then(res => {
-        if (res.ok) return res.json()
-      })
-      .catch(error => {
-        console.log('error', error);
-      })
-  }
-
-  function updateStation(id, station, petrolPrice, dieselPrice) {
-    bluConsoleLog('running');
-    fetch(`${baseUrl}/api/update/${id}/`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(
-        {
-          "station": station,
-          "petrol": petrolPrice,
-          "diesel": dieselPrice
-        })
+    .catch(error => {
+      console.log('error', error);
     })
-      .then(res => {
-        if (res.ok) return res.json()
-      })
-      .catch(error => {
-        console.log('error', error);
-      })
-  }
+}
 
-  function deleteStation(id) {
-    bluConsoleLog('running');
-    fetch(`${baseUrl}/api/delete/${id}/`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+function updateStation(id, station, petrolPrice, dieselPrice) {
+  fetch(`${baseUrl}/api/update/${id}/`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(
+      {
+        "station": station,
+        "petrol": petrolPrice,
+        "diesel": dieselPrice
+      })
+  })
+    .then(res => {
+      if (res.ok) return res.json()
     })
-      .then(res => {
-        if (res.ok) return res.json()
-      })
-      .catch(error => {
-        console.log('error', error);
-      })
-  }
-
-  function getStation(id) {
-    bluConsoleLog('running');
-    fetch(`${baseUrl}/api/${id}/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    .catch(error => {
+      console.log('error', error);
     })
-      .then(res => {
-        if (res.ok) return res.json()
-      })
-      .catch(error => {
-        console.log('error', error);
-      })
-  }
+}
 
-  export {
-    getStation,
-    deleteStation,
-    updateStation,
-    createStation,
-  }
+function deleteStation(id) {
+  fetch(`${baseUrl}/api/delete/${id}/`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+    })
+    .catch(error => {
+      console.log('error', error);
+    })
+}
+
+function getStation(id) {
+  fetch(`${baseUrl}/api/${id}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(res => {
+      if (res.ok) return res.json()
+    })
+    .catch(error => {
+      console.log('error', error);
+    })
+}
+
+/* coords in format og: '53.46473616374262,-10.688388878528719' */
+const getStationLocationData = (coords) => {
+  return new Promise(async resolve => {
+    try {
+      const response = await fetch(`https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu62.gitpod.io/api/externalapiequest/${coords}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const responseJson = await response.json(); //extract JSON from the http response
+
+      resolve(responseJson);
+    } catch (error) {
+      alert(error);
+      resolve();
+    }
+  })
+};
+
+export {
+  getStation,
+  deleteStation,
+  updateStation,
+  createStation,
+  getStationLocationData
+}

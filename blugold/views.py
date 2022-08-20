@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework import viewsets, generics
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
-import os       
-from .serializers import StationSerializer, CreateUserSerializer    
-from .models import Station                     
+import os
+from .serializers import StationSerializer, CreateUserSerializer
+from .models import Station
 from . import serializers
 from rest_framework import permissions
 from rest_framework import views
@@ -14,12 +14,17 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from braces.views import CsrfExemptMixin
 from django.contrib.auth.models import User
+import dotenv
 
 import urllib.request
 from django.conf import settings
 from django.http import HttpResponse
 from django.template import engines
 from django.views.generic import TemplateView
+from rest_framework.permissions import IsAuthenticated
+import requests
+import json
+
 
 def catchall_dev(request, upstream='http://localhost:3000'):
     upstream_url = upstream + request.path
@@ -39,13 +44,16 @@ def catchall_dev(request, upstream='http://localhost:3000'):
             reason=response.reason,
         )
 
+
 catchall_prod = TemplateView.as_view(template_name='index.html')
 
 catchall = catchall_dev if settings.DEBUG else catchall_prod
 
+
 class BlugoldView(viewsets.ModelViewSet):
-    serializer_class = StationSerializer          
+    serializer_class = StationSerializer
     queryset = Station.objects.all()
+
 
 class Assets(View):
     def get(self, _request, filename):
@@ -57,10 +65,12 @@ class Assets(View):
         else:
             return HttpResponseNotFound()
 
+
 class StationCreate(generics.CreateAPIView):
     # API endpoint that allows creation of a new station
     serializer_class = StationSerializer
     queryset = Station.objects.all(),
+
 
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.
@@ -68,20 +78,24 @@ class StationList(generics.ListAPIView):
     serializer_class = StationSerializer
     queryset = Station.objects.all()
 
+
 class StationDetail(generics.RetrieveAPIView):
     # API endpoint that returns a single station by id.
     serializer_class = StationSerializer
     queryset = Station.objects.all()
+
 
 class StationUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Station record to be updated.
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
+
 class StationDelete(generics.RetrieveDestroyAPIView):
     # API endpoint that allows a Station record to be deleted.
     serializer_class = StationSerializer
     queryset = Station.objects.all()
+
 
 class LoginView(CsrfExemptMixin, views.APIView):
     # This view should be accessible also for unauthenticated users.
@@ -90,7 +104,7 @@ class LoginView(CsrfExemptMixin, views.APIView):
 
     def post(self, request, format=None):
         serializer = serializers.LoginSerializer(data=self.request.data,
-            context={ 'request': self.request })
+                                                 context={'request': self.request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
@@ -100,18 +114,48 @@ class LoginView(CsrfExemptMixin, views.APIView):
 class LogoutView(CsrfExemptMixin, views.APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = []
+
     def post(self, request, format=None):
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
-    #permission_classes = (permissions.AllowAny,)
+
     def get_object(self):
         return self.request.user
+
 
 class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
     authentication_classes = []
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = CreateUserSerializer
+
+
+class ExternalApiRequest(CsrfExemptMixin, views.APIView):
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
+
+    """ This view make and external api call, save the result and return 
+        the data generated as json object """
+
+    def get(self, request, pk, format=None):
+        response = {}
+        payload = {'location': pk, 'radius': '100000', 'types': 'gas_station',
+                   'name': 'fuel', 'key': str(os.getenv('GOOGLE_API_KEY'))}
+        r = requests.get(
+            'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
+        r_status = r.status_code
+        if r_status == 200:
+            json_res = r.text
+            data = json.loads(json_res)
+            response['status'] = 200
+            response['message'] = 'success'
+            response['credentials'] = data
+        else:
+            response['status'] = r.status_code
+            response['message'] = 'error'
+            response['credentials'] = {}
+        return Response(data)

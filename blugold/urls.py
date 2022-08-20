@@ -1,5 +1,5 @@
 from django.urls import include, path
-from .views import StationCreate, StationList, StationDetail, StationUpdate, StationDelete
+from .views import StationCreate, StationList, StationDetail, StationUpdate, StationDelete, ExternalApiRequest
 
 
 urlpatterns = [
@@ -7,5 +7,6 @@ urlpatterns = [
     path('', StationList.as_view()),
     path('<int:pk>/', StationDetail.as_view(), name='retrieve-station'),
     path('update/<int:pk>/', StationUpdate.as_view(), name='update-station'),
-    path('delete/<int:pk>/', StationDelete.as_view(), name='delete-station')
+    path('delete/<int:pk>/', StationDelete.as_view(), name='delete-station'),
+    path('externalapiequest/<str:pk>/', ExternalApiRequest.as_view())
 ]

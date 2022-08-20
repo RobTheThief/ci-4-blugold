@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import DeckSnapshot from './components/DeckSnapshot';
-import { bluConsoleLog } from './helpers';
 import baseUrl from './baseUrl';
 import {
   getStation,
   deleteStation,
   updateStation,
   createStation,
+  getStationLocationData
 } from './dbAPIRequests'
 import {
   getProfile,
@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     var debug = console.log.bind(window.console)
-    bluConsoleLog(apiData, bluApiData, debug)
+    console.log({apiData, bluApiData, debug})
   }, [apiData, bluApiData])
 
   useEffect(() => {
@@ -44,6 +44,8 @@ function App() {
     //console.log(getStation())
     //login();
     getProfile();
+   // let result = getStationLocationData('53.34523915464418,-6.267469638550943')
+   // console.log({result});
   }, [])
 
   return (
