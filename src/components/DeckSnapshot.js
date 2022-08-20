@@ -41,7 +41,7 @@ export default function DeckSnapshot() {
     });
 
     const fetchAndSetStationData = async () => {
-        setStationData(await getStationLocationData('53.34523915464418,-6.267469638550943'))
+        setStationData(await getStationLocationData('53.34523915464418,-6.267469638550943', '100000'))
     }
 
     useEffect(() => {
@@ -69,8 +69,8 @@ export default function DeckSnapshot() {
             >
                 <Map
                     mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                    //mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
-                    mapStyle="mapbox://styles/mapbox/streets-v11"
+                    mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
+                    //mapStyle="mapbox://styles/mapbox/streets-v11"
                 />
             </DeckGL>
         </>

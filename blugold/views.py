@@ -136,14 +136,12 @@ class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
 
 class ExternalApiRequest(CsrfExemptMixin, views.APIView):
     authentication_classes = []
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,) 
 
-    """ This view make and external api call, save the result and return 
-        the data generated as json object """
-
-    def get(self, request, pk, format=None):
+    def get(self, request, location, radius, format=None):
         response = {}
-        payload = {'location': pk, 'radius': '100000', 'types': 'gas_station',
+        print(location, radius)
+        payload = {'location': location, 'radius': radius, 'types': 'gas_station',
                    'name': 'fuel', 'key': str(os.getenv('GOOGLE_API_KEY'))}
         r = requests.get(
             'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
@@ -153,9 +151,7 @@ class ExternalApiRequest(CsrfExemptMixin, views.APIView):
             data = json.loads(json_res)
             response['status'] = 200
             response['message'] = 'success'
-            response['credentials'] = data
         else:
             response['status'] = r.status_code
             response['message'] = 'error'
-            response['credentials'] = {}
         return Response(data)

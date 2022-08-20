@@ -73,11 +73,11 @@ function getStation(id) {
     })
 }
 
-/* coords in format og: '53.46473616374262,-10.688388878528719' */
-const getStationLocationData = (coords) => {
+/* location in format of: '53.46473616374262,-10.688388878528719' radius in meters */
+const getStationLocationData = (location, radius) => {
   return new Promise(async resolve => {
     try {
-      const response = await fetch(`https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu62.gitpod.io/externalapiequest/${coords}/`, {
+      const response = await fetch(`https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu62.gitpod.io/externalapiequest/${location}/${radius}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
