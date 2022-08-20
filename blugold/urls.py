@@ -8,5 +8,4 @@ urlpatterns = [
     path('<int:pk>/', StationDetail.as_view(), name='retrieve-station'),
     path('update/<int:pk>/', StationUpdate.as_view(), name='update-station'),
     path('delete/<int:pk>/', StationDelete.as_view(), name='delete-station'),
-    path('externalapiequest/<str:pk>/', ExternalApiRequest.as_view())
 ]

@@ -77,7 +77,7 @@ function getStation(id) {
 const getStationLocationData = (coords) => {
   return new Promise(async resolve => {
     try {
-      const response = await fetch(`https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu62.gitpod.io/api/externalapiequest/${coords}/`, {
+      const response = await fetch(`https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu62.gitpod.io/externalapiequest/${coords}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
