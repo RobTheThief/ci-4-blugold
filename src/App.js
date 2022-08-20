@@ -31,11 +31,24 @@ function App() {
   const [email, setEmail] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  async function checkLogin() {
+    let response = await getProfile();
+    if (response !== "Authentication credentials were not provided.") {
+      setIsLoggedIn(true)
+    }
+    console.log({ isLoggedIn });
+  }
 
   useEffect(() => {
     var debug = console.log.bind(window.console)
-    console.log({apiData, bluApiData, debug})
+    console.log({ apiData, bluApiData, debug })
   }, [apiData, bluApiData])
+
+  useEffect(() => {
+    checkLogin()
+  }, [isLoggedIn])
 
   useEffect(() => {
     //createStation();
@@ -43,9 +56,8 @@ function App() {
     //deleteStation()
     //console.log(getStation())
     //login();
-    getProfile();
-   // let result = getStationLocationData('53.34523915464418,-6.267469638550943')
-   // console.log({result});
+    // let result = getStationLocationData('53.34523915464418,-6.267469638550943')
+    // console.log({result});
   }, [])
 
   return (

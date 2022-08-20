@@ -74,7 +74,7 @@ class StationCreate(generics.CreateAPIView):
 
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.
-    #permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny,)
     serializer_class = StationSerializer
     queryset = Station.objects.all()
 
