@@ -12,6 +12,7 @@ import {
   createStation,
   getStationLocationData
 } from './dbAPIRequests'
+import SearchStationSidebar from './components/SearchStationSidebar';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -38,6 +39,7 @@ function App() {
   return (
     <>
       <LoginRegisterUI />
+      <SearchStationSidebar />
       <DeckSnapshot />
     </>
   );

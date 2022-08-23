@@ -4,9 +4,9 @@ import {
     logout,
     register,
     login
-  } from '../authRequests'
+} from '../authRequests'
 
-export default function SearchStationSidebar({}) {
+export default function LoginRegisterUI({ }) {
     const [user, setUser] = useState();
     const [pass, setPass] = useState();
     const [pass2, setPass2] = useState();
@@ -16,37 +16,36 @@ export default function SearchStationSidebar({}) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     async function checkLogin() {
-      let response = await getProfile();
-      if (response !== "Authentication credentials were not provided.") {
-        setIsLoggedIn(true)
-      }
-      console.log({ isLoggedIn });
+        let response = await getProfile();
+        if (response !== "Authentication credentials were not provided.") {
+            setIsLoggedIn(true)
+        }
+        console.log({ isLoggedIn });
     }
-  
-    useEffect(() => {
-      checkLogin()
-    }, [isLoggedIn])
-    
-    return (
 
-        <div className='login-ui-wrapper'>
-            <form className='login-form'>
-                <label>Enter your username:<br />
+    useEffect(() => {
+        checkLogin()
+    }, [isLoggedIn])
+
+    return (
+        <div className='login-ui-wrapper sidebar-ui'>
+            <form className='login-form ui-form'>
+                <label>Enter your username<br />
                     <input type="text" onChange={(e) => setUser(e.target.value)} />
                 </label>
-                <label>Enter your password:<br />
+                <label>Enter your password<br />
                     <input type="text" onChange={(e) => setPass(e.target.value)} />
                 </label>
-                <label>Enter your password again:<br />
+                <label>Enter your password again<br />
                     <input type="text" onChange={(e) => setPass2(e.target.value)} />
                 </label>
-                <label>Enter your email:<br />
+                <label>Enter your email<br />
                     <input type="text" onChange={(e) => setEmail(e.target.value)} />
                 </label>
-                <label>Enter your first name:<br />
+                <label>Enter your first name<br />
                     <input type="text" onChange={(e) => setFirstName(e.target.value)} />
                 </label>
-                <label>Enter your last name:<br />
+                <label>Enter your last name<br />
                     <input type="text" onChange={(e) => setLastName(e.target.value)} />
                 </label>
             </form>
