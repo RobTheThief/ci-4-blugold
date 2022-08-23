@@ -7,25 +7,23 @@ import {
     getStationLocationData
 } from '../dbAPIRequests'
 
-// Viewport settings
-const INITIAL_VIEW_STATE = {
-    longitude: -6.267469638550943,
-    latitude: 53.34523915464418,
-    zoom: 13,
-    pitch: 45,
-    bearing: 0
-};
-
 const ICON_LAYER_DATA = [{ name: 'Colma (COLM)', address: '365 D Street, Colma CA 94014', exits: 4214, coordinates: [-6.263469638550943, 53.34521353452406] },]
 
 const ICON_MAPPING = {
     marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
 }
 
-export default function DeckSnapshot() {
-    const [stationData, setStationData] = useState();
-    const [mapData, setMapData] = useState(); 
+export default function DeckSnapshot({mapData, setMapData, stationData, setStationData, longView, setLongView, latView, setLatView}) {
 
+        // Viewport settings
+    const INITIAL_VIEW_STATE =  {
+        longitude: -6.267469638550943,
+        latitude: 53.34523915464418,
+        zoom: 13,
+        pitch: 45,
+        bearing: 0
+    };
+    
     const ICON_LAYER = new IconLayer({
         id: 'icon-layer',
         data: mapData,

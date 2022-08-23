@@ -74,6 +74,7 @@ function getStation(id) {
 
 /* location in format of: '53.46473616374262,-10.688388878528719' radius in meters, name of place as a string, default='fuel' */
 const getStationLocationData = (location, radius, name='fuel') => {
+  console.log({location, radius})
   return new Promise(async resolve => {
     try {
       const response = await fetch(`https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu62.gitpod.io/externalapiequest/${location}/${radius}/${name}/`, {
@@ -84,6 +85,8 @@ const getStationLocationData = (location, radius, name='fuel') => {
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
+      
+      console.log(responseJson)
 
       resolve(responseJson);
     } catch (error) {
