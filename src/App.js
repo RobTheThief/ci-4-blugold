@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import DeckSnapshot from './components/DeckSnapshot';
-import baseUrl from './baseUrl';
+import { url as baseUrl } from './baseUrl';
 import {
   getStation,
   deleteStation,
@@ -22,7 +22,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function App() {
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
-  const { data: bluApiData, error: bluError } = useSWR(`${baseUrl.url}/api/`, fetcher, { refreshInterval: 10000 }) // dev
+  const { data: bluApiData, error: bluError } = useSWR(`${baseUrl}/api/`, fetcher, { refreshInterval: 10000 }) // dev
   //const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
 
   const [user, setUser] = useState();

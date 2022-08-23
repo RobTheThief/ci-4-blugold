@@ -1,4 +1,4 @@
-import baseUrl from './baseUrl';
+import { url as baseUrl } from './baseUrl';
 import { bluConsoleLog } from './helpers';
 
 function createStation(station, petrolPrice, dieselPrice) {

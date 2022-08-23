@@ -1,4 +1,4 @@
-import baseUrl from './baseUrl';
+import { url as baseUrl } from './baseUrl';
 
 const login = (user, pass) => (e) => {
   var formdata = new FormData();
@@ -10,7 +10,7 @@ const login = (user, pass) => (e) => {
     body: formdata,
   };
 
-  fetch(`${baseUrl.url}/login/`, requestOptions)
+  fetch(`${baseUrl}/login/`, requestOptions)
     .then(response => response)
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
@@ -31,7 +31,7 @@ const register = (user, pass, pass2, email, firstName, lastName) => (e) => {
     body: formdata,
   };
 
-  fetch(`${baseUrl.url}/register/`, requestOptions)
+  fetch(`${baseUrl}/register/`, requestOptions)
     .then(response => response.json())
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
@@ -43,7 +43,7 @@ const logout = () => {
     method: 'POST',
   };
 
-  fetch(`${baseUrl.url}/logout/`, requestOptions)
+  fetch(`${baseUrl}/logout/`, requestOptions)
     .then(response => response)
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
@@ -59,7 +59,7 @@ const getProfile = () => {
       method: 'GET',
     };
     try {
-      let result = await fetch(`${baseUrl.url}/profile/`, requestOptions)
+      let result = await fetch(`${baseUrl}/profile/`, requestOptions)
         .then(response => response.json())
       resolve(result.detail);
     } catch (error) {
