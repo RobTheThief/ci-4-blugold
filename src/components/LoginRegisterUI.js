@@ -34,10 +34,10 @@ export default function LoginRegisterUI({ }) {
                     <input type="text" onChange={(e) => setUser(e.target.value)} />
                 </label>
                 <label>Enter your password<br />
-                    <input type="text" onChange={(e) => setPass(e.target.value)} />
+                    <input type="password" onChange={(e) => setPass(e.target.value)} />
                 </label>
                 <label>Enter your password again<br />
-                    <input type="text" onChange={(e) => setPass2(e.target.value)} />
+                    <input type="password" onChange={(e) => setPass2(e.target.value)} />
                 </label>
                 <label>Enter your email<br />
                     <input type="text" onChange={(e) => setEmail(e.target.value)} />

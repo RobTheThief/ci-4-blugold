@@ -12,10 +12,17 @@ export default function SearchStationSidebar({ stationData, setStationData, long
     const [lat, setLat] = useState(); 
     const [radius, setRadius] = useState();
 
-    const handleSearchArea = async () => {
+    const handleSearchArea =  (address) => async (e) => {
         let location = `${lat},${long}`
-        console.log({lat, long, location, radius})
-        setStationData(await getStationLocationData(location, `${radius}`, 'fuel'))
+        console.log({lat, long, location, radius, area})
+            if (address) {
+                setStationData(await getStationLocationData('undefined,undefined', `${radius}`, 'fuel', area))
+                console.log('area')
+                return;
+            }
+            setStationData(await getStationLocationData(location, `${radius}`, 'fuel'))
+            console.log('location')
+       
     }
 
     const handleSearchStation = () => {
@@ -42,7 +49,7 @@ export default function SearchStationSidebar({ stationData, setStationData, long
                     <label>Area<br />
                         <input type="text" onChange={(e) => setArea(e.target.value)} />
                     </label>
-                    <button className='go-btn' >Go</button>
+                    <button className='go-btn' onClick={handleSearchArea(true)} >Go</button>
                 </div>
                 <label>Radius<br />
                     <input type="text" onChange={(e) => setRadius(e.target.value)} />
@@ -54,7 +61,7 @@ export default function SearchStationSidebar({ stationData, setStationData, long
                     <label>lat<br />
                         <input className='coord-input' type="text" onChange={(e) => setLat(e.target.value)} />
                     </label>
-                    <button className='go-btn' onClick={handleSearchArea}>Go</button>
+                    <button className='go-btn' onClick={handleSearchArea()}>Go</button>
                 </div>
             </div>
         </div>
