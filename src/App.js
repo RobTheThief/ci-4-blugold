@@ -13,6 +13,7 @@ import {
   getStationLocationData
 } from './dbAPIRequests'
 import SearchStationSidebar from './components/SearchStationSidebar';
+import {getProfile} from './authRequests';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -39,6 +40,7 @@ function App() {
     // let result = getStationLocationData('53.34523915464418,-6.267469638550943')
     // console.log({result});
      createStation('The thing', 2, 2);
+     getProfile();
   }, [])
 
   return (

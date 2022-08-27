@@ -72,59 +72,71 @@ class StationCreate(generics.CreateAPIView):
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     #authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions]
+    #permission_classes = [permissions.DjangoModelPermissions]
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
 
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.
-    permission_classes = (permissions.AllowAny,)
+    #permission_classes = (permissions.AllowAny,)
     serializer_class = StationSerializer
     queryset = Station.objects.all()
-
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
 
 class StationDetail(generics.RetrieveAPIView):
     # API endpoint that returns a single station by id.
     serializer_class = StationSerializer
     queryset = Station.objects.all()
-
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
 
 class StationUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Station record to be updated.
     queryset = Station.objects.all()
     serializer_class = StationSerializer
-
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
 
 class StationDelete(generics.RetrieveDestroyAPIView):
     # API endpoint that allows a Station record to be deleted.
     serializer_class = StationSerializer
     queryset = Station.objects.all()
-
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
 
 class LoginView(CsrfExemptMixin, views.APIView):
     # This view should be accessible also for unauthenticated users.
     permission_classes = (permissions.AllowAny,)
+    #authentication_classes = [authentication.SessionAuthentication]
     authentication_classes = []
-
+    
     def post(self, request, format=None):
         serializer = serializers.LoginSerializer(data=self.request.data,
                                                  context={'request': self.request})
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
         login(request, user)
         return Response(None, status=status.HTTP_202_ACCEPTED)
 
 
 class LogoutView(CsrfExemptMixin, views.APIView):
+    #permission_classes = [IsAuthenticated]
+    #authentication_classes = [
+        #authentication.SessionAuthentication, authentication.BasicAuthentication]
     permission_classes = (permissions.AllowAny,)
     authentication_classes = []
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
-
+    #permission_classes = (permissions.IsAuthenticated,)
+    #authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,)
     def get_object(self):
         return self.request.user
 
@@ -138,13 +150,13 @@ class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
 
 class ExternalApiRequest(CsrfExemptMixin, views.APIView):
     authentication_classes = []
-    permission_classes = (permissions.AllowAny,) 
+    permission_classes = (permissions.AllowAny,)
 
     def get(self, request, location, radius, name, format=None):
         response = {}
         print(location, radius)
         payload = {'location': location, 'radius': radius, 'types': 'gas_station',
-                'name': name, 'key': str(os.getenv('GOOGLE_API_KEY'))}
+                   'name': name, 'key': str(os.getenv('GOOGLE_API_KEY'))}
         print(payload)
         r = requests.get(
             'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
