@@ -7,6 +7,7 @@ from .serializers import StationSerializer, CreateUserSerializer
 from .models import Station
 from . import serializers
 from rest_framework import permissions
+from rest_framework import authentication
 from rest_framework import views
 from rest_framework.response import Response
 from django.contrib.auth import login, logout
@@ -69,8 +70,9 @@ class Assets(View):
 class StationCreate(generics.CreateAPIView):
     # API endpoint that allows creation of a new station
     serializer_class = StationSerializer
-    queryset = Station.objects.all(),
-
+    queryset = Station.objects.all()
+    #authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.

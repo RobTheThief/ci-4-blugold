@@ -17,6 +17,7 @@ export default function LoginRegisterUI({ }) {
 
     async function checkLogin() {
         let response = await getProfile();
+        console.log({response})
         if (response !== "Authentication credentials were not provided.") {
             setIsLoggedIn(true)
         }

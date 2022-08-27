@@ -38,6 +38,7 @@ function App() {
     //login();
     // let result = getStationLocationData('53.34523915464418,-6.267469638550943')
     // console.log({result});
+     createStation('The thing', 2, 2);
   }, [])
 
   return (

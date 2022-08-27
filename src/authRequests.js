@@ -61,7 +61,7 @@ const getProfile = () => {
     try {
       let result = await fetch(`${baseUrl}/profile/`, requestOptions)
         .then(response => response.json())
-      resolve(result.detail);
+      resolve(result);
     } catch (error) {
       resolve(error)
     }
