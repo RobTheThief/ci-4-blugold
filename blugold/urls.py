@@ -1,5 +1,5 @@
 from django.urls import include, path
-from .views import StationCreate, StationList, StationDetail, StationUpdate, StationDelete, ExternalApiRequest
+from .views import StationCreate, StationList, StationDetail, StationUpdate, StationDelete
 
 
 urlpatterns = [

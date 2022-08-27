@@ -148,11 +148,11 @@ class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
 
-class ExternalApiRequest(CsrfExemptMixin, views.APIView):
+class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
     authentication_classes = []
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request, location, radius, name, format=None):
+    def get(self, request, name, radius, location, format=None):
         response = {}
         print(location, radius)
         payload = {'location': location, 'radius': radius, 'types': 'gas_station',
@@ -171,22 +171,19 @@ class ExternalApiRequest(CsrfExemptMixin, views.APIView):
             response['message'] = 'error'
         return Response(data)
 
-
-""" class ExternalApiRequest(CsrfExemptMixin, views.APIView):
+class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
     authentication_classes = []
     permission_classes = (permissions.AllowAny,) 
 
-    def get(self, request, location, radius, name, formatted_address, format=None):
+    def get(self, request, area):
         response = {}
-        print(location, radius)
-        payload = {'location': location, 'radius': radius, 'types': 'gas_station',
-                'name': name, 'key': str(os.getenv('GOOGLE_API_KEY'))}
-        if location == 'undefined,undefined':
-            payload = {'formatted_address': formatted_address, 'radius': radius, 'types': 'gas_station',
-                    'name': name, 'key': str(os.getenv('GOOGLE_API_KEY'))}
+        print(area)
+       
+        payload = {'input': area, 'inputtype': 'textquery', 'fields': 'geometry',
+                'key': str(os.getenv('GOOGLE_API_KEY'))}
+        r = requests.get('https://maps.googleapis.com/maps/api/place/findplacefromtext/json', payload)
+
         print(payload)
-        r = requests.get(
-            'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
         r_status = r.status_code
         if r_status == 200:
             json_res = r.text
@@ -197,4 +194,4 @@ class ExternalApiRequest(CsrfExemptMixin, views.APIView):
             response['status'] = r.status_code
             response['message'] = 'error'
         return Response(data)
- """
+

@@ -37,7 +37,7 @@ export default function DeckSnapshot({mapData, setMapData, stationData, setStati
     });
 
     const fetchAndSetStationData = async () => {
-        setStationData(await getStationLocationData('53.34523915464418,-6.267469638550943', '100000'))
+        setStationData(await getStationLocationData('100000', '53.34523915464418,-6.267469638550943', 'fuel'))
     }
 
     useEffect(() => {

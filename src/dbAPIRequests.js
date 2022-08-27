@@ -71,11 +71,35 @@ function getStation(id) {
 }
 
 /* location in format of: '53.46473616374262,-10.688388878528719' radius in meters, name of place as a string, default='fuel' */
-const getStationLocationData = (location, radius, name='fuel') => {
+const getStationLocationData = (radius, location, name='fuel') => {
   console.log({location, radius, name})
   return new Promise(async resolve => {
     try {
-      const response = await fetch(`externalapiequest/${location}/${radius}/${name}/`, {
+      const response = await fetch(`places-api-location-request/${name}/${radius}/${location}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const responseJson = await response.json(); //extract JSON from the http response
+      
+      console.log(responseJson.results)
+
+      resolve(responseJson);
+    } catch (error) {
+      alert(error);
+      resolve();
+    }
+  })
+};
+
+/*  area as a string */
+const getAreaData = (area) => {
+  console.log({area})
+  return new Promise(async resolve => {
+    try {
+      const response = await fetch(`places-api-area-request/${area}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -99,5 +123,6 @@ export {
   deleteStation,
   updateStation,
   createStation,
-  getStationLocationData
+  getStationLocationData,
+  getAreaData
 }

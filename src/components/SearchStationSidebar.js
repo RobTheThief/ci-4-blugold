@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import {
     getStation,
-    getStationLocationData
+    getStationLocationData,
+    getAreaData
 } from '../dbAPIRequests'
 
 export default function SearchStationSidebar({ stationData, setStationData, longView, setLongView, latView, setLatView }) {
@@ -11,17 +12,21 @@ export default function SearchStationSidebar({ stationData, setStationData, long
     const [long, setLong] = useState();
     const [lat, setLat] = useState();
     const [radius, setRadius] = useState();
+    const [areaData, setAreaData] = useState();
 
-    const handleSearchArea = () => async (e) => {
-        console.log({ lat, long, location, radius, area })
+    const handleSearchLocation = async (e) => {
         let location = `${lat},${long}`
-        setStationData(await getStationLocationData(location, `${radius}`, 'fuel'))
+        location && radius && setStationData(await getStationLocationData(`${radius}`, location, 'fuel'))
         console.log('location')
 
     }
 
-    const handleSearchStation = () => {
+    const handleSearchStationName = async (e) => {
 
+    }
+
+    const handleSearchStationArea = async (e) => {
+        setAreaData(await getAreaData(area))
     }
 
     useEffect(() => {
@@ -29,6 +34,9 @@ export default function SearchStationSidebar({ stationData, setStationData, long
         setLatView(lat);
     }, [stationData])
 
+    useEffect(() => {
+        console.log(areaData && areaData.candidates[0].geometry.location)
+    }, [areaData])
 
     return (
         <div className='search-station-ui-wrapper sidebar-ui'>
@@ -38,13 +46,13 @@ export default function SearchStationSidebar({ stationData, setStationData, long
                     <label>Station name<br />
                         <input type="text" onChange={(e) => setStationName(e.target.value)} />
                     </label>
-                    <button className='go-btn' onClick={handleSearchStation}>Go</button>
+                    <button className='go-btn' onClick={handleSearchStationName}>Go</button>
                 </div>
                 <div className='btn-input-container'>
                     <label>Area<br />
                         <input type="text" onChange={(e) => setArea(e.target.value)} />
                     </label>
-                    <button className='go-btn' onClick={handleSearchArea} >Go</button>
+                    <button className='go-btn' onClick={handleSearchStationArea} >Go</button>
                 </div>
                 <label>Radius<br />
                     <input type="text" onChange={(e) => setRadius(e.target.value)} />
@@ -56,7 +64,7 @@ export default function SearchStationSidebar({ stationData, setStationData, long
                     <label>lat<br />
                         <input className='coord-input' type="text" onChange={(e) => setLat(e.target.value)} />
                     </label>
-                    <button className='go-btn' onClick={handleSearchArea}>Go</button>
+                    <button className='go-btn' onClick={handleSearchLocation}>Go</button>
                 </div>
             </div>
         </div>
