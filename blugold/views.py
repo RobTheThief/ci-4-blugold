@@ -138,6 +138,30 @@ class ExternalApiRequest(CsrfExemptMixin, views.APIView):
     authentication_classes = []
     permission_classes = (permissions.AllowAny,) 
 
+    def get(self, request, location, radius, name, format=None):
+        response = {}
+        print(location, radius)
+        payload = {'location': location, 'radius': radius, 'types': 'gas_station',
+                'name': name, 'key': str(os.getenv('GOOGLE_API_KEY'))}
+        print(payload)
+        r = requests.get(
+            'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
+        r_status = r.status_code
+        if r_status == 200:
+            json_res = r.text
+            data = json.loads(json_res)
+            response['status'] = 200
+            response['message'] = 'success'
+        else:
+            response['status'] = r.status_code
+            response['message'] = 'error'
+        return Response(data)
+
+
+""" class ExternalApiRequest(CsrfExemptMixin, views.APIView):
+    authentication_classes = []
+    permission_classes = (permissions.AllowAny,) 
+
     def get(self, request, location, radius, name, formatted_address, format=None):
         response = {}
         print(location, radius)
@@ -159,3 +183,4 @@ class ExternalApiRequest(CsrfExemptMixin, views.APIView):
             response['status'] = r.status_code
             response['message'] = 'error'
         return Response(data)
+ """
