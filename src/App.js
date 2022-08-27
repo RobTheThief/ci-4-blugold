@@ -19,8 +19,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function App() {
   const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
-  const { data: bluApiData, error: bluError } = useSWR(`${baseUrl}/api/`, fetcher, { refreshInterval: 10000 }) // dev
-  //const { data: bluApiData, error: bluError } = useSWR('https://blugold.herokuapp.com/api/', fetcher, { refreshInterval: 10000 }) // prod
+  const { data: bluApiData, error: bluError } = useSWR(`/api/`, fetcher, { refreshInterval: 10000 })
   const [stationData, setStationData] = useState();
   const [mapData, setMapData] = useState();
   const [longView, setLongView] = useState();
@@ -32,15 +31,7 @@ function App() {
   }, [apiData, bluApiData])
 
   useEffect(() => {
-    //createStation();
-    //updateStation()
-    //deleteStation()
-    //console.log(getStation())
-    //login();
-    // let result = getStationLocationData('53.34523915464418,-6.267469638550943')
-    // console.log({result});
-     createStation('The thing', 2, 2);
-     getProfile();
+
   }, [])
 
   return (

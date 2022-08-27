@@ -7,8 +7,6 @@ import {
     getStationLocationData
 } from '../dbAPIRequests'
 
-const ICON_LAYER_DATA = [{ name: 'Colma (COLM)', address: '365 D Street, Colma CA 94014', exits: 4214, coordinates: [-6.263469638550943, 53.34521353452406] },]
-
 const ICON_MAPPING = {
     marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
 }
