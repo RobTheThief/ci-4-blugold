@@ -4,7 +4,6 @@ import useSWR from 'swr';
 
 import DeckSnapshot from './components/DeckSnapshot';
 import LoginRegisterUI from './components/LoginRegisterUI';
-import { url as baseUrl } from './baseUrl';
 import {
   getStation,
   deleteStation,
@@ -26,8 +25,7 @@ function App() {
   const [latView, setLatView] = useState(); 
 
   useEffect(() => {
-    var debug = console.log.bind(window.console)
-    console.log({ apiData, bluApiData, debug })
+    //console.log({ apiData, bluApiData, debug })
   }, [apiData, bluApiData])
 
   useEffect(() => {

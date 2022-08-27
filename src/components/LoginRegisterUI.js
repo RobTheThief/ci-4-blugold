@@ -25,7 +25,7 @@ export default function LoginRegisterUI({ }) {
     }
 
     useEffect(() => {
-        checkLogin()
+        //checkLogin()
     }, [isLoggedIn])
 
     return (

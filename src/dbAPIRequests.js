@@ -1,7 +1,5 @@
-import { url as baseUrl } from './baseUrl';
-
 function createStation(station, petrolPrice, dieselPrice) {
-  fetch(`${baseUrl}/api/create/`, {
+  fetch(`/api/create/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -22,7 +20,7 @@ function createStation(station, petrolPrice, dieselPrice) {
 }
 
 function updateStation(id, station, petrolPrice, dieselPrice) {
-  fetch(`${baseUrl}/api/update/${id}/`, {
+  fetch(`/api/update/${id}/`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -43,7 +41,7 @@ function updateStation(id, station, petrolPrice, dieselPrice) {
 }
 
 function deleteStation(id) {
-  fetch(`${baseUrl}/api/delete/${id}/`, {
+  fetch(`/api/delete/${id}/`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -58,7 +56,7 @@ function deleteStation(id) {
 }
 
 function getStation(id) {
-  fetch(`${baseUrl}/api/${id}/`, {
+  fetch(`/api/${id}/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
