@@ -5,9 +5,8 @@ import {
     getAreaData
 } from '../dbAPIRequests'
 
-export default function SearchStationSidebar({ stationData, setStationData, longView, setLongView, latView, setLatView }) {
+export default function SearchStationSidebar({ stationData, setStationData, longView, setLongView, latView, setLatView, viewState, setViewState }) {
 
-    const [stationName, setStationName] = useState();
     const [area, setArea] = useState();
     const [long, setLong] = useState();
     const [lat, setLat] = useState();
@@ -18,15 +17,14 @@ export default function SearchStationSidebar({ stationData, setStationData, long
         let location = `${lat},${long}`
         location && radius && setStationData(await getStationLocationData(`${radius}`, location, 'fuel'))
         console.log('location')
-
-    }
-
-    const handleSearchStationName = async (e) => {
-
     }
 
     const handleSearchStationArea = async (e) => {
-        setAreaData(await getAreaData(area))
+        await getAreaData(area)
+            .then(data => { setLat(data.candidates[0].geometry.location.lat); return data })
+            .then(data => { setLong(data.candidates[0].geometry.location.lng); return data })
+            .catch(error => console.log(error))
+
     }
 
     useEffect(() => {
@@ -35,19 +33,16 @@ export default function SearchStationSidebar({ stationData, setStationData, long
     }, [stationData])
 
     useEffect(() => {
-        console.log(areaData && areaData.candidates[0].geometry.location)
-    }, [areaData])
+        console.log({lat, long})
+        setRadius(100010)
+        let location = `${lat},${long}`
+        lat && long && handleSearchLocation();
+    }, [lat, long])
 
     return (
         <div className='search-station-ui-wrapper sidebar-ui'>
 
             <div className='search-form ui-form'>
-                <div className='btn-input-container'>
-                    <label>Station name<br />
-                        <input type="text" onChange={(e) => setStationName(e.target.value)} />
-                    </label>
-                    <button className='go-btn' onClick={handleSearchStationName}>Go</button>
-                </div>
                 <div className='btn-input-container'>
                     <label>Area<br />
                         <input type="text" onChange={(e) => setArea(e.target.value)} />

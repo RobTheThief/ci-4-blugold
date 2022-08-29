@@ -152,14 +152,14 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
     authentication_classes = []
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request, name, radius, location, format=None):
+    def get(self, request, name, radius, location):
         response = {}
-        print(location, radius)
-        payload = {'location': location, 'radius': radius, 'types': 'gas_station',
-                   'name': name, 'key': str(os.getenv('GOOGLE_API_KEY'))}
+        payload = {'location': location, 'radius': 3000, 'types': 'gas_station convenience_store store supermarket atm cafe car_repair car_wash',
+                   'name': 'gas station', 'key': str(os.getenv('GOOGLE_API_KEY'))}
         print(payload)
         r = requests.get(
             'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
+            #  url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Sydney&key=YOUR_API_KEY',
         r_status = r.status_code
         if r_status == 200:
             json_res = r.text
@@ -177,8 +177,6 @@ class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
 
     def get(self, request, area):
         response = {}
-        print(area)
-       
         payload = {'input': area, 'inputtype': 'textquery', 'fields': 'geometry',
                 'key': str(os.getenv('GOOGLE_API_KEY'))}
         r = requests.get('https://maps.googleapis.com/maps/api/place/findplacefromtext/json', payload)

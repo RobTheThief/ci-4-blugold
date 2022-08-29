@@ -69,3 +69,13 @@
 .go-btn {
   max-height: 1.5rem;
 }
+
+.tooltip {
+  padding: 1rem;
+  margin: 0;
+  max-width: 200px;
+  list-style-type: none;
+  border: solid #ffffff80 2px;
+  border-radius: 8px;
+  background-color: #00000080;
+}
