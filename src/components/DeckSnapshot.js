@@ -110,16 +110,18 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
 
     useEffect(() => {
         fetchAndSetStationData();
-        getAllStationsAsync();
     }, [])
 
     useEffect(() => {
-        console.log(stationPriceData)
+        getAllStationsAsync();
+    }, [stationData])
+
+    useEffect(() => {
+        console.log({stationPriceData})
     }, [stationPriceData])
 
     useEffect(() => {
         let mapData = []
-
         stationData && stationPriceData && stationData.results.forEach((station, idx) => {
             mapData.push(station)
             mapData[idx].coordinates = [station.geometry.location.lng, station.geometry.location.lat]
