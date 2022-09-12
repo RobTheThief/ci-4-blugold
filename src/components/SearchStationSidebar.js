@@ -16,7 +16,6 @@ export default function SearchStationSidebar({ stationData, setStationData, long
     const handleSearchLocation = async (e) => {
         let location = `${lat},${long}`
         location && radius && setStationData(await getStationLocationData(`${radius}`, location, 'fuel'))
-        console.log('location')
     }
 
     const handleSearchStationArea = async (e) => {
@@ -24,7 +23,6 @@ export default function SearchStationSidebar({ stationData, setStationData, long
             .then(data => { setLat(data.candidates[0].geometry.location.lat); return data })
             .then(data => { setLong(data.candidates[0].geometry.location.lng); return data })
             .catch(error => console.log(error))
-
     }
 
     useEffect(() => {
@@ -35,7 +33,6 @@ export default function SearchStationSidebar({ stationData, setStationData, long
     useEffect(() => {
         console.log({lat, long})
         setRadius(100010)
-        let location = `${lat},${long}`
         lat && long && handleSearchLocation();
     }, [lat, long])
 

@@ -8,7 +8,7 @@ from django.contrib.auth.password_validation import validate_password
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ['id', 'station', 'petrol', 'diesel', 'updated']
+        fields = ['id', 'station', 'petrol', 'diesel', 'updated', 'google_id', 'updated_by']
 
 class LoginSerializer(serializers.Serializer):
     """

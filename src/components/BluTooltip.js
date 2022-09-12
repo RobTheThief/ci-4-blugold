@@ -12,6 +12,15 @@ export default function BluTooltip({ hoverInfo }) {
                         'Open: No' : 'No opening hours set'
                 }
             </li>
+            <br />
+            {hoverInfo.object.fuelInfo.petrol === '0' ?
+                (<li>Petrol: no information</li>) :
+                (<li>Petrol: €{hoverInfo.object.fuelInfo.petrol} on {hoverInfo.object.fuelInfo.updated}</li>)}
+            {hoverInfo.object.fuelInfo.diesel === '0' ?
+                (<li>Diesel: no information</li>) :
+                (<li>Diesel: €{hoverInfo.object.fuelInfo.diesel} on {hoverInfo.object.fuelInfo.updated}</li>)}
+            <br />
+            {hoverInfo.object.fuelInfo.petrol !== '0' ? (<li>Updated by: {hoverInfo.object.fuelInfo.updated_by}</li>) : (<li>Updated by: Not updated yet</li>)}
         </ul>
     )
 }

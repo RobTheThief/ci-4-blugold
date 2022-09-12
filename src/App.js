@@ -26,7 +26,6 @@ const INITIAL_VIEW_STATE = {
 };
 
 function App() {
-  const { data: apiData, error: apiError } = useSWR('https://api.reliefweb.int/v1/reports?appname=apidoc&limit=2', fetcher, { refreshInterval: 10000 })
   const { data: bluApiData, error: bluError } = useSWR(`/api/`, fetcher, { refreshInterval: 10000 })
   const [stationData, setStationData] = useState();
   const [mapData, setMapData] = useState();
@@ -35,11 +34,10 @@ function App() {
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   useEffect(() => {
-    //console.log({ apiData, bluApiData, debug })
-  }, [apiData, bluApiData])
+    console.log({ bluApiData })
+  }, [bluApiData])
 
   useEffect(() => {
-
   }, [])
 
   return (

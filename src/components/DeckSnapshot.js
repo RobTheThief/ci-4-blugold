@@ -4,7 +4,9 @@ import { IconLayer } from 'deck.gl';
 import Map from 'react-map-gl';
 import "mapbox-gl/dist/mapbox-gl.css";
 import {
-    getStationLocationData
+    getStationLocationData,
+    createStation,
+    getAllStations
 } from '../dbAPIRequests'
 import BluTooltip from './BluTooltip';
 
@@ -14,6 +16,7 @@ const ICON_MAPPING = {
 
 export default function DeckSnapshot({ mapData, setMapData, stationData, setStationData, longView, setLongView, latView, setLatView, viewState, setViewState }) {
     const [hoverInfo, setHoverInfo] = useState('');
+    const [stationPriceData, setStationPriceData] = useState();
 
     const iconLayer = new IconLayer({
         id: 'icon-layer',
@@ -61,7 +64,7 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
     });
 
     function focusView() {
-        console.log({ longView, latView })
+        //console.log({ longView, latView })
         if (longView && latView) {
             setViewState({
                 longitude: longView,
@@ -83,31 +86,59 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
         setStationData(await getStationLocationData('100000', '53.34523915464418,-6.267469638550943', 'fuel'))
     }
 
+    const getAllStationsAsync = async () => {
+        setStationPriceData( await getAllStations());
+    }
+
+    const findStationInDB = (idx) => {
+        return stationPriceData.find( (station) => {
+            return station.google_id === stationData.results[idx].place_id;
+        })
+    }
+
     useEffect(() => {
         fetchAndSetStationData();
+        getAllStationsAsync();
     }, [])
 
     useEffect(() => {
+        console.log(stationPriceData)
+    }, [stationPriceData])
+
+    useEffect(() => {
         let mapData = []
-        stationData && stationData.results.forEach((station, idx) => {
+
+        stationData && stationPriceData && stationData.results.forEach((station, idx) => {
             mapData.push(station)
             mapData[idx].coordinates = [station.geometry.location.lng, station.geometry.location.lat]
-        });
-        setMapData(mapData)
-        console.log({ mapData })
+            let bluDBStation = findStationInDB(idx);
+            if (bluDBStation === undefined) {
+                console.log('station added')
+                createStation(stationData.results[idx].name, 0, 0, stationData.results[idx].place_id);
+                mapData[idx].fuelInfo = {
+                    "petrol": "0",
+                    "diesel": "0",
+                };
+            } else {
+                mapData[idx].fuelInfo = bluDBStation;
+            };
 
-    }, [stationData])
+            //console.log(stationData.results[idx].place_id)
+        });
+        setMapData(mapData);
+        console.log({ mapData });
+    }, [stationData, stationPriceData])
 
     useEffect(() => {
         focusView();
     }, [longView, latView])
-    
+
     return (
         <>
-        {hoverInfo && (
-            <div style={{ position: 'absolute', zIndex: 100000000, pointerEvents: 'none', left: hoverInfo.x, top: hoverInfo.y, color: 'white'}}>
-                {hoverInfo && hoverInfo.object && (<BluTooltip hoverInfo={hoverInfo} />)}
-            </div>)}
+            {hoverInfo && (
+                <div style={{ position: 'absolute', zIndex: 10, pointerEvents: 'none', left: hoverInfo.x, top: hoverInfo.y, color: 'white' }}>
+                    {hoverInfo && hoverInfo.object && (<BluTooltip hoverInfo={hoverInfo} />)}
+                </div>)}
             <DeckGL
                 initialViewState={viewState}
                 onViewportChange={setViewState}
