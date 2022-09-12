@@ -44,7 +44,13 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
         getPosition: d => d.coordinates,
         getFillColor: d => [48, 128, d.value * 255, 255],
         getLineColor: [0, 0, 0],
-        getElevation: d => 0.1,
+        getElevation: d => {
+            let price = parseFloat(d.fuelInfo.petrol)
+            if (price === 0){
+                return parseFloat(d.fuelInfo.petrol) + 0.01
+            }
+            return parseFloat(d.fuelInfo.petrol) - 1.7
+        },
         onHover: info => updateHoverInfo(info)
     });
 
@@ -59,7 +65,13 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
         getPosition: d => [d.coordinates[0] + 0.0005, d.coordinates[1] + 0.0005],
         getFillColor: d => [48, 128, 255, 255],
         getLineColor: [0, 0, 0],
-        getElevation: d => 0.2,
+        getElevation: d => {
+            let price = parseFloat(d.fuelInfo.diesel)
+            if (price === 0){
+                return parseFloat(d.fuelInfo.diesel) + 0.01
+            }
+            return parseFloat(d.fuelInfo.diesel) - 1.7
+        },
         onHover: info => updateHoverInfo(info)
     });
 
@@ -114,7 +126,7 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
             let bluDBStation = findStationInDB(idx);
             if (bluDBStation === undefined) {
                 console.log('station added')
-                createStation(stationData.results[idx].name, 0, 0, stationData.results[idx].place_id);
+                createStation(stationData.results[idx].name, 1.85, 1.96, stationData.results[idx].place_id);
                 mapData[idx].fuelInfo = {
                     "petrol": "0",
                     "diesel": "0",
