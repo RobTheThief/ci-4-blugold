@@ -95,11 +95,10 @@ const getAllStations = () => {
 };
 
 /* location in format of: '53.46473616374262,-10.688388878528719' radius in meters, name of place as a string, default='fuel' */
-const getStationLocationData = (radius, location, name='fuel') => {
-  console.log({location, radius, name})
+const getStationLocationData = (location, name='fuel') => {
   return new Promise(async resolve => {
     try {
-      const response = await fetch(`places-api-location-request/${name}/${radius}/${location}/`, {
+      const response = await fetch(`places-api-location-request/${name}/${location}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

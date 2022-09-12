@@ -23,7 +23,7 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view()),
     path('profile/', views.ProfileView.as_view()),
     path('register/', views.CreateUserView.as_view(), name='auth_register'),
-    path('places-api-location-request/<str:name>/<str:radius>/<str:location>/', views.PlacesApiLocationRequest.as_view()),
+    path('places-api-location-request/<str:name>/<str:location>/', views.PlacesApiLocationRequest.as_view()),
     path('places-api-area-request/<str:area>/', views.PlacesApiAreaRequest.as_view()),
     path('api/', include('blugold.urls')),
     re_path(r'', views.catchall),

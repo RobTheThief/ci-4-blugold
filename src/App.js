@@ -4,13 +4,7 @@ import useSWR from 'swr';
 
 import DeckSnapshot from './components/DeckSnapshot';
 import LoginRegisterUI from './components/LoginRegisterUI';
-import {
-  getStation,
-  deleteStation,
-  updateStation,
-  createStation,
-  getStationLocationData
-} from './dbAPIRequests'
+
 import SearchStationSidebar from './components/SearchStationSidebar';
 import {getProfile} from './authRequests';
 

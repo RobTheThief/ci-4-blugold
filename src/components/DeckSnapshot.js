@@ -76,7 +76,6 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
     });
 
     function focusView() {
-        //console.log({ longView, latView })
         if (longView && latView) {
             setViewState({
                 longitude: longView,
@@ -95,7 +94,7 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
     }
 
     const fetchAndSetStationData = async () => {
-        setStationData(await getStationLocationData('100000', '53.34523915464418,-6.267469638550943', 'fuel'))
+        setStationData(await getStationLocationData('53.34523915464418,-6.267469638550943', 'fuel'))
     }
 
     const getAllStationsAsync = async () => {
@@ -136,8 +135,6 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
             } else {
                 mapData[idx].fuelInfo = bluDBStation;
             };
-
-            //console.log(stationData.results[idx].place_id)
         });
         setMapData(mapData);
         console.log({ mapData });

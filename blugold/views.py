@@ -152,7 +152,7 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
     authentication_classes = []
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request, name, radius, location):
+    def get(self, request, name, location):
         response = {}
         payload = {'location': location, 'radius': 3000, 'types': 'gas_station convenience_store store supermarket atm cafe car_repair car_wash',
                    'name': 'gas station', 'key': str(os.getenv('GOOGLE_API_KEY'))}
