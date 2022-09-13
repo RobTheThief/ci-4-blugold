@@ -161,7 +161,6 @@ export default function DeckSnapshot({ mapData, setMapData, stationData, setStat
                     mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
                 //mapStyle="mapbox://styles/mapbox/streets-v11"
                 />
-                <button style={{ position: 'relative', left: '500px' }} onClick={focusView}>PRESS</button>
             </DeckGL>
         </>
     )

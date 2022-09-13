@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import DeckSnapshot from './components/DeckSnapshot';
-import LoginRegisterUI from './components/LoginRegisterUI';
+import RightSidebar from './components/RightSidebar';
 
 import SearchStationSidebar from './components/SearchStationSidebar';
 import {getProfile} from './authRequests';
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <>
-      <LoginRegisterUI />
+      <RightSidebar />
       <SearchStationSidebar
         setLongView={setLongView}
         latView={latView}

@@ -11,8 +11,6 @@ export default function SearchStationSidebar({ stationData, setStationData, long
     const [long, setLong] = useState();
     const [lat, setLat] = useState();
 
-    const [radius, setRadius] = useState();
-
     const searchLocation = async (e) => {
         console.log('yes');
         let location = `${lat},${long}`

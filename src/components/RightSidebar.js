@@ -13,24 +13,48 @@ export default function LoginRegisterUI({ }) {
     const [email, setEmail] = useState();
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [profile, setProfile] = useState();
+    const [loggedIn, setLoggedIn] = useState(false);
 
-    async function checkLogin() {
-        let response = await getProfile();
-        console.log({response})
-        if (response !== "Authentication credentials were not provided.") {
-            setIsLoggedIn(true)
+    async function getAndSetProfile() {
+        setProfile(await getProfile());
+    }
+
+    const handleLogin = async () => {
+        await login(user, pass);
+        await getAndSetProfile();
+        checkIfLoggedIn()
+    }
+
+    function handleLogout () {
+        logout();
+        getAndSetProfile();
+        checkIfLoggedIn()
+    }
+
+    async function checkIfLoggedIn () {
+        setProfile(await getProfile());
+        if (profile && profile.username) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
         }
-        console.log({ isLoggedIn });
+        console.log(loggedIn)
     }
 
     useEffect(() => {
-        //checkLogin()
-    }, [isLoggedIn])
+        getAndSetProfile();
+        checkIfLoggedIn();
+    }, [])
+
+    useEffect(() => {
+        console.log(profile)
+    }, [profile])
 
     return (
+        
         <div className='login-ui-wrapper sidebar-ui'>
-            <form className='login-form ui-form'>
+           { (profile && profile.username) ? (<div><span>Logged in as {profile.username}</span> <button className='button' onClick={handleLogout}>Logout</button></div>) : (<form className='login-form ui-form'>
                 <label>Enter your username<br />
                     <input type="text" onChange={(e) => setUser(e.target.value)} />
                 </label>
@@ -49,11 +73,10 @@ export default function LoginRegisterUI({ }) {
                 <label>Enter your last name<br />
                     <input type="text" onChange={(e) => setLastName(e.target.value)} />
                 </label>
-            </form>
+            </form>)}
             <div className='login-ui-button-group'>
-                <button className='button' onClick={login(user, pass)}>Login</button>
-                <button className='button' onClick={register(user, pass, pass2, email, firstName, lastName)}>Register</button>
-                <button className='button' onClick={logout}>Logout</button>
+                {(profile && !profile.username) && (<button className='button' onClick={handleLogin}>Login</button>)}
+                {(profile && !profile.username) && (<button className='button' onClick={register(user, pass, pass2, email, firstName, lastName)}>Register</button>)}
             </div>
         </div>
     )

@@ -1,17 +1,24 @@
-const login = (user, pass) => (e) => {
-  var formdata = new FormData();
-  formdata.append("username", user);
-  formdata.append("password", pass);
+const login = (user, pass) => {
+  return new Promise(async resolve => {
+    var formdata = new FormData();
+    formdata.append("username", user);
+    formdata.append("password", pass);
 
-  var requestOptions = {
-    method: 'POST',
-    body: formdata,
-  };
-
-  fetch(`/login/`, requestOptions)
-    .then(response => response)
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+    };
+    try {
+      const response = fetch(`/login/`, requestOptions)
+         .then(response => response)
+         .then(result => console.log(result))
+         .catch(error => console.log('error', error));
+      resolve(response)
+    } catch (error) {
+      console.log(error);
+      resolve()
+    }
+  })
 }
 
 const register = (user, pass, pass2, email, firstName, lastName) => (e) => {
@@ -49,17 +56,21 @@ const logout = () => {
 
 const getProfile = () => {
   return new Promise(async resolve => {
-    var requestOptions = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: "include",
-      method: 'GET',
-    };
+
     try {
-      let result = await fetch(`/profile/`, requestOptions)
-        .then(response => response.json())
-      resolve(result);
+      const response = await fetch(`/profile/`, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: "include",
+        method: 'GET',
+      })
+
+      const responseJson = await response.json(); //extract JSON from the http response
+
+      console.log(responseJson)
+
+      resolve(responseJson);
     } catch (error) {
       resolve(error)
     }

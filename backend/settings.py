@@ -17,8 +17,8 @@ import dotenv
 import dj_database_url
 
 ORIGINS_TO_ALLOW = [
-    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu63.gitpod.io',
-    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu63.gitpod.io',
+    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu64.gitpod.io',
+    'https://3000-robthethief-ci4blugold-gsro7huqcm1.ws-eu64.gitpod.io',
     'https://localhost:8000',
     'https://127.0.0.1:8000',
     'https://blugold.herokuapp.com',
@@ -182,7 +182,7 @@ ALLOWED_HOSTS = ['*'] # Set to open for all access
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
