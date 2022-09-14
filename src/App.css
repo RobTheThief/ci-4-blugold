@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0");
+
 input {
   background-color: #ffffff80;
   height: 1.35rem;
@@ -12,9 +14,9 @@ input {
 .button {
   margin: 0 1rem 0 0;
   z-index: 1000;
-  color: #183f01;
+  color: white;
   background-color: rgb(48, 128, 255, 255);
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 0.5rem;
   cursor: pointer;
 }
@@ -57,7 +59,6 @@ input {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  width: 15%;
   height: 100vh;
   position: absolute;
   top: 0;
@@ -65,6 +66,49 @@ input {
   z-index: 100;
   padding: 2rem;
   max-width: 500px;
+  /* border-right: 4px solid green; */
+}
+
+.drawer-tab {
+  position: relative;
+  top: -2rem;
+  color: black;
+  background-color: #ffffff80;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.open-drawer {
+  width: 230px;
+  transition: all 0.2s ease-in-out;
+}
+
+.close-drawer {
+  width: 0px;
+  transition: all 0.2s ease-in-out;
+}
+
+.point-arrow-left {
+  transform: rotate(180deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.point-arrow-right {
+  transform: rotate(0deg);
+  transition: all 0.2s ease-in-out;
+}
+
+.container-left {
+  left: 10.95rem;
+  border-radius: 0 0 0.5rem 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.container-right {
+  left: 0rem;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 1rem 1.3rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .login-ui--group {
@@ -139,3 +183,4 @@ ul li {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+

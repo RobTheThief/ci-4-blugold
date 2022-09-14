@@ -24,6 +24,7 @@ export default function SearchStationSidebar({
   const [loggedIn, setLoggedIn] = useState(false);
   const [dieselPrice, setDieselPrice] = useState();
   const [petrolPrice, setPetrolPrice] = useState();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
   const searchLocation = async (e) => {
     console.log("yes");
@@ -32,7 +33,7 @@ export default function SearchStationSidebar({
   };
 
   const handleSearchStationArea = (goButton) => async (e) => {
-    if (e.code === "Enter" || goButton === 'go') {
+    if (e.code === "Enter" || goButton === "go") {
       await getAreaData(area)
         .then((data) => {
           setLat(data.candidates[0].geometry.location.lat);
@@ -63,6 +64,10 @@ export default function SearchStationSidebar({
     getAndSetProfile();
     checkIfLoggedIn();
   }
+
+  const handleOpenCloseDrawer = () => {
+    setIsDrawerOpen(isDrawerOpen ? false : true);
+  };
 
   async function checkIfLoggedIn() {
     if (profile && profile.username) {
@@ -116,149 +121,176 @@ export default function SearchStationSidebar({
   }, [lat, long]);
 
   return (
-    <div className='sidebar-ui'>
-      <div className='search-form ui-form'>
-        <div className='btn-input-container'>
-          <label>
-            Area
-            <br />
-            <input
-              type='text'
-              onChange={(e) => setArea(e.target.value)}
-              onKeyDown={handleSearchStationArea()}
-            />
-          </label>
-          <span className='go-btn button' onClick={handleSearchStationArea('go')}>
-            Go
-          </span>
-        </div>
+    <div
+      className={`sidebar-ui ${isDrawerOpen ? "open-drawer" : "close-drawer"}`}
+    >
+      <div
+        className={`drawer-tab ${isDrawerOpen ? "container-left" : "container-right"}`}
+        onClick={handleOpenCloseDrawer}
+      >
+        <span className={`material-symbols-outlined ${isDrawerOpen ? "point-arrow-left" : "point-arrow-right"}`}> double_arrow</span>
       </div>
-      <div className='login-and-update-wrapper'>
-        <div className='login-ui-wrapper'>
-          {profile && profile.username ? (
-            <div className='logout-section'>
-              <span>Logged in as {profile.username}</span>{" "}
-              <span className='button' onClick={handleLogout}>
-                Logout
-              </span>
-            </div>
-          ) : (
-            <form className='login-form ui-form'>
+      {isDrawerOpen && (
+        <>
+          <div className='search-form ui-form'>
+            <div className='btn-input-container'>
               <label>
-                Enter your username
-                <br />
-                <input type='text' onChange={(e) => setUser(e.target.value)} />
-              </label>
-              <label>
-                Enter your password
-                <br />
-                <input
-                  type='password'
-                  onChange={(e) => setPass(e.target.value)}
-                />
-              </label>
-              <label>
-                Enter your password again
-                <br />
-                <input
-                  type='password'
-                  onChange={(e) => setPass2(e.target.value)}
-                />
-              </label>
-              <label>
-                Enter your email
-                <br />
-                <input type='text' onChange={(e) => setEmail(e.target.value)} />
-              </label>
-              <label>
-                Enter your first name
+                Area
                 <br />
                 <input
                   type='text'
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => setArea(e.target.value)}
+                  onKeyDown={handleSearchStationArea()}
                 />
               </label>
-              <label>
-                Enter your last name
-                <br />
-                <input
-                  type='text'
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </label>
-            </form>
-          )}
-          <div className='login-ui-button-group'>
-            {profile && !profile.username && (
-              <span className='button' onClick={handleLogin}>
-                Login
-              </span>
-            )}
-            {profile && !profile.username && (
               <span
-                className='button'
-                onClick={register(
-                  user,
-                  pass,
-                  pass2,
-                  email,
-                  firstName,
-                  lastName
-                )}
+                className='go-btn button'
+                onClick={handleSearchStationArea("go")}
               >
-                Register
-              </span>
-            )}
-          </div>
-          {columnClickEvent && loggedIn && (
-            <div className='update-station-section'>
-              <ul className='station-info'>
-                <li>{columnClickEvent.object.name}</li>
-                <li>{columnClickEvent.object.vicinity}</li>
-                <br />
-                <li>
-                  {columnClickEvent.object.opening_hours &&
-                  columnClickEvent.object.opening_hours.open_now
-                    ? "Open: Yes"
-                    : columnClickEvent.object.opening_hours
-                    ? "Open: No"
-                    : "No opening hours set"}
-                </li>
-                <br />
-                <li>
-                  Petrol:{" "}
-                  <input
-                    type='text'
-                    placeholder={columnClickEvent.object.fuelInfo.petrol}
-                    onChange={(e) => setPetrolPrice(e.target.value)}
-                  ></input>
-                </li>
-                <li>
-                  Diesel:{" "}
-                  <input
-                    type='text'
-                    placeholder={columnClickEvent.object.fuelInfo.diesel}
-                    onChange={(e) => setDieselPrice(e.target.value)}
-                  ></input>
-                </li>
-                <br />
-                {columnClickEvent.object.fuelInfo.petrol !== "0" ? (
-                  <li>
-                    Updated by: {columnClickEvent.object.fuelInfo.updated_by}
-                  </li>
-                ) : (
-                  <li>Updated by: Not updated yet</li>
-                )}
-                <li>Updated on: {columnClickEvent.object.fuelInfo.updated}</li>
-                <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
-              </ul>
-              <span className='button update-btn' onClick={handleUpdateStation}>
-                Update Station
+                Go
               </span>
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+          <div className='login-and-update-wrapper'>
+            <div className='login-ui-wrapper'>
+              {profile && profile.username ? (
+                <div className='logout-section'>
+                  <span>Logged in as {profile.username}</span>{" "}
+                  <span className='button' onClick={handleLogout}>
+                    Logout
+                  </span>
+                </div>
+              ) : (
+                <form className='login-form ui-form'>
+                  <label>
+                    Enter your username
+                    <br />
+                    <input
+                      type='text'
+                      onChange={(e) => setUser(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Enter your password
+                    <br />
+                    <input
+                      type='password'
+                      onChange={(e) => setPass(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Enter your password again
+                    <br />
+                    <input
+                      type='password'
+                      onChange={(e) => setPass2(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Enter your email
+                    <br />
+                    <input
+                      type='text'
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Enter your first name
+                    <br />
+                    <input
+                      type='text'
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Enter your last name
+                    <br />
+                    <input
+                      type='text'
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </label>
+                </form>
+              )}
+              <div className='login-ui-button-group'>
+                {profile && !profile.username && (
+                  <span className='button' onClick={handleLogin}>
+                    Login
+                  </span>
+                )}
+                {profile && !profile.username && (
+                  <span
+                    className='button'
+                    onClick={register(
+                      user,
+                      pass,
+                      pass2,
+                      email,
+                      firstName,
+                      lastName
+                    )}
+                  >
+                    Register
+                  </span>
+                )}
+              </div>
+              {columnClickEvent && loggedIn && (
+                <div className='update-station-section'>
+                  <ul className='station-info'>
+                    <li>{columnClickEvent.object.name}</li>
+                    <li>{columnClickEvent.object.vicinity}</li>
+                    <br />
+                    <li>
+                      {columnClickEvent.object.opening_hours &&
+                      columnClickEvent.object.opening_hours.open_now
+                        ? "Open: Yes"
+                        : columnClickEvent.object.opening_hours
+                        ? "Open: No"
+                        : "No opening hours set"}
+                    </li>
+                    <br />
+                    <li>
+                      Petrol:{" "}
+                      <input
+                        type='text'
+                        placeholder={columnClickEvent.object.fuelInfo.petrol}
+                        onChange={(e) => setPetrolPrice(e.target.value)}
+                      ></input>
+                    </li>
+                    <li>
+                      Diesel:{" "}
+                      <input
+                        type='text'
+                        placeholder={columnClickEvent.object.fuelInfo.diesel}
+                        onChange={(e) => setDieselPrice(e.target.value)}
+                      ></input>
+                    </li>
+                    <br />
+                    {columnClickEvent.object.fuelInfo.petrol !== "0" ? (
+                      <li>
+                        Updated by:{" "}
+                        {columnClickEvent.object.fuelInfo.updated_by}
+                      </li>
+                    ) : (
+                      <li>Updated by: Not updated yet</li>
+                    )}
+                    <li>
+                      Updated on: {columnClickEvent.object.fuelInfo.updated}
+                    </li>
+                    <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
+                  </ul>
+                  <span
+                    className='button update-btn'
+                    onClick={handleUpdateStation}
+                  >
+                    Update Station
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
