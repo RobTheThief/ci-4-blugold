@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getStationLocationData, getAreaData } from "../dbAPIRequests";
+import {
+  getStationLocationData,
+  getAreaData,
+  updateStation,
+} from "../dbAPIRequests";
 import { getProfile, logout, register, login } from "../authRequests";
+import bloGoldLogo from "../assets/img/blu-gold-logo.png";
 
 export default function SearchStationSidebar({
   stationData,
@@ -59,6 +64,13 @@ export default function SearchStationSidebar({
     checkIfLoggedIn();
   };
 
+  const handleRegister = async () => {
+    await register(user, pass, pass2, email, firstName, lastName);
+    await login(user, pass);
+    await getAndSetProfile();
+    await checkIfLoggedIn();
+  }
+
   function handleLogout() {
     logout();
     getAndSetProfile();
@@ -69,13 +81,18 @@ export default function SearchStationSidebar({
     setIsDrawerOpen(isDrawerOpen ? false : true);
   };
 
+  const handleInfoHover = () => {};
+
   async function checkIfLoggedIn() {
-    if (profile && profile.username) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
-    console.log(loggedIn);
+    return new Promise(async (resolve) => {
+      if (profile && profile.username) {
+        setLoggedIn(true);
+        resolve();
+      } else {
+        setLoggedIn(false);
+        resolve();
+      }
+    })
   }
 
   const handleUpdateStation = async (e) => {
@@ -125,20 +142,48 @@ export default function SearchStationSidebar({
       className={`sidebar-ui ${isDrawerOpen ? "open-drawer" : "close-drawer"}`}
     >
       <div
-        className={`drawer-tab ${isDrawerOpen ? "container-left" : "container-right"}`}
+        className={`drawer-tab ${
+          isDrawerOpen ? "container-left" : "container-right"
+        }`}
         onClick={handleOpenCloseDrawer}
       >
-        <span className={`material-symbols-outlined arrow ${isDrawerOpen ? "point-arrow-left" : "point-arrow-right"}`}> double_arrow</span>
+        <span
+          className={`material-symbols-outlined arrow ${
+            isDrawerOpen ? "point-arrow-left" : "point-arrow-right"
+          }`}
+        >
+          {" "}
+          double_arrow
+        </span>
       </div>
       {isDrawerOpen && (
         <>
           <div className='search-form ui-form'>
+            <div className='logo-container'>
+              <img
+                src={bloGoldLogo}
+                alt='blugold logo'
+                height='30'
+                className='blu-logo'
+              />
+              <span className='logo-text'>BLUGOLD</span>
+            </div>
             <div className='btn-input-container'>
               <label>
-                Area
+                Search Area
+                <span
+                  class='material-symbols-outlined info-icon'
+                  onHover={handleInfoHover}
+                >
+                  info
+                </span>
+                <span class='info-icon-tooltip'>
+                  Enter an address or place name to find stations within 3km of
+                  that location.
+                </span>
                 <br />
                 <input
-                  className="search-input"
+                  className='search-input'
                   type='text'
                   onChange={(e) => setArea(e.target.value)}
                   onKeyDown={handleSearchStationArea()}
@@ -155,16 +200,22 @@ export default function SearchStationSidebar({
           <div className='login-and-update-wrapper'>
             <div className='login-ui-wrapper'>
               {profile && profile.username ? (
-                <div className='logout-section'>
-                  <span>Logged in as {profile.username}</span>{" "}
-                  <span className='button' onClick={handleLogout}>
-                    Logout
-                  </span>
-                </div>
+                <>
+                  <div className='logout-section'>
+                    <span>Logged in as {profile.username}</span>{" "}
+                    <span className='button' onClick={handleLogout}>
+                      Logout
+                    </span>
+                  </div>
+                  <p>
+                    Click on a station on the map to view details and update
+                    fuel prices.
+                  </p>
+                </>
               ) : (
                 <form className='login-form ui-form'>
                   <label>
-                    Enter your username
+                    Username
                     <br />
                     <input
                       type='text'
@@ -172,7 +223,26 @@ export default function SearchStationSidebar({
                     />
                   </label>
                   <label>
-                    Enter your password
+                    Password
+                    <br />
+                    <input
+                      type='password'
+                      onChange={(e) => setPass(e.target.value)}
+                    />
+                  </label>
+                  <span className='button login' onClick={handleLogin}>
+                    Login
+                  </span>
+                  <label>
+                    Username
+                    <br />
+                    <input
+                      type='text'
+                      onChange={(e) => setUser(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Password
                     <br />
                     <input
                       type='password'
@@ -180,7 +250,7 @@ export default function SearchStationSidebar({
                     />
                   </label>
                   <label>
-                    Enter your password again
+                    Type password again
                     <br />
                     <input
                       type='password'
@@ -188,7 +258,7 @@ export default function SearchStationSidebar({
                     />
                   </label>
                   <label>
-                    Enter your email
+                    Email
                     <br />
                     <input
                       type='text'
@@ -196,7 +266,7 @@ export default function SearchStationSidebar({
                     />
                   </label>
                   <label>
-                    Enter your first name
+                    First name
                     <br />
                     <input
                       type='text'
@@ -204,37 +274,22 @@ export default function SearchStationSidebar({
                     />
                   </label>
                   <label>
-                    Enter your last name
+                    Last name
                     <br />
                     <input
                       type='text'
                       onChange={(e) => setLastName(e.target.value)}
                     />
                   </label>
-                </form>
-              )}
-              <div className='login-ui-button-group'>
-                {profile && !profile.username && (
-                  <span className='button' onClick={handleLogin}>
-                    Login
-                  </span>
-                )}
-                {profile && !profile.username && (
                   <span
                     className='button'
-                    onClick={register(
-                      user,
-                      pass,
-                      pass2,
-                      email,
-                      firstName,
-                      lastName
-                    )}
+                    onClick={handleRegister}
                   >
                     Register
                   </span>
-                )}
-              </div>
+                </form>
+              )}
+              <div className='login-ui-button-group'></div>
               {columnClickEvent && loggedIn && (
                 <div className='update-station-section'>
                   <ul className='station-info'>

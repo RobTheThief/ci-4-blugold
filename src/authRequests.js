@@ -1,85 +1,86 @@
 const login = (user, pass) => {
-  return new Promise(async resolve => {
+  return new Promise(async (resolve) => {
     var formdata = new FormData();
     formdata.append("username", user);
     formdata.append("password", pass);
 
     var requestOptions = {
-      method: 'POST',
+      method: "POST",
       body: formdata,
     };
     try {
       const response = fetch(`/login/`, requestOptions)
-         .then(response => response)
-         .then(result => console.log(result))
-         .catch(error => console.log('error', error));
-      resolve(response)
+        .then((response) => response)
+        .then((result) => console.log(result))
+        .catch((error) => console.log("error", error));
+      resolve(response);
     } catch (error) {
       console.log(error);
-      resolve()
+      resolve();
     }
-  })
-}
+  });
+};
 
-const register = (user, pass, pass2, email, firstName, lastName) => (e) => {
-  var formdata = new FormData();
-  formdata.append("username", user);
-  formdata.append("password", pass);
-  formdata.append("password2", pass2);
-  formdata.append("email", email);
-  formdata.append("first_name", firstName);
-  formdata.append("last_name", lastName);
+const register = (user, pass, pass2, email, firstName, lastName) => {
+  return new Promise(async (resolve) => {
+    var formdata = new FormData();
+    formdata.append("username", user);
+    formdata.append("password", pass);
+    formdata.append("password2", pass2);
+    formdata.append("email", email);
+    formdata.append("first_name", firstName);
+    formdata.append("last_name", lastName);
 
-  var requestOptions = {
-    credentials: "include",
-    method: 'POST',
-    body: formdata,
-  };
-
-  fetch(`/register/`, requestOptions)
-    .then(response => response.json())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-}
+    var requestOptions = {
+      credentials: "include",
+      method: "POST",
+      body: formdata,
+    };
+    try {
+      fetch(`/register/`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => console.log(result))
+        .then(() => resolve())
+        .catch((error) => console.log("error", error));
+    } catch (error) {
+      console.log(error);
+      resolve();
+    }
+  });
+};
 
 const logout = () => {
   var requestOptions = {
     credentials: "include",
-    method: 'POST',
+    method: "POST",
   };
 
   fetch(`/logout/`, requestOptions)
-    .then(response => response)
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-}
+    .then((response) => response)
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+};
 
 const getProfile = () => {
-  return new Promise(async resolve => {
-
+  return new Promise(async (resolve) => {
     try {
       const response = await fetch(`/profile/`, {
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         credentials: "include",
-        method: 'GET',
-      })
+        method: "GET",
+      });
 
       const responseJson = await response.json(); //extract JSON from the http response
 
-      console.log(responseJson)
+      console.log(responseJson);
 
       resolve(responseJson);
     } catch (error) {
-      resolve(error)
+      resolve(error);
     }
-  })
-}
+  });
+};
 
-export {
-  getProfile,
-  logout,
-  register,
-  login
-}
+export { getProfile, logout, register, login };
