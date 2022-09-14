@@ -14,6 +14,8 @@
   flex-direction: column;
   z-index: 100;
   max-height: 500px;
+  animation-name: fade-in;
+  animation-duration: 0.2s;
 }
 
 .login-ui-wrapper {
@@ -79,10 +81,6 @@
   background-color: #00000080;
 }
 
-ul {
- 
-}
-
 ul li {
   list-style-type: none;
 }
@@ -102,4 +100,11 @@ ul li {
   padding: 1rem;
   margin: 0;
   width: 100%;
+  animation-name: fade-in;
+  animation-duration: 0.3s;
+}
+
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
