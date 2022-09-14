@@ -1,4 +1,4 @@
-function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy='me-dev') {
+function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 'me-dev') {
   fetch(`/api/create/`, {
     method: 'POST',
     headers: {
@@ -21,25 +21,31 @@ function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy='m
     })
 }
 
-function updateStation(id, station, petrolPrice, dieselPrice) {
-  fetch(`/api/update/${id}/`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(
-      {
-        "station": station,
-        "petrol": petrolPrice,
-        "diesel": dieselPrice
+function updateStation(id, station, google_id, updated_by, petrolPrice, dieselPrice) {
+  return new Promise(async resolve => {
+    try {
+      var formdata = new FormData();
+      formdata.append("station", station);
+      formdata.append("petrol", petrolPrice);
+      formdata.append("diesel", dieselPrice);
+      formdata.append("google_id", google_id);
+      formdata.append("updated_by", updated_by);
+
+      const response = await fetch(`/api/update/${id}/`, {
+        method: 'PUT',
+        redirect: 'follow',
+        body: formdata,
       })
-  })
-    .then(res => {
-      if (res.ok) return res.json()
-    })
-    .catch(error => {
+
+      const responseJson = await response.json(); //extract JSON from the http response
+      console.log(responseJson)
+
+      resolve(responseJson);
+    } catch (error) {
       console.log('error', error);
-    })
+      resolve();
+    }
+  })
 }
 
 function deleteStation(id) {
@@ -83,8 +89,8 @@ const getAllStations = () => {
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
-      
-      console.log(responseJson)
+
+     // console.log(responseJson)
 
       resolve(responseJson);
     } catch (error) {
@@ -95,7 +101,7 @@ const getAllStations = () => {
 };
 
 /* location in format of: '53.46473616374262,-10.688388878528719' radius in meters, name of place as a string, default='fuel' */
-const getStationLocationData = (location, name='fuel') => {
+const getStationLocationData = (location, name = 'fuel') => {
   return new Promise(async resolve => {
     try {
       const response = await fetch(`places-api-location-request/${name}/${location}/`, {
@@ -106,7 +112,7 @@ const getStationLocationData = (location, name='fuel') => {
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
-      
+
       console.log(responseJson.results)
 
       resolve(responseJson);
@@ -119,7 +125,7 @@ const getStationLocationData = (location, name='fuel') => {
 
 /*  area as a string */
 const getAreaData = (area) => {
-  console.log({area})
+  console.log({ area })
   return new Promise(async resolve => {
     try {
       const response = await fetch(`places-api-area-request/${area}/`, {
@@ -130,7 +136,7 @@ const getAreaData = (area) => {
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
-      
+
       console.log(responseJson)
 
       resolve(responseJson);

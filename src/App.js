@@ -7,6 +7,11 @@ import RightSidebar from './components/RightSidebar';
 
 import SearchStationSidebar from './components/SearchStationSidebar';
 import {getProfile} from './authRequests';
+import {
+  getStationLocationData,
+  createStation,
+  getAllStations
+} from './dbAPIRequests'
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -26,32 +31,30 @@ function App() {
   const [longView, setLongView] = useState();
   const [latView, setLatView] = useState(); 
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [columnClickEvent, setColumnClickEvent] = useState();
 
   useEffect(() => {
-    console.log({ bluApiData })
   }, [bluApiData])
-
-  useEffect(() => {
-  }, [])
 
   return (
     <>
-      <RightSidebar />
+      <RightSidebar 
+        setColumnClickEvent={setColumnClickEvent}
+        columnClickEvent={columnClickEvent}
+        mapData={mapData}
+        setMapData={setMapData}
+      />
       <SearchStationSidebar
         setLongView={setLongView}
-        latView={latView}
-        longView={longView}
         setLatView={setLatView}
         stationData={stationData}
         setStationData={setStationData}
-        viewState={viewState}
-        setViewState={setViewState}
       />
       <DeckSnapshot
-        setLongView={setLongView}
+        columnClickEvent={columnClickEvent}
+        setColumnClickEvent={setColumnClickEvent}
         latView={latView}
         longView={longView}
-        setLatView={setLatView}
         stationData={stationData}
         setStationData={setStationData}
         mapData={mapData}

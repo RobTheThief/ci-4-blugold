@@ -76,6 +76,7 @@ class StationCreate(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
+
 class StationList(generics.ListAPIView):
     # API endpoint that allows station to be viewed.
     #permission_classes = (permissions.AllowAny,)
@@ -84,6 +85,7 @@ class StationList(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
+
 class StationDetail(generics.RetrieveAPIView):
     # API endpoint that returns a single station by id.
     serializer_class = StationSerializer
@@ -91,12 +93,14 @@ class StationDetail(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
-class StationUpdate(generics.RetrieveUpdateAPIView):
+
+class StationUpdate(CsrfExemptMixin, generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Station record to be updated.
-    queryset = Station.objects.all()
-    serializer_class = StationSerializer
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
+    serializer_class = StationSerializer
+    queryset = Station.objects.all()
+
 
 class StationDelete(generics.RetrieveDestroyAPIView):
     # API endpoint that allows a Station record to be deleted.
@@ -105,12 +109,13 @@ class StationDelete(generics.RetrieveDestroyAPIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
+
 class LoginView(CsrfExemptMixin, views.APIView):
     # This view should be accessible also for unauthenticated users.
     #authentication_classes = [authentication.SessionAuthentication, authentication.BasicAuthentication]
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
-    
+
     def post(self, request, format=None):
         serializer = serializers.LoginSerializer(data=self.request.data,
                                                  context={'request': self.request})
@@ -130,11 +135,13 @@ class LogoutView(views.APIView):
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
 
     def get_object(self):
         return self.request.user
+
 
 class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
@@ -154,7 +161,7 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
         print(payload)
         r = requests.get(
             'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
-            #  url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Sydney&key=YOUR_API_KEY',
+        #  url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Sydney&key=YOUR_API_KEY',
         r_status = r.status_code
         if r_status == 200:
             json_res = r.text
@@ -166,6 +173,7 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
             response['message'] = 'error'
         return Response(data)
 
+
 class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
@@ -173,8 +181,9 @@ class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
     def get(self, request, area):
         response = {}
         payload = {'input': area, 'inputtype': 'textquery', 'fields': 'geometry',
-                'key': str(os.getenv('GOOGLE_API_KEY'))}
-        r = requests.get('https://maps.googleapis.com/maps/api/place/findplacefromtext/json', payload)
+                   'key': str(os.getenv('GOOGLE_API_KEY'))}
+        r = requests.get(
+            'https://maps.googleapis.com/maps/api/place/findplacefromtext/json', payload)
 
         print(payload)
         r_status = r.status_code
@@ -187,4 +196,3 @@ class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
             response['status'] = r.status_code
             response['message'] = 'error'
         return Response(data)
-

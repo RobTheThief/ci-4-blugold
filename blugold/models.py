@@ -1,7 +1,7 @@
 from django.db import models
 
 class Station(models.Model):
-    station = models.CharField("Name", max_length=240)
+    station = models.CharField("Station", max_length=240)
     petrol = models.CharField("Petrol", max_length=240)
     diesel = models.CharField("Diesel", max_length=240)
     google_id = models.CharField("google_id", max_length=240)

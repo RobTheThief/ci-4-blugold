@@ -74,8 +74,32 @@
   padding: 1rem;
   margin: 0;
   max-width: 200px;
-  list-style-type: none;
   border: solid #ffffff80 2px;
   border-radius: 8px;
   background-color: #00000080;
+}
+
+ul {
+ 
+}
+
+ul li {
+  list-style-type: none;
+}
+
+.station-info input {
+  max-width: 2rem;
+  color: white;
+  background: black;
+}
+
+.station-info {
+  color: white;
+  text-align: left;
+  border: solid #ffffff80 2px;
+  border-radius: 8px;
+  background-color: #000000;
+  padding: 1rem;
+  margin: 0;
+  width: 100%;
 }

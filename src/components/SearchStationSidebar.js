@@ -4,7 +4,7 @@ import {
     getAreaData
 } from '../dbAPIRequests'
 
-export default function SearchStationSidebar({ stationData, setStationData, longView, setLongView, latView, setLatView, viewState, setViewState }) {
+export default function SearchStationSidebar({ stationData, setStationData, setLongView, setLatView }) {
 
     const [area, setArea] = useState();
 
