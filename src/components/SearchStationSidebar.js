@@ -128,7 +128,7 @@ export default function SearchStationSidebar({
         className={`drawer-tab ${isDrawerOpen ? "container-left" : "container-right"}`}
         onClick={handleOpenCloseDrawer}
       >
-        <span className={`material-symbols-outlined ${isDrawerOpen ? "point-arrow-left" : "point-arrow-right"}`}> double_arrow</span>
+        <span className={`material-symbols-outlined arrow ${isDrawerOpen ? "point-arrow-left" : "point-arrow-right"}`}> double_arrow</span>
       </div>
       {isDrawerOpen && (
         <>
@@ -138,6 +138,7 @@ export default function SearchStationSidebar({
                 Area
                 <br />
                 <input
+                  className="search-input"
                   type='text'
                   onChange={(e) => setArea(e.target.value)}
                   onKeyDown={handleSearchStationArea()}
