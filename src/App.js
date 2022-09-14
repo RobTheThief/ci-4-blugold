@@ -3,15 +3,7 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import DeckSnapshot from './components/DeckSnapshot';
-import RightSidebar from './components/RightSidebar';
-
 import SearchStationSidebar from './components/SearchStationSidebar';
-import {getProfile} from './authRequests';
-import {
-  getStationLocationData,
-  createStation,
-  getAllStations
-} from './dbAPIRequests'
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -38,17 +30,15 @@ function App() {
 
   return (
     <>
-      <RightSidebar 
-        setColumnClickEvent={setColumnClickEvent}
-        columnClickEvent={columnClickEvent}
-        mapData={mapData}
-        setMapData={setMapData}
-      />
       <SearchStationSidebar
         setLongView={setLongView}
         setLatView={setLatView}
         stationData={stationData}
         setStationData={setStationData}
+        setColumnClickEvent={setColumnClickEvent}
+        columnClickEvent={columnClickEvent}
+        mapData={mapData}
+        setMapData={setMapData}
       />
       <DeckSnapshot
         columnClickEvent={columnClickEvent}

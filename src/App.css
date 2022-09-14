@@ -1,3 +1,9 @@
+input {
+  background-color: #ffffff80;
+  height: 1.35rem;
+  border-radius: 0.5rem;
+}
+
 .App {
   text-align: center;
 }
@@ -5,6 +11,11 @@
 .button {
   margin: 0 1rem 0 0;
   z-index: 1000;
+  color: #183f01;
+  background-color: rgb(48, 128, 255, 255);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 .ui-form {
@@ -18,12 +29,26 @@
   animation-duration: 0.2s;
 }
 
-.login-ui-wrapper {
-  right: 0rem;
+.login-ui-button-group {
+  margin-top: 1rem;
 }
 
-.search-station-ui-wrapper {
-  left: 0rem;
+.update-btn {
+  position: relative;
+  top: 1rem;
+}
+
+.login-and-update-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 264px;
+  margin-top: 2rem;
+}
+
+.logout-section {
+  animation-name: fade-in;
+  animation-duration: 0.2s;
 }
 
 .sidebar-ui {
@@ -38,9 +63,10 @@
   background-color: #ffffff80;
   z-index: 100;
   padding: 2rem;
+  max-width: 500px;
 }
 
-.login-ui-button-group {
+.login-ui--group {
   display:flex;
   margin-top: 2rem;
 }
@@ -70,6 +96,7 @@
 
 .go-btn {
   max-height: 1.5rem;
+  margin-left: 0.5rem;
 }
 
 .tooltip {
@@ -99,7 +126,10 @@ ul li {
   background-color: #000000;
   padding: 1rem;
   margin: 0;
-  width: 100%;
+  width: 82%;
+}
+
+.update-station-section {
   animation-name: fade-in;
   animation-duration: 0.3s;
 }
