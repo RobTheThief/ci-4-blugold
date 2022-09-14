@@ -31,19 +31,21 @@ export default function SearchStationSidebar({
     location && setStationData(await getStationLocationData(location, "fuel"));
   };
 
-  const handleSearchStationArea = async (e) => {
-    await getAreaData(area)
-      .then((data) => {
-        setLat(data.candidates[0].geometry.location.lat);
-        console.log("yes");
-        return data;
-      })
-      .then((data) => {
-        setLong(data.candidates[0].geometry.location.lng);
-        console.log("and yes");
-        return data;
-      })
-      .catch((error) => console.log(error));
+  const handleSearchStationArea = (goButton) => async (e) => {
+    if (e.code === "Enter" || goButton === 'go') {
+      await getAreaData(area)
+        .then((data) => {
+          setLat(data.candidates[0].geometry.location.lat);
+          console.log("yes");
+          return data;
+        })
+        .then((data) => {
+          setLong(data.candidates[0].geometry.location.lng);
+          console.log("and yes");
+          return data;
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   async function getAndSetProfile() {
@@ -120,14 +122,18 @@ export default function SearchStationSidebar({
           <label>
             Area
             <br />
-            <input type='text' onChange={(e) => setArea(e.target.value)} />
+            <input
+              type='text'
+              onChange={(e) => setArea(e.target.value)}
+              onKeyDown={handleSearchStationArea()}
+            />
           </label>
-          <span className='go-btn button' onClick={handleSearchStationArea}>
+          <span className='go-btn button' onClick={handleSearchStationArea('go')}>
             Go
           </span>
         </div>
       </div>
-      <div className="login-and-update-wrapper" >
+      <div className='login-and-update-wrapper'>
         <div className='login-ui-wrapper'>
           {profile && profile.username ? (
             <div className='logout-section'>
