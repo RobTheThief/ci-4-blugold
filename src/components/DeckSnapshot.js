@@ -94,12 +94,6 @@ export default function DeckSnapshot({
     setHoverInfo(info);
   };
 
-  const handleTestClick = () => {
-    let mapDataDeepCopy = JSON.parse(JSON.stringify(mapData));
-    setMapData({ mapData });
-    console.log(mapDataDeepCopy, mapData);
-  };
-
   const fetchAndSetStationData = async (
     long = "53.34523915464418",
     lat = "-6.267469638550943"
@@ -216,12 +210,6 @@ export default function DeckSnapshot({
             mapStyle='mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09'
             //mapStyle="mapbox://styles/mapbox/streets-v11"
           />
-          <button
-            style={{ position: "absolute", right: "50%" }}
-            onClick={handleTestClick}
-          >
-            PRESS TO TEST
-          </button>
         </DeckGL>
       )}
     </>

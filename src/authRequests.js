@@ -9,14 +9,12 @@ const login = (user, pass) => {
       body: formdata,
     };
     try {
-      const response = fetch(`/login/`, requestOptions)
-        .then((response) => response)
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
+      const response = await fetch(`/login/`, requestOptions);
+
       resolve(response);
     } catch (error) {
       console.log(error);
-      resolve();
+      resolve(error);
     }
   });
 };
@@ -37,14 +35,14 @@ const register = (user, pass, pass2, email, firstName, lastName) => {
       body: formdata,
     };
     try {
-      fetch(`/register/`, requestOptions)
-        .then((response) => response.json())
-        .then((result) => console.log(result))
-        .then(() => resolve())
-        .catch((error) => console.log("error", error));
+      let response = await fetch(`/register/`, requestOptions);
+
+      let responseJson = await response.json();
+
+      resolve(responseJson)
     } catch (error) {
       console.log(error);
-      resolve();
+      resolve(error);
     }
   });
 };

@@ -32,7 +32,14 @@ export default function SearchStationSidebar({
   const [dieselPrice, setDieselPrice] = useState();
   const [petrolPrice, setPetrolPrice] = useState();
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-  const [updateErrorMsg, setUpdateErrorMsg] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const updateStationErrorMsg =
+    "Price input must be a number and there must be both a Diesel and Petrol price.";
+  const emailErrorMsg =
+    "This email address has already been used to create an account.";
+  const checkUserPass = "Please check your login details and try again.";
 
   const searchLocation = async (e) => {
     console.log("yes");
@@ -61,19 +68,35 @@ export default function SearchStationSidebar({
     setProfile(await getProfile());
   }
 
+  const displayErrorMessage = (error) => {
+    setErrorMessage(error);
+    setIsError(true);
+    setTimeout(() => {
+      setIsError(false);
+    }, 3000);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(user, pass);
-    await getAndSetProfile();
-    checkIfLoggedIn();
+    let result = await login(user, pass);
+    if (result.statusText === "Bad Request") {
+      displayErrorMessage(checkUserPass);
+    } else {
+      await getAndSetProfile();
+      checkIfLoggedIn();
+    }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    await register(user, pass, pass2, email, firstName, lastName);
-    await login(user, pass);
-    await getAndSetProfile();
-    await checkIfLoggedIn();
+    let result = await register(user, pass, pass2, email, firstName, lastName); //.then(response => console.log(response));
+    if (result.email[0] !== "This field must be unique.") {
+      await login(user, pass);
+      await getAndSetProfile();
+      await checkIfLoggedIn();
+    } else {
+      displayErrorMessage(emailErrorMsg);
+    }
   };
 
   function handleLogout() {
@@ -132,10 +155,7 @@ export default function SearchStationSidebar({
         dieselPrice
       );
     } else {
-      setUpdateErrorMsg(true);
-      setTimeout(() => {
-        setUpdateErrorMsg(false);
-      }, 3000);
+      displayErrorMessage(updateStationErrorMsg);
     }
   };
 
@@ -175,14 +195,9 @@ export default function SearchStationSidebar({
           double_arrow
         </span>
       </div>
-      <div
-        className={`tooltip ${
-          updateErrorMsg ? "update-error-message" : "hidden"
-        }`}
-      >
+      <div className={`tooltip ${isError ? "update-error-message" : "hidden"}`}>
         <div className='material-symbols-outlined warning-icon'>warning</div>{" "}
-        Price input must be a number and there must be both a Diesel and Petrol
-        price.
+        {errorMessage}
       </div>
       <div
         className={`sidebar-ui ${
