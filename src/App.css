@@ -15,6 +15,7 @@ input {
   border: solid #ffffff80 2px;
   border-radius: 8px;
   margin-bottom: 0.5rem;
+  height: auto;
 }
 
 .search-input {
@@ -43,7 +44,7 @@ input {
 }
 
 .info-icon:hover ~ .info-icon-tooltip {
-  display:block;
+  display: block;
 }
 
 .App {
@@ -51,6 +52,7 @@ input {
 }
 
 .button {
+  border: none;
   margin: 0 1rem 0 0;
   z-index: 1000;
   color: white;
@@ -85,9 +87,10 @@ input {
   margin-top: 1rem;
 }
 
-.update-btn {
+.form-btn {
   position: relative;
   top: 1rem;
+  font-size: 16px;
 }
 
 .login-and-update-wrapper {
@@ -95,13 +98,13 @@ input {
   justify-content: flex-start;
   align-items: flex-start;
   width: 264px;
-  margin-top: 2rem;
 }
 
 .logout-section {
   animation-name: fade-in;
   animation-duration: 0.2s;
   left: 1rem;
+  margin-top: 1rem;
 }
 
 .logout-section .button {
@@ -114,7 +117,7 @@ input {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  
+
   position: absolute;
   left: 1rem;
   top: 2rem;
@@ -271,7 +274,7 @@ ul li {
 }
 
 .petrol-legend-dot {
-  background-color:#2b7400;
+  background-color: #2b7400;
 }
 
 .diesel-legend-dot {

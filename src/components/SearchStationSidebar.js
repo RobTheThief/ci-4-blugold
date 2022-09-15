@@ -61,13 +61,15 @@ export default function SearchStationSidebar({
     setProfile(await getProfile());
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     await login(user, pass);
     await getAndSetProfile();
     checkIfLoggedIn();
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     await register(user, pass, pass2, email, firstName, lastName);
     await login(user, pass);
     await getAndSetProfile();
@@ -118,7 +120,8 @@ export default function SearchStationSidebar({
   };
 
   const handleUpdateStation = async (e) => {
-    if (columnClickEvent && petrolPrice && dieselPrice) {
+    e.preventDefault();
+    if (!isNaN(petrolPrice) && !isNaN(dieselPrice)) {
       await updateMapData();
       await updateStation(
         columnClickEvent.object.fuelInfo.id,
@@ -177,8 +180,9 @@ export default function SearchStationSidebar({
           updateErrorMsg ? "update-error-message" : "hidden"
         }`}
       >
-        <div className='material-symbols-outlined warning-icon'>warning</div>There must be
-        both an updated Diesel and Petrol price.
+        <div className='material-symbols-outlined warning-icon'>warning</div>{" "}
+        Price input must be a number and there must be both a Diesel and Petrol
+        price.
       </div>
       <div
         className={`sidebar-ui ${
@@ -244,136 +248,159 @@ export default function SearchStationSidebar({
                       To update the station fuel prices please log in or
                       register.
                     </p>
-                    <form className='login-form ui-form'>
-                      <label>
-                        Username
-                        <br />
+                    <div className='login-form ui-form'>
+                      <form onSubmit={(e) => handleLogin(e)}>
+                        <label>
+                          Username
+                          <br />
+                          <input
+                            type='text'
+                            onChange={(e) => setUser(e.target.value)}
+                            required
+                          />
+                        </label>
+                        <label>
+                          Password
+                          <br />
+                          <input
+                            type='password'
+                            onChange={(e) => setPass(e.target.value)}
+                            required
+                          />
+                        </label>
                         <input
-                          type='text'
-                          onChange={(e) => setUser(e.target.value)}
+                          type='submit'
+                          value='Login'
+                          className='button form-btn login'
                         />
-                      </label>
-                      <label>
-                        Password
-                        <br />
+                      </form>
+                      <form onSubmit={(e) => handleRegister(e)}>
+                        <label>
+                          Username
+                          <br />
+                          <input
+                            type='text'
+                            onChange={(e) => setUser(e.target.value)}
+                            required
+                          />
+                        </label>
+                        <label>
+                          Password
+                          <br />
+                          <input
+                            type='password'
+                            onChange={(e) => setPass(e.target.value)}
+                            required
+                          />
+                        </label>
+                        <label>
+                          Type password again
+                          <br />
+                          <input
+                            type='password'
+                            onChange={(e) => setPass2(e.target.value)}
+                            required
+                          />
+                        </label>
+                        <label>
+                          Email
+                          <br />
+                          <input
+                            type='email'
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                          />
+                        </label>
+                        <label>
+                          First name
+                          <br />
+                          <input
+                            type='text'
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                          />
+                        </label>
+                        <label>
+                          Last name
+                          <br />
+                          <input
+                            type='text'
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                          />
+                        </label>
                         <input
-                          type='password'
-                          onChange={(e) => setPass(e.target.value)}
+                          type='submit'
+                          value='Register'
+                          className='button form-btn'
                         />
-                      </label>
-                      <span className='button login' onClick={handleLogin}>
-                        Login
-                      </span>
-                      <label>
-                        Username
-                        <br />
-                        <input
-                          type='text'
-                          onChange={(e) => setUser(e.target.value)}
-                        />
-                      </label>
-                      <label>
-                        Password
-                        <br />
-                        <input
-                          type='password'
-                          onChange={(e) => setPass(e.target.value)}
-                        />
-                      </label>
-                      <label>
-                        Type password again
-                        <br />
-                        <input
-                          type='password'
-                          onChange={(e) => setPass2(e.target.value)}
-                        />
-                      </label>
-                      <label>
-                        Email
-                        <br />
-                        <input
-                          type='text'
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                      </label>
-                      <label>
-                        First name
-                        <br />
-                        <input
-                          type='text'
-                          onChange={(e) => setFirstName(e.target.value)}
-                        />
-                      </label>
-                      <label>
-                        Last name
-                        <br />
-                        <input
-                          type='text'
-                          onChange={(e) => setLastName(e.target.value)}
-                        />
-                      </label>
-                      <span className='button' onClick={handleRegister}>
-                        Register
-                      </span>
-                    </form>
+                      </form>
+                    </div>
                   </>
                 )}
                 <div className='login-ui-button-group'></div>
                 {columnClickEvent && loggedIn && (
                   <div className='update-station-section'>
-                    <ul className='station-info'>
-                      <li>{columnClickEvent.object.name}</li>
-                      <li>{columnClickEvent.object.vicinity}</li>
-                      <br />
-                      <li>
-                        {columnClickEvent.object.opening_hours &&
-                        columnClickEvent.object.opening_hours.open_now
-                          ? "Open: Yes"
-                          : columnClickEvent.object.opening_hours
-                          ? "Open: No"
-                          : "No opening hours set"}
-                      </li>
-                      <br />
-                      <li className='tooltip-list-item'>
-                        <PetrolLegendDot />
-                        Petrol:{" "}
-                        <input
-                          className='update-price-input'
-                          type='text'
-                          placeholder={columnClickEvent.object.fuelInfo.petrol}
-                          onChange={(e) => setPetrolPrice(e.target.value)}
-                        ></input>
-                      </li>
-                      <li className='tooltip-list-item'>
-                        <DieselLegendDot />
-                        Diesel:{"  "}
-                        <input
-                          className='update-price-input'
-                          type='text'
-                          placeholder={columnClickEvent.object.fuelInfo.diesel}
-                          onChange={(e) => setDieselPrice(e.target.value)}
-                        ></input>
-                      </li>
-                      <br />
-                      {columnClickEvent.object.fuelInfo.petrol !== "0" ? (
+                    <form onSubmit={(e) => handleUpdateStation(e)}>
+                      <ul className='station-info'>
+                        <li>{columnClickEvent.object.name}</li>
+                        <li>{columnClickEvent.object.vicinity}</li>
+                        <br />
                         <li>
-                          Updated by:{" "}
-                          {columnClickEvent.object.fuelInfo.updated_by}
+                          {columnClickEvent.object.opening_hours &&
+                          columnClickEvent.object.opening_hours.open_now
+                            ? "Open: Yes"
+                            : columnClickEvent.object.opening_hours
+                            ? "Open: No"
+                            : "No opening hours set"}
                         </li>
-                      ) : (
-                        <li>Updated by: Not updated yet</li>
-                      )}
-                      <li>
-                        Updated on: {columnClickEvent.object.fuelInfo.updated}
-                      </li>
-                      <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
-                    </ul>
-                    <span
-                      className='button update-btn'
-                      onClick={handleUpdateStation}
-                    >
-                      Update Station
-                    </span>
+                        <br />
+                        <li className='tooltip-list-item'>
+                          <PetrolLegendDot />
+                          Petrol:{" "}
+                          <input
+                            className='update-price-input'
+                            type='text'
+                            placeholder={
+                              columnClickEvent.object.fuelInfo.petrol
+                            }
+                            onChange={(e) => setPetrolPrice(e.target.value)}
+                            required
+                          ></input>
+                        </li>
+                        <li className='tooltip-list-item'>
+                          <DieselLegendDot />
+                          Diesel:{"  "}
+                          <input
+                            className='update-price-input'
+                            type='text'
+                            placeholder={
+                              columnClickEvent.object.fuelInfo.diesel
+                            }
+                            onChange={(e) => setDieselPrice(e.target.value)}
+                            required
+                          ></input>
+                        </li>
+                        <br />
+                        {columnClickEvent.object.fuelInfo.petrol !== "0" ? (
+                          <li>
+                            Updated by:{" "}
+                            {columnClickEvent.object.fuelInfo.updated_by}
+                          </li>
+                        ) : (
+                          <li>Updated by: Not updated yet</li>
+                        )}
+                        <li>
+                          Updated on: {columnClickEvent.object.fuelInfo.updated}
+                        </li>
+                        <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
+                      </ul>
+                      <input
+                        className='button form-btn'
+                        type='submit'
+                        value='Update Station'
+                      />
+                    </form>
                   </div>
                 )}
               </div>
