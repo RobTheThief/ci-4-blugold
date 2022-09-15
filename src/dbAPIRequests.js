@@ -1,27 +1,36 @@
 function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 'me-dev') {
-  fetch(`/api/create/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(
-      {
-        "station": station,
-        "petrol": petrolPrice,
-        "diesel": dieselPrice,
-        "updated_by": updatedBy,
-        "google_id": googleId
+  return new Promise(async resolve => {
+    try {
+      fetch(`/api/create/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            "station": station,
+            "petrol": petrolPrice,
+            "diesel": dieselPrice,
+            "updated_by": updatedBy,
+            "google_id": googleId
+          })
       })
+        .then(res => {
+          if (res.ok) return res.json()
+        })
+        .catch(error => {
+          console.log('error', error);
+        })
+        resolve()
+    } catch (error) {
+      resolve()
+      console.log(error)
+    }
   })
-    .then(res => {
-      if (res.ok) return res.json()
-    })
-    .catch(error => {
-      console.log('error', error);
-    })
 }
 
 function updateStation(id, station, google_id, updated_by, petrolPrice, dieselPrice) {
+  console.log(id, station, google_id, updated_by, petrolPrice, dieselPrice)
   return new Promise(async resolve => {
     try {
       var formdata = new FormData();

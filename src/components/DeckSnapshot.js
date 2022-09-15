@@ -27,7 +27,7 @@ export default function DeckSnapshot({
   columnClickEvent,
 }) {
   const [hoverInfo, setHoverInfo] = useState("");
-  const [deckMapData, setDeckMapData] = useState();
+  const [runOnce, setRunOnce] = useState(false);
 
   let petrolColumnLayer = new ColumnLayer({
     id: "petrol-column-layer",
@@ -124,29 +124,37 @@ export default function DeckSnapshot({
   };
 
   const findStationInDB = async (idx) => {
-    return await handleFindStationInDBAsync(idx);
+    return new Promise(async (resolve) => {
+      try {
+        resolve(await handleFindStationInDBAsync(idx))
+      } catch (error) {
+        console.log(error);
+        resolve();
+      }
+    })
   };
 
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
+
     return new Promise(async (resolve) => {
       if (
-        bluDBStation === undefined &&
-        (mapData === undefined || mapData[0] === undefined)
+        bluDBStation === undefined && 
+        (runOnce === false)
       ) {
-        createStation(
+        await createStation(
           `${stationData.results[idx].name}`,
-          1.85,
-          1.96,
+          0,
+          0,
           stationData.results[idx].place_id
         );
-        mapDataTemp[idx].fuelInfo = {
-          petrol: "0",
-          diesel: "0",
-        };
+        let newbluDBStation = await findStationInDB(idx);
+        newbluDBStation !== undefined && console.log(await newbluDBStation)
+        mapDataTemp[idx].fuelInfo = newbluDBStation !== undefined ? newbluDBStation : mapDataTemp[idx].fuelInfo;
       } else {
         mapDataTemp[idx].fuelInfo = bluDBStation;
       }
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapDataTemp));
+      setRunOnce(true);
       setMapData(mapDataDeepCopy);
       resolve();
     });
@@ -179,6 +187,11 @@ export default function DeckSnapshot({
   useEffect(() => {
     focusView();
   }, [longView, latView]);
+
+  useEffect(() => {
+    setRunOnce(false);
+  }, [mapData])
+  
 
   return (
     <>

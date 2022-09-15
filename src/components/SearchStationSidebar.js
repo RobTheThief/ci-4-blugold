@@ -81,8 +81,6 @@ export default function SearchStationSidebar({
     setIsDrawerOpen(isDrawerOpen ? false : true);
   };
 
-  const handleInfoHover = () => {};
-
   async function checkIfLoggedIn() {
     return new Promise(async (resolve) => {
       if (profile && profile.username) {
@@ -95,16 +93,28 @@ export default function SearchStationSidebar({
     })
   }
 
+  const updateMapData = () => {
+    return new Promise(async (resolve) => {
+      try {
+        let stationIndex = mapData.findIndex((station) => {
+          return station.reference === columnClickEvent.object.fuelInfo.google_id;
+        });
+        let mapDataTemp = mapData;
+        mapDataTemp[stationIndex].fuelInfo.petrol = petrolPrice;
+        mapDataTemp[stationIndex].fuelInfo.diesel = dieselPrice;
+        setMapData(mapDataTemp);
+        console.log(mapData)
+        resolve()
+      } catch (error) {
+        console.log(error)
+        resolve()
+      }
+    })
+  }
+
   const handleUpdateStation = async (e) => {
     if (columnClickEvent && petrolPrice && dieselPrice) {
-      let stationIndex = mapData.findIndex((station) => {
-        return station.reference === columnClickEvent.object.fuelInfo.google_id;
-      });
-      let mapDataTemp = mapData;
-      mapDataTemp[stationIndex].fuelInfo.petrol = petrolPrice;
-      mapDataTemp[stationIndex].fuelInfo.diesel = dieselPrice;
-      setMapData(mapDataTemp);
-
+      await updateMapData();
       await updateStation(
         columnClickEvent.object.fuelInfo.id,
         toString(columnClickEvent.object.fuelInfo.station),
@@ -135,7 +145,7 @@ export default function SearchStationSidebar({
 
   useEffect(() => {
     lat && long && searchLocation();
-  }, [lat, long]);
+  }, [long]);
 
   return (
     <div
@@ -172,12 +182,11 @@ export default function SearchStationSidebar({
               <label>
                 Search Area
                 <span
-                  class='material-symbols-outlined info-icon'
-                  onHover={handleInfoHover}
+                  className='material-symbols-outlined info-icon'
                 >
                   info
                 </span>
-                <span class='info-icon-tooltip'>
+                <span className='info-icon-tooltip'>
                   Enter an address or place name to find stations within 3km of
                   that location.
                 </span>
@@ -213,6 +222,10 @@ export default function SearchStationSidebar({
                   </p>
                 </>
               ) : (
+                <>
+                <p>
+                  To update the station fuel prices please log in or register.
+                </p>
                 <form className='login-form ui-form'>
                   <label>
                     Username
@@ -288,6 +301,7 @@ export default function SearchStationSidebar({
                     Register
                   </span>
                 </form>
+                </>
               )}
               <div className='login-ui-button-group'></div>
               {columnClickEvent && loggedIn && (
