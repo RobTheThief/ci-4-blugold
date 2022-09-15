@@ -287,6 +287,21 @@ ul li {
   align-items: center;
 }
 
+.update-error-message {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50vh;
+  left: 40vw;
+  z-index: 10000;
+  background-color: #000000;
+  padding: 1rem 2rem;
+}
+.warning-icon {
+  font-size: 34px;
+  color: red;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

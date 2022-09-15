@@ -32,6 +32,7 @@ export default function SearchStationSidebar({
   const [dieselPrice, setDieselPrice] = useState();
   const [petrolPrice, setPetrolPrice] = useState();
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [updateErrorMsg, setUpdateErrorMsg] = useState(false);
 
   const searchLocation = async (e) => {
     console.log("yes");
@@ -128,7 +129,10 @@ export default function SearchStationSidebar({
         dieselPrice
       );
     } else {
-      alert("There must be both an updated Diesel and Petrol price");
+      setUpdateErrorMsg(true);
+      setTimeout(() => {
+        setUpdateErrorMsg(false);
+      }, 3000);
     }
   };
 
@@ -167,6 +171,14 @@ export default function SearchStationSidebar({
           {" "}
           double_arrow
         </span>
+      </div>
+      <div
+        className={`tooltip ${
+          updateErrorMsg ? "update-error-message" : "hidden"
+        }`}
+      >
+        <div className='material-symbols-outlined warning-icon'>warning</div>There must be
+        both an updated Diesel and Petrol price.
       </div>
       <div
         className={`sidebar-ui ${
