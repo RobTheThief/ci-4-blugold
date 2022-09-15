@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function DieselLegendDot() {
-  return (
-    <span className='diesel-legend-dot legend-dot' ></span>
-  )
+  return <span className='diesel-legend-dot legend-dot'></span>;
 }

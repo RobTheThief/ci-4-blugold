@@ -177,11 +177,11 @@ export default function DeckSnapshot({
   useEffect(() => {
     focusView();
   }, [longView, latView]);
-  
+
   useEffect(() => {
     setRunOnce(false);
   }, [mapData]);
- 
+
   useEffect(() => {
     fetchAndSetStationData();
   }, []);

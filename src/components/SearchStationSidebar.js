@@ -152,9 +152,7 @@ export default function SearchStationSidebar({
   }, []);
 
   return (
-    <div
-      className={`sidebar-ui ${isDrawerOpen ? "open-drawer" : "close-drawer"}`}
-    >
+    <>
       <div
         className={`drawer-tab ${
           isDrawerOpen ? "container-left" : "container-right"
@@ -170,200 +168,207 @@ export default function SearchStationSidebar({
           double_arrow
         </span>
       </div>
-      {isDrawerOpen && (
-        <>
-          <div className='search-form ui-form'>
-            <div className='logo-container'>
-              <img
-                src={bloGoldLogo}
-                alt='blugold logo'
-                height='30'
-                className='blu-logo'
-              />
-              <span className='logo-text'>BLUGOLD</span>
-            </div>
-            <div className='btn-input-container'>
-              <label>
-                Search Area
-                <span className='material-symbols-outlined info-icon'>
-                  info
-                </span>
-                <span className='info-icon-tooltip'>
-                  Enter an address or place name to find stations within 3km of
-                  that location.
-                </span>
-                <br />
-                <input
-                  className='search-input'
-                  type='text'
-                  onChange={(e) => setArea(e.target.value)}
-                  onKeyDown={handleSearchStationArea()}
+      <div
+        className={`sidebar-ui ${
+          isDrawerOpen ? "open-drawer" : "close-drawer"
+        }`}
+      >
+        {isDrawerOpen && (
+          <>
+            <div className='search-form ui-form'>
+              <div className='logo-container'>
+                <img
+                  src={bloGoldLogo}
+                  alt='blugold logo'
+                  height='30'
+                  className='blu-logo'
                 />
-              </label>
-              <span
-                className='go-btn button'
-                onClick={handleSearchStationArea("go")}
-              >
-                Go
-              </span>
+                <span className='logo-text'>BLUGOLD</span>
+              </div>
+              <div className='btn-input-container'>
+                <label>
+                  Search Area
+                  <span className='material-symbols-outlined info-icon'>
+                    info
+                  </span>
+                  <span className='info-icon-tooltip'>
+                    Enter an address or place name to find stations within 3km
+                    of that location.
+                  </span>
+                  <br />
+                  <input
+                    className='search-input'
+                    type='text'
+                    onChange={(e) => setArea(e.target.value)}
+                    onKeyDown={handleSearchStationArea()}
+                  />
+                </label>
+                <span
+                  className='go-btn button'
+                  onClick={handleSearchStationArea("go")}
+                >
+                  Go
+                </span>
+              </div>
             </div>
-          </div>
-          <div className='login-and-update-wrapper'>
-            <div className='login-ui-wrapper'>
-              {profile && profile.username ? (
-                <>
-                  <div className='logout-section'>
-                    <span>Logged in as {profile.username}</span>{" "}
-                    <span className='button' onClick={handleLogout}>
-                      Logout
+            <div className='login-and-update-wrapper'>
+              <div className='login-ui-wrapper'>
+                {profile && profile.username ? (
+                  <>
+                    <div className='logout-section'>
+                      <span>Logged in as {profile.username}</span>{" "}
+                      <span className='button' onClick={handleLogout}>
+                        Logout
+                      </span>
+                    </div>
+                    <p>
+                      Click on a station on the map to view details and update
+                      fuel prices.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      To update the station fuel prices please log in or
+                      register.
+                    </p>
+                    <form className='login-form ui-form'>
+                      <label>
+                        Username
+                        <br />
+                        <input
+                          type='text'
+                          onChange={(e) => setUser(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Password
+                        <br />
+                        <input
+                          type='password'
+                          onChange={(e) => setPass(e.target.value)}
+                        />
+                      </label>
+                      <span className='button login' onClick={handleLogin}>
+                        Login
+                      </span>
+                      <label>
+                        Username
+                        <br />
+                        <input
+                          type='text'
+                          onChange={(e) => setUser(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Password
+                        <br />
+                        <input
+                          type='password'
+                          onChange={(e) => setPass(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Type password again
+                        <br />
+                        <input
+                          type='password'
+                          onChange={(e) => setPass2(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Email
+                        <br />
+                        <input
+                          type='text'
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        First name
+                        <br />
+                        <input
+                          type='text'
+                          onChange={(e) => setFirstName(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Last name
+                        <br />
+                        <input
+                          type='text'
+                          onChange={(e) => setLastName(e.target.value)}
+                        />
+                      </label>
+                      <span className='button' onClick={handleRegister}>
+                        Register
+                      </span>
+                    </form>
+                  </>
+                )}
+                <div className='login-ui-button-group'></div>
+                {columnClickEvent && loggedIn && (
+                  <div className='update-station-section'>
+                    <ul className='station-info'>
+                      <li>{columnClickEvent.object.name}</li>
+                      <li>{columnClickEvent.object.vicinity}</li>
+                      <br />
+                      <li>
+                        {columnClickEvent.object.opening_hours &&
+                        columnClickEvent.object.opening_hours.open_now
+                          ? "Open: Yes"
+                          : columnClickEvent.object.opening_hours
+                          ? "Open: No"
+                          : "No opening hours set"}
+                      </li>
+                      <br />
+                      <li className='tooltip-list-item'>
+                        <PetrolLegendDot />
+                        Petrol:{" "}
+                        <input
+                          className='update-price-input'
+                          type='text'
+                          placeholder={columnClickEvent.object.fuelInfo.petrol}
+                          onChange={(e) => setPetrolPrice(e.target.value)}
+                        ></input>
+                      </li>
+                      <li className='tooltip-list-item'>
+                        <DieselLegendDot />
+                        Diesel:{"  "}
+                        <input
+                          className='update-price-input'
+                          type='text'
+                          placeholder={columnClickEvent.object.fuelInfo.diesel}
+                          onChange={(e) => setDieselPrice(e.target.value)}
+                        ></input>
+                      </li>
+                      <br />
+                      {columnClickEvent.object.fuelInfo.petrol !== "0" ? (
+                        <li>
+                          Updated by:{" "}
+                          {columnClickEvent.object.fuelInfo.updated_by}
+                        </li>
+                      ) : (
+                        <li>Updated by: Not updated yet</li>
+                      )}
+                      <li>
+                        Updated on: {columnClickEvent.object.fuelInfo.updated}
+                      </li>
+                      <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
+                    </ul>
+                    <span
+                      className='button update-btn'
+                      onClick={handleUpdateStation}
+                    >
+                      Update Station
                     </span>
                   </div>
-                  <p>
-                    Click on a station on the map to view details and update
-                    fuel prices.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p>
-                    To update the station fuel prices please log in or register.
-                  </p>
-                  <form className='login-form ui-form'>
-                    <label>
-                      Username
-                      <br />
-                      <input
-                        type='text'
-                        onChange={(e) => setUser(e.target.value)}
-                      />
-                    </label>
-                    <label>
-                      Password
-                      <br />
-                      <input
-                        type='password'
-                        onChange={(e) => setPass(e.target.value)}
-                      />
-                    </label>
-                    <span className='button login' onClick={handleLogin}>
-                      Login
-                    </span>
-                    <label>
-                      Username
-                      <br />
-                      <input
-                        type='text'
-                        onChange={(e) => setUser(e.target.value)}
-                      />
-                    </label>
-                    <label>
-                      Password
-                      <br />
-                      <input
-                        type='password'
-                        onChange={(e) => setPass(e.target.value)}
-                      />
-                    </label>
-                    <label>
-                      Type password again
-                      <br />
-                      <input
-                        type='password'
-                        onChange={(e) => setPass2(e.target.value)}
-                      />
-                    </label>
-                    <label>
-                      Email
-                      <br />
-                      <input
-                        type='text'
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </label>
-                    <label>
-                      First name
-                      <br />
-                      <input
-                        type='text'
-                        onChange={(e) => setFirstName(e.target.value)}
-                      />
-                    </label>
-                    <label>
-                      Last name
-                      <br />
-                      <input
-                        type='text'
-                        onChange={(e) => setLastName(e.target.value)}
-                      />
-                    </label>
-                    <span className='button' onClick={handleRegister}>
-                      Register
-                    </span>
-                  </form>
-                </>
-              )}
-              <div className='login-ui-button-group'></div>
-              {columnClickEvent && loggedIn && (
-                <div className='update-station-section'>
-                  <ul className='station-info'>
-                    <li>{columnClickEvent.object.name}</li>
-                    <li>{columnClickEvent.object.vicinity}</li>
-                    <br />
-                    <li>
-                      {columnClickEvent.object.opening_hours &&
-                      columnClickEvent.object.opening_hours.open_now
-                        ? "Open: Yes"
-                        : columnClickEvent.object.opening_hours
-                        ? "Open: No"
-                        : "No opening hours set"}
-                    </li>
-                    <br />
-                    <li className='tooltip-list-item'>
-                      <PetrolLegendDot />
-                      Petrol:{" "}
-                      <input
-                        className='update-price-input'
-                        type='text'
-                        placeholder={columnClickEvent.object.fuelInfo.petrol}
-                        onChange={(e) => setPetrolPrice(e.target.value)}
-                      ></input>
-                    </li>
-                    <li className='tooltip-list-item'>
-                      <DieselLegendDot />
-                      Diesel:{"  "}
-                      <input
-                        className='update-price-input'
-                        type='text'
-                        placeholder={columnClickEvent.object.fuelInfo.diesel}
-                        onChange={(e) => setDieselPrice(e.target.value)}
-                      ></input>
-                    </li>
-                    <br />
-                    {columnClickEvent.object.fuelInfo.petrol !== "0" ? (
-                      <li>
-                        Updated by:{" "}
-                        {columnClickEvent.object.fuelInfo.updated_by}
-                      </li>
-                    ) : (
-                      <li>Updated by: Not updated yet</li>
-                    )}
-                    <li>
-                      Updated on: {columnClickEvent.object.fuelInfo.updated}
-                    </li>
-                    <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
-                  </ul>
-                  <span
-                    className='button update-btn'
-                    onClick={handleUpdateStation}
-                  >
-                    Update Station
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }

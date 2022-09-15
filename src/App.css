@@ -72,8 +72,13 @@ input {
   flex-direction: column;
   z-index: 100;
   max-height: 500px;
+  width: 200px;
   animation-name: fade-in;
   animation-duration: 0.2s;
+}
+
+.login-ui-wrapper {
+  margin-left: 1rem;
 }
 
 .login-ui-button-group {
@@ -109,7 +114,7 @@ input {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  width: 100%;
+  
   position: absolute;
   left: 1rem;
   top: 2rem;
@@ -124,28 +129,34 @@ input {
 .sidebar-ui {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
-  height: 100vh;
+  height: 80%;
   position: absolute;
   top: 0;
   box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.7);
   border-right: 2px solid rgb(48, 128, 255, 255);
+  border-bottom: 2px solid rgb(48, 128, 255, 255);
+  border-radius: 0 0 0.5rem 0;
   z-index: 100;
-  padding: 2rem;
+  padding: 0rem;
+  overflow-y: scroll;
+  overflow-x: visible;
 }
 
 .drawer-tab {
-  position: relative;
-  top: -2rem;
+  position: absolute;
+  top: 0rem;
   color: black;
+  border-radius: 0 0 0.5rem 0;
   box-shadow: inset 0 0 50px rgba(255, 255, 255, 0.6);
   padding: 1rem;
   cursor: pointer;
+  z-index: 1000;
 }
 
 .open-drawer {
-  width: 230px;
+  width: 300px;
   transition: all 0.2s ease-in-out;
 }
 
@@ -170,8 +181,7 @@ input {
 }
 
 .container-left {
-  left: 11rem;
-  border-radius: 0 0 0.5rem 0;
+  left: 18.75rem;
   border-left: 2px solid rgb(48, 128, 255, 255);
   transition: all 0.2s ease-in-out;
 }
@@ -180,7 +190,6 @@ input {
   left: 0rem;
   padding: 1rem 1.3rem;
   transition: all 0.2s ease-in-out;
-  box-shadow: none;
 }
 
 .long-lat-search-group {
@@ -204,7 +213,8 @@ input {
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
-  margin-left: 0.75rem;
+  margin-left: 1rem;
+  margin-top: 5rem;
 }
 
 .go-btn {
