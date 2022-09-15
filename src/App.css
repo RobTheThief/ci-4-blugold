@@ -229,6 +229,11 @@ ul li {
   max-width: 2rem;
   color: white;
   background: black;
+  margin-bottom: 0;
+}
+
+.station-info .tooltip-list-item {
+  margin-bottom: 0.25rem;
 }
 
 .station-info {
@@ -245,6 +250,31 @@ ul li {
 .update-station-section {
   animation-name: fade-in;
   animation-duration: 0.3s;
+}
+
+.legend-dot {
+  padding: 0.25rem;
+  border-radius: 50%;
+  height: 0.25rem;
+  width: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.petrol-legend-dot {
+  background-color:#2b7400;
+}
+
+.diesel-legend-dot {
+  background-color: rgba(48, 128, 255, 255);
+}
+
+.update-price-input {
+  margin-left: 0.35rem;
+}
+
+.tooltip-list-item {
+  display: flex;
+  align-items: center;
 }
 
 @keyframes fade-in {

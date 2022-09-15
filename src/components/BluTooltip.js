@@ -1,4 +1,6 @@
 import React from 'react'
+import PetrolLegendDot from './PetrolLegendDot';
+import DieselLegendDot from './DieselLegendDot';
 
 export default function BluTooltip({ hoverInfo }) {
     return (
@@ -14,11 +16,11 @@ export default function BluTooltip({ hoverInfo }) {
             </li>
             <br />
             {hoverInfo.object.fuelInfo.petrol === '0' ?
-                (<li>Petrol: no information</li>) :
-                (<li>Petrol: €{hoverInfo.object.fuelInfo.petrol} on {hoverInfo.object.fuelInfo.updated}</li>)}
+                (<li className='tooltip-list-item'><PetrolLegendDot /> Petrol: no information</li>) :
+                (<li className='tooltip-list-item'><PetrolLegendDot /> Petrol: €{hoverInfo.object.fuelInfo.petrol} on {hoverInfo.object.fuelInfo.updated}</li>)}
             {hoverInfo.object.fuelInfo.diesel === '0' ?
-                (<li>Diesel: no information</li>) :
-                (<li>Diesel: €{hoverInfo.object.fuelInfo.diesel} on {hoverInfo.object.fuelInfo.updated}</li>)}
+                (<li className='tooltip-list-item'><DieselLegendDot /> Diesel: no information</li>) :
+                (<li className='tooltip-list-item'><DieselLegendDot /> Diesel: €{hoverInfo.object.fuelInfo.diesel} on {hoverInfo.object.fuelInfo.updated}</li>)}
             <br />
             {hoverInfo.object.fuelInfo.petrol !== '0' ? (<li>Updated by: {hoverInfo.object.fuelInfo.updated_by}</li>) : (<li>Updated by: Not updated yet</li>)}
         </ul>

@@ -6,6 +6,8 @@ import {
 } from "../dbAPIRequests";
 import { getProfile, logout, register, login } from "../authRequests";
 import bloGoldLogo from "../assets/img/blu-gold-logo.png";
+import PetrolLegendDot from "./PetrolLegendDot";
+import DieselLegendDot from "./DieselLegendDot";
 
 export default function SearchStationSidebar({
   stationData,
@@ -316,17 +318,21 @@ export default function SearchStationSidebar({
                         : "No opening hours set"}
                     </li>
                     <br />
-                    <li>
+                    <li className='tooltip-list-item'>
+                      <PetrolLegendDot />
                       Petrol:{" "}
                       <input
+                        className='update-price-input'
                         type='text'
                         placeholder={columnClickEvent.object.fuelInfo.petrol}
                         onChange={(e) => setPetrolPrice(e.target.value)}
                       ></input>
                     </li>
-                    <li>
-                      Diesel:{" "}
+                    <li className='tooltip-list-item'>
+                      <DieselLegendDot />
+                      Diesel:{"  "}
                       <input
+                        className='update-price-input'
                         type='text'
                         placeholder={columnClickEvent.object.fuelInfo.diesel}
                         onChange={(e) => setDieselPrice(e.target.value)}
