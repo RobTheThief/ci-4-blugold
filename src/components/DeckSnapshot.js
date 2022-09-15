@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import DeckGL, { ColumnLayer, FlyToInterpolator } from "deck.gl";
-import { IconLayer } from "deck.gl";
 import Map from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import {
@@ -9,10 +8,6 @@ import {
   getAllStations,
 } from "../dbAPIRequests";
 import BluTooltip from "./BluTooltip";
-
-const ICON_MAPPING = {
-  marker: { x: 0, y: 0, width: 128, height: 128, mask: true },
-};
 
 export default function DeckSnapshot({
   mapData,
@@ -126,21 +121,17 @@ export default function DeckSnapshot({
   const findStationInDB = async (idx) => {
     return new Promise(async (resolve) => {
       try {
-        resolve(await handleFindStationInDBAsync(idx))
+        resolve(await handleFindStationInDBAsync(idx));
       } catch (error) {
         console.log(error);
         resolve();
       }
-    })
+    });
   };
 
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
-
     return new Promise(async (resolve) => {
-      if (
-        bluDBStation === undefined && 
-        (runOnce === false)
-      ) {
+      if (bluDBStation === undefined && runOnce === false) {
         await createStation(
           `${stationData.results[idx].name}`,
           0,
@@ -148,8 +139,11 @@ export default function DeckSnapshot({
           stationData.results[idx].place_id
         );
         let newbluDBStation = await findStationInDB(idx);
-        newbluDBStation !== undefined && console.log(await newbluDBStation)
-        mapDataTemp[idx].fuelInfo = newbluDBStation !== undefined ? newbluDBStation : mapDataTemp[idx].fuelInfo;
+        newbluDBStation !== undefined && console.log(await newbluDBStation);
+        mapDataTemp[idx].fuelInfo =
+          newbluDBStation !== undefined
+            ? newbluDBStation
+            : mapDataTemp[idx].fuelInfo;
       } else {
         mapDataTemp[idx].fuelInfo = bluDBStation;
       }
@@ -181,17 +175,16 @@ export default function DeckSnapshot({
   }, [stationData]);
 
   useEffect(() => {
-    fetchAndSetStationData();
-  }, []);
-
-  useEffect(() => {
     focusView();
   }, [longView, latView]);
-
+  
   useEffect(() => {
     setRunOnce(false);
-  }, [mapData])
-  
+  }, [mapData]);
+ 
+  useEffect(() => {
+    fetchAndSetStationData();
+  }, []);
 
   return (
     <>
@@ -220,7 +213,7 @@ export default function DeckSnapshot({
         >
           <Map
             mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-            mapStyle="mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09"
+            mapStyle='mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09'
             //mapStyle="mapbox://styles/mapbox/streets-v11"
           />
           <button

@@ -69,7 +69,7 @@ export default function SearchStationSidebar({
     await login(user, pass);
     await getAndSetProfile();
     await checkIfLoggedIn();
-  }
+  };
 
   function handleLogout() {
     logout();
@@ -90,27 +90,29 @@ export default function SearchStationSidebar({
         setLoggedIn(false);
         resolve();
       }
-    })
+    });
   }
 
   const updateMapData = () => {
     return new Promise(async (resolve) => {
       try {
         let stationIndex = mapData.findIndex((station) => {
-          return station.reference === columnClickEvent.object.fuelInfo.google_id;
+          return (
+            station.reference === columnClickEvent.object.fuelInfo.google_id
+          );
         });
         let mapDataTemp = mapData;
         mapDataTemp[stationIndex].fuelInfo.petrol = petrolPrice;
         mapDataTemp[stationIndex].fuelInfo.diesel = dieselPrice;
         setMapData(mapDataTemp);
-        console.log(mapData)
-        resolve()
+        console.log(mapData);
+        resolve();
       } catch (error) {
-        console.log(error)
-        resolve()
+        console.log(error);
+        resolve();
       }
-    })
-  }
+    });
+  };
 
   const handleUpdateStation = async (e) => {
     if (columnClickEvent && petrolPrice && dieselPrice) {
@@ -129,11 +131,6 @@ export default function SearchStationSidebar({
   };
 
   useEffect(() => {
-    getAndSetProfile();
-    checkIfLoggedIn();
-  }, []);
-
-  useEffect(() => {
     console.log(profile);
     checkIfLoggedIn();
   }, [profile]);
@@ -146,6 +143,11 @@ export default function SearchStationSidebar({
   useEffect(() => {
     lat && long && searchLocation();
   }, [long]);
+
+  useEffect(() => {
+    getAndSetProfile();
+    checkIfLoggedIn();
+  }, []);
 
   return (
     <div
@@ -181,9 +183,7 @@ export default function SearchStationSidebar({
             <div className='btn-input-container'>
               <label>
                 Search Area
-                <span
-                  className='material-symbols-outlined info-icon'
-                >
+                <span className='material-symbols-outlined info-icon'>
                   info
                 </span>
                 <span className='info-icon-tooltip'>
@@ -223,84 +223,81 @@ export default function SearchStationSidebar({
                 </>
               ) : (
                 <>
-                <p>
-                  To update the station fuel prices please log in or register.
-                </p>
-                <form className='login-form ui-form'>
-                  <label>
-                    Username
-                    <br />
-                    <input
-                      type='text'
-                      onChange={(e) => setUser(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Password
-                    <br />
-                    <input
-                      type='password'
-                      onChange={(e) => setPass(e.target.value)}
-                    />
-                  </label>
-                  <span className='button login' onClick={handleLogin}>
-                    Login
-                  </span>
-                  <label>
-                    Username
-                    <br />
-                    <input
-                      type='text'
-                      onChange={(e) => setUser(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Password
-                    <br />
-                    <input
-                      type='password'
-                      onChange={(e) => setPass(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Type password again
-                    <br />
-                    <input
-                      type='password'
-                      onChange={(e) => setPass2(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Email
-                    <br />
-                    <input
-                      type='text'
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    First name
-                    <br />
-                    <input
-                      type='text'
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Last name
-                    <br />
-                    <input
-                      type='text'
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                  </label>
-                  <span
-                    className='button'
-                    onClick={handleRegister}
-                  >
-                    Register
-                  </span>
-                </form>
+                  <p>
+                    To update the station fuel prices please log in or register.
+                  </p>
+                  <form className='login-form ui-form'>
+                    <label>
+                      Username
+                      <br />
+                      <input
+                        type='text'
+                        onChange={(e) => setUser(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Password
+                      <br />
+                      <input
+                        type='password'
+                        onChange={(e) => setPass(e.target.value)}
+                      />
+                    </label>
+                    <span className='button login' onClick={handleLogin}>
+                      Login
+                    </span>
+                    <label>
+                      Username
+                      <br />
+                      <input
+                        type='text'
+                        onChange={(e) => setUser(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Password
+                      <br />
+                      <input
+                        type='password'
+                        onChange={(e) => setPass(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Type password again
+                      <br />
+                      <input
+                        type='password'
+                        onChange={(e) => setPass2(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Email
+                      <br />
+                      <input
+                        type='text'
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      First name
+                      <br />
+                      <input
+                        type='text'
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Last name
+                      <br />
+                      <input
+                        type='text'
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </label>
+                    <span className='button' onClick={handleRegister}>
+                      Register
+                    </span>
+                  </form>
                 </>
               )}
               <div className='login-ui-button-group'></div>
