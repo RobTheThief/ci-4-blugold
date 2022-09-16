@@ -65,14 +65,14 @@ class Assets(View):
                 return HttpResponse(file.read(), content_type='application/javascript')
         else:
             return HttpResponseNotFound()
-            
+
 
 class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
     # API endpoint that allows creation of a new station
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions] #, permissions.DjangoModelPermissions
+    permission_classes = [permissions.IsAuthenticated] #, permissions.DjangoModelPermissions
     #permission_classes = [permissions.AllowAny]
     #authentication_classes = []
 
