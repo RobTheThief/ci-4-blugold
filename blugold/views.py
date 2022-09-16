@@ -65,7 +65,7 @@ class Assets(View):
                 return HttpResponse(file.read(), content_type='application/javascript')
         else:
             return HttpResponseNotFound()
-
+            
 
 class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
     # API endpoint that allows creation of a new station

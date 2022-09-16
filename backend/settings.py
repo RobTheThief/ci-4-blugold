@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+#DISABLE_COLLECTSTATIC=1 removed from heroku env variables
+
 from pathlib import Path
 import os
 import dotenv
