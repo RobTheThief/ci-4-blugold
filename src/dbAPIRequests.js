@@ -1,10 +1,28 @@
+function getCookie(name) {
+  if (!document.cookie) {
+    return null;
+  }
+
+  const xsrfCookies = document.cookie.split(';')
+    .map(c => c.trim())
+    .filter(c => c.startsWith(name + '='));
+
+  if (xsrfCookies.length === 0) {
+    return null;
+  }
+  return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+}
+
+const csrfToken = getCookie('CSRF-TOKEN');
+
 function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 'me-dev') {
   return new Promise(async resolve => {
     try {
       fetch(`/api/create/`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken,
         },
         body: JSON.stringify(
           {
