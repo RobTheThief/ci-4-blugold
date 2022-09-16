@@ -1,3 +1,7 @@
+import getCookie from './helpers';
+
+const CSRFTOKEN = getCookie();
+
 const login = (user, pass) => {
   return new Promise(async (resolve) => {
     var formdata = new FormData();
@@ -5,6 +9,10 @@ const login = (user, pass) => {
     formdata.append("password", pass);
 
     var requestOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': CSRFTOKEN,
+      },
       method: "POST",
       body: formdata,
     };
@@ -30,6 +38,10 @@ const register = (user, pass, pass2, email, firstName, lastName) => {
     formdata.append("last_name", lastName);
 
     var requestOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': CSRFTOKEN,
+      },
       credentials: "include",
       method: "POST",
       body: formdata,
@@ -49,6 +61,10 @@ const register = (user, pass, pass2, email, firstName, lastName) => {
 
 const logout = () => {
   var requestOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': CSRFTOKEN,
+    },
     credentials: "include",
     method: "POST",
   };
@@ -64,7 +80,8 @@ const getProfile = () => {
     try {
       const response = await fetch(`/profile/`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          'X-CSRFToken': CSRFTOKEN,
         },
         credentials: "include",
         method: "GET",

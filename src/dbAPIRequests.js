@@ -1,19 +1,6 @@
-function getCookie(name) {
-  if (!document.cookie) {
-    return null;
-  }
+import getCookie from './helpers';
 
-  const xsrfCookies = document.cookie.split(';')
-    .map(c => c.trim())
-    .filter(c => c.startsWith(name + '='));
-
-  if (xsrfCookies.length === 0) {
-    return null;
-  }
-  return decodeURIComponent(xsrfCookies[0].split('=')[1]);
-}
-
-const csrfToken = getCookie('CSRF-TOKEN');
+const CSRFTOKEN = getCookie();
 
 function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 'me-dev') {
   return new Promise(async resolve => {
@@ -22,7 +9,7 @@ function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken,
+          'X-CSRFToken': CSRFTOKEN,
         },
         body: JSON.stringify(
           {
@@ -59,6 +46,10 @@ function updateStation(id, station, google_id, updated_by, petrolPrice, dieselPr
       formdata.append("updated_by", updated_by);
 
       const response = await fetch(`/api/update/${id}/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': CSRFTOKEN,
+        },
         method: 'PUT',
         redirect: 'follow',
         body: formdata,
@@ -79,7 +70,8 @@ function deleteStation(id) {
   fetch(`/api/delete/${id}/`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRFToken': CSRFTOKEN,
     },
   })
     .then(res => {
@@ -94,7 +86,8 @@ function getStation(id) {
   fetch(`/api/${id}/`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-CSRFToken': CSRFTOKEN,
     },
   })
     .then(res => {
@@ -111,13 +104,12 @@ const getAllStations = () => {
       const response = await fetch(`/api/`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-CSRFToken': CSRFTOKEN,
         },
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
-
-     // console.log(responseJson)
 
       resolve(responseJson);
     } catch (error) {
@@ -135,7 +127,8 @@ const getStationLocationData = (location, name = 'fuel') => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }
+          'X-CSRFToken': CSRFTOKEN,
+        },
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
@@ -159,7 +152,8 @@ const getAreaData = (area) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }
+          'X-CSRFToken': CSRFTOKEN,
+        },
       });
 
       const responseJson = await response.json(); //extract JSON from the http response
