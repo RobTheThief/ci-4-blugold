@@ -19,7 +19,6 @@ export default function DeckSnapshot({
   viewState,
   setViewState,
   setColumnClickEvent,
-  columnClickEvent,
 }) {
   const [hoverInfo, setHoverInfo] = useState("");
   const [runOnce, setRunOnce] = useState(false);
@@ -208,7 +207,6 @@ export default function DeckSnapshot({
           <Map
             mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             mapStyle='mapbox://styles/uberdata/cjoqbbf6l9k302sl96tyvka09'
-            //mapStyle="mapbox://styles/mapbox/streets-v11"
           />
         </DeckGL>
       )}

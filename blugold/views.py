@@ -56,7 +56,7 @@ class BlugoldView(viewsets.ModelViewSet):
     queryset = Station.objects.all()
 
 
-class Assets(View):
+""" class Assets(View):
     def get(self, _request, filename):
         path = os.path.join(os.path.dirname(__file__), 'public', filename)
 
@@ -64,17 +64,17 @@ class Assets(View):
             with open(path, 'rb') as file:
                 return HttpResponse(file.read(), content_type='application/javascript')
         else:
-            return HttpResponseNotFound()
+            return HttpResponseNotFound() """
 
 
-class StationCreate(generics.CreateAPIView):
+class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
     # API endpoint that allows creation of a new station
     serializer_class = StationSerializer
     queryset = Station.objects.all()
-    #authentication_classes = [authentication.SessionAuthentication]
-    #permission_classes = [permissions.DjangoModelPermissions]
-    permission_classes = [permissions.AllowAny]
-    authentication_classes = []
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.DjangoModelPermissions] #, permissions.DjangoModelPermissions
+    #permission_classes = [permissions.AllowAny]
+    #authentication_classes = []
 
 
 class StationList(generics.ListAPIView):
@@ -158,10 +158,8 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
         response = {}
         payload = {'location': location, 'radius': 3000, 'types': 'gas_station convenience_store store supermarket atm cafe car_repair car_wash',
                    'name': 'gas station', 'key': str(os.getenv('GOOGLE_API_KEY'))}
-        print(payload)
         r = requests.get(
             'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
-        #  url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20Sydney&key=YOUR_API_KEY',
         r_status = r.status_code
         if r_status == 200:
             json_res = r.text
@@ -185,7 +183,6 @@ class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
         r = requests.get(
             'https://maps.googleapis.com/maps/api/place/findplacefromtext/json', payload)
 
-        print(payload)
         r_status = r.status_code
         if r_status == 200:
             json_res = r.text

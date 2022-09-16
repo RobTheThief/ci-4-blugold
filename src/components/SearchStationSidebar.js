@@ -73,7 +73,7 @@ export default function SearchStationSidebar({
     setIsError(true);
     setTimeout(() => {
       setIsError(false);
-    }, 3000);
+    }, 4000);
   };
 
   const handleLogin = async (e) => {
@@ -89,7 +89,7 @@ export default function SearchStationSidebar({
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    let result = await register(user, pass, pass2, email, firstName, lastName); //.then(response => console.log(response));
+    let result = await register(user, pass, pass2, email, firstName, lastName);
     if (result.email[0] !== "This field must be unique.") {
       await login(user, pass);
       await getAndSetProfile();

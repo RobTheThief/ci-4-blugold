@@ -1,11 +1,8 @@
 import './App.css';
-import { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import { useState } from 'react';
 
 import DeckSnapshot from './components/DeckSnapshot';
 import SearchStationSidebar from './components/SearchStationSidebar';
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
@@ -17,16 +14,12 @@ const INITIAL_VIEW_STATE = {
 };
 
 function App() {
-  const { data: bluApiData, error: bluError } = useSWR(`/api/`, fetcher, { refreshInterval: 10000 })
   const [stationData, setStationData] = useState();
   const [mapData, setMapData] = useState();
   const [longView, setLongView] = useState();
   const [latView, setLatView] = useState(); 
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [columnClickEvent, setColumnClickEvent] = useState();
-
-  useEffect(() => {
-  }, [bluApiData])
 
   return (
     <>
