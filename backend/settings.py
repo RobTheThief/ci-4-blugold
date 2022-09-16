@@ -24,7 +24,7 @@ ORIGINS_TO_ALLOW = [
     ]
 
 #BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = Path(__file__).resolve().root.root
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 """ BACKEND_DIR = BASE_DIR
 FRONTEND_DIR = BASE_DIR.parent """
