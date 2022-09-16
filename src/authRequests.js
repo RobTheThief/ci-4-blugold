@@ -1,4 +1,4 @@
-import getCookie from './helpers';
+import { getCookie } from './helpers';
 
 const CSRFTOKEN = getCookie();
 
