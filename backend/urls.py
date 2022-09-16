@@ -26,5 +26,6 @@ urlpatterns = [
     path('places-api-location-request/<str:name>/<str:location>/', views.PlacesApiLocationRequest.as_view()),
     path('places-api-area-request/<str:area>/', views.PlacesApiAreaRequest.as_view()),
     path('api/', include('blugold.urls')),
-    re_path(r'', views.catchall),
+    re_path('.*', TemplateView.as_view(template_name='index.html')),
+    #re_path(r'', views.catchall),
 ]

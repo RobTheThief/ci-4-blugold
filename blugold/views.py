@@ -16,15 +16,15 @@ from django.views.decorators.csrf import csrf_exempt
 from braces.views import CsrfExemptMixin
 from django.contrib.auth.models import User
 import dotenv
+import requests
+import json
 
-import urllib.request
+""" import urllib.request
 from django.conf import settings
 from django.http import HttpResponse
 from django.template import engines
 from django.views.generic import TemplateView
 from rest_framework.permissions import IsAuthenticated
-import requests
-import json
 
 
 def catchall_dev(request, upstream='http://localhost:3000'):
@@ -48,7 +48,7 @@ def catchall_dev(request, upstream='http://localhost:3000'):
 
 catchall_prod = TemplateView.as_view(template_name='index.html')
 
-catchall = catchall_dev if settings.DEBUG else catchall_prod
+catchall = catchall_dev if settings.DEBUG else catchall_prod """
 
 
 class BlugoldView(viewsets.ModelViewSet):
@@ -56,15 +56,15 @@ class BlugoldView(viewsets.ModelViewSet):
     queryset = Station.objects.all()
 
 
-""" class Assets(View):
+class Assets(View):
     def get(self, _request, filename):
-        path = os.path.join(os.path.dirname(__file__), 'public', filename)
+        path = os.path.join(os.path.dirname(__file__), 'static', filename) #public for development
 
         if os.path.isfile(path):
             with open(path, 'rb') as file:
                 return HttpResponse(file.read(), content_type='application/javascript')
         else:
-            return HttpResponseNotFound() """
+            return HttpResponseNotFound()
 
 
 class StationCreate(CsrfExemptMixin, generics.CreateAPIView):

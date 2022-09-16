@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
 import dotenv
 import dj_database_url
 
@@ -24,14 +23,16 @@ ORIGINS_TO_ALLOW = [
     'https://blugold.herokuapp.com',
     ]
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().root.root
 
-BACKEND_DIR = BASE_DIR
-FRONTEND_DIR = BASE_DIR.parent
+""" BACKEND_DIR = BASE_DIR
+FRONTEND_DIR = BASE_DIR.parent """
 
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -40,7 +41,8 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_ENV') == 'development'
+# DEBUG = os.environ.get('DJANGO_ENV') == 'development'
+DEBUG =  False
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,8 +80,8 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [FRONTEND_DIR / 'ci-4-blugold' / 'build'],
-        #'DIRS': [os.path.join(BASE_DIR, 'build')],
+        #'DIRS': [FRONTEND_DIR / 'ci-4-blugold' / 'build'],
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,6 +98,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+""" DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600) """ # may need for production
 
 DATABASES = {
     'default': {
@@ -142,16 +147,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 #This may need to be changed for deploy
-STATICFILES_DIRS = [FRONTEND_DIR / 'ci-4-blugold' / 'build' / 'static']
+#STATICFILES_DIRS = [FRONTEND_DIR / 'ci-4-blugold' / 'build' / 'static']
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_ROOT = BACKEND_DIR / 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = BACKEND_DIR / 'static'
 
 #This may need to be changed for deploy
-WHITENOISE_ROOT = FRONTEND_DIR / 'ci-4-blugold' / 'build' / 'root'
+#WHITENOISE_ROOT = FRONTEND_DIR / 'ci-4-blugold' / 'build' / 'root'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -164,15 +170,25 @@ CORS_ALLOWED_ORIGINS = ORIGINS_TO_ALLOW
 
 CORS_ORIGIN_WHITELIST = ORIGINS_TO_ALLOW
 
-django_heroku.settings(locals())
+CORS_ORIGIN_ALLOW_ALL = True
 
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
 
 ALLOWED_HOSTS = ['*'] # Set to open for all access
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 """ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -180,12 +196,5 @@ ALLOWED_HOSTS = ['*'] # Set to open for all access
     ],
 } """
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        #'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-}
+import django_heroku
+django_heroku.settings(locals())
