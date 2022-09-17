@@ -19,6 +19,7 @@ import dotenv
 import requests
 import json
 
+
 class BlugoldView(viewsets.ModelViewSet):
     serializer_class = StationSerializer
     queryset = Station.objects.all()

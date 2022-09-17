@@ -5,10 +5,13 @@ from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
+
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ['id', 'station', 'petrol', 'diesel', 'updated', 'google_id', 'updated_by']
+        fields = ['id', 'station', 'petrol', 'diesel',
+                  'updated', 'google_id', 'updated_by']
+
 
 class LoginSerializer(serializers.Serializer):
     """
@@ -23,7 +26,6 @@ class LoginSerializer(serializers.Serializer):
     )
     password = serializers.CharField(
         label="Password",
-        # This will be used when the DRF browsable API is enabled
         style={'input_type': 'password'},
         trim_whitespace=False,
         write_only=True
@@ -50,6 +52,7 @@ class LoginSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -61,19 +64,22 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
         ]
 
+
 class CreateUserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
-            required=True,
-            validators=[UniqueValidator(queryset=User.objects.all())]
-            )
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(
+        write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name')
+        fields = ('username', 'password', 'password2',
+                  'email', 'first_name', 'last_name')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True}
@@ -81,7 +87,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+            raise serializers.ValidationError(
+                {"password": "Password fields didn't match."})
 
         return attrs
 
@@ -92,7 +99,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
         )
-        
+
         user.set_password(validated_data['password'])
         user.save()
 

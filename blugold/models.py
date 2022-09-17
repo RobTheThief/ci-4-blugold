@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Station(models.Model):
     station = models.CharField("Station", max_length=240)
     petrol = models.CharField("Petrol", max_length=240)
@@ -10,4 +11,3 @@ class Station(models.Model):
 
     def __str__(self):
         return self.name
-
