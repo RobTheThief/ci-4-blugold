@@ -1,8 +1,8 @@
-import './App.css';
-import { useState } from 'react';
+import "./App.css";
+import { useState } from "react";
 
-import DeckSnapshot from './components/DeckSnapshot';
-import UISidebar from './components/UISidebar';
+import DeckSnapshot from "./components/DeckSnapshot";
+import UISidebar from "./components/UISidebar";
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
@@ -10,14 +10,14 @@ const INITIAL_VIEW_STATE = {
   latitude: 53.34523915464418,
   zoom: 13,
   pitch: 45,
-  bearing: 0
+  bearing: 0,
 };
 
 function App() {
   const [stationData, setStationData] = useState();
   const [mapData, setMapData] = useState();
   const [longView, setLongView] = useState();
-  const [latView, setLatView] = useState(); 
+  const [latView, setLatView] = useState();
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [columnClickEvent, setColumnClickEvent] = useState();
 

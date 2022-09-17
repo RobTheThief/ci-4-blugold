@@ -57,10 +57,10 @@ export default function DeckSnapshot({
   }
 
   /**
-   * Sets the hoverInfo state variable to the event 
+   * Sets the hoverInfo state variable to the event
    * object returned from the onHover event from the
-   * colmn layer for the the tooltip. 
-   * @param {object} info 
+   * colmn layer for the the tooltip.
+   * @param {object} info
    */
   const updateHoverInfo = (info) => {
     setHoverInfo(info);
@@ -70,8 +70,8 @@ export default function DeckSnapshot({
    * Fetches station data form the google places api throught
    * the middleware and sets it to the stationData state variable.
    * Defaults to coordinates in Dublin city centre.
-   * @param {string} long 
-   * @param {string} lat 
+   * @param {string} long
+   * @param {string} lat
    */
   const fetchAndSetStationData = async (
     long = "53.34523915464418",
@@ -85,7 +85,7 @@ export default function DeckSnapshot({
    * Checks the database for a station that matches the google referencs
    * in stationData for a given index in the stationData array and returns
    * the station object.
-   * @param {int} idx 
+   * @param {int} idx
    * @returns object, promise
    */
   const handleFindStationInDBAsync = (idx) => {
@@ -99,10 +99,10 @@ export default function DeckSnapshot({
   };
 
   /**
-   * Uses a promise to control the flow of the script using 
+   * Uses a promise to control the flow of the script using
    * handleFindStationInDBAsync to find a station that matches
    * the google references in stationData.
-   * @param {int} idx 
+   * @param {int} idx
    * @returns object, promise
    */
   const findStationInDB = async (idx) => {
@@ -120,16 +120,16 @@ export default function DeckSnapshot({
    * Checks if a station from google places api mapped to mapDataTemp is in the database
    * and adds it to the station object as the key fuelInfo. If not found it will either create it in the database
    * and add it from the database if user is logged in or it will add the data to fuelInfo if not logged in
-   * ecept without the database object id.  
-   * @param {object} bluDBStation 
-   * @param {array} mapDataTemp 
-   * @param {int} idx 
+   * ecept without the database object id.
+   * @param {object} bluDBStation
+   * @param {array} mapDataTemp
+   * @param {int} idx
    * @returns array, promise
    */
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
     return new Promise(async (resolve) => {
       let profile = await getProfile();
-      if (bluDBStation === undefined && runOnce === false && profile.username ) { 
+      if (bluDBStation === undefined && runOnce === false && profile.username) {
         await createStation(
           `${stationData.results[idx].name}`,
           0,
@@ -142,23 +142,30 @@ export default function DeckSnapshot({
             ? newbluDBStation
             : mapDataTemp[idx].fuelInfo;
         setRunOnce(true);
-      } else if (!profile.username && runOnce === false && bluDBStation !== undefined) {
+      } else if (
+        !profile.username &&
+        runOnce === false &&
+        bluDBStation !== undefined
+      ) {
         mapDataTemp[idx].fuelInfo = bluDBStation;
         setRunOnce(true);
-      } else if (profile.username && runOnce === false && bluDBStation !== undefined) { 
+      } else if (
+        profile.username &&
+        runOnce === false &&
+        bluDBStation !== undefined
+      ) {
         mapDataTemp[idx].fuelInfo = bluDBStation;
         setRunOnce(true);
-      } 
-      else if (runOnce === false){
+      } else if (runOnce === false) {
         mapDataTemp[idx].fuelInfo = {
           name: stationData.results[idx].name,
-          petrol: '0',
-          diesel: '0',
+          petrol: "0",
+          diesel: "0",
           google_id: stationData.results[idx].place_id,
-        }
+        };
       }
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapDataTemp));
-      
+
       resolve(mapDataDeepCopy);
     });
   };
@@ -178,7 +185,11 @@ export default function DeckSnapshot({
       });
       stationData.results.forEach(async (item, idx) => {
         let bluDBStation = await findStationInDB(idx);
-        let updatedMapData = await checkAndAddToDB(bluDBStation, mapDataTemp, idx);
+        let updatedMapData = await checkAndAddToDB(
+          bluDBStation,
+          mapDataTemp,
+          idx
+        );
         setMapData(updatedMapData);
       });
     }
@@ -196,50 +207,57 @@ export default function DeckSnapshot({
      ColumnLayer class.
   */
   useEffect(() => {
-    setDieselLayer(new ColumnLayer({
-      id: "diesel-column-layer",
-      data: mapData,
-      dataComparator: (newData, oldData) => false,
-      diskResolution: 12,
-      radius: 25,
-      extruded: true,
-      pickable: true,
-      elevationScale: 5000,
-      getPosition: (d) => [d.coordinates[0] + 0.0005, d.coordinates[1] + 0.0005],
-      getFillColor: (d) => [48, 128, 255, 255],
-      getLineColor: [0, 0, 0],
-      getElevation: (d) => {
-        let price = parseFloat(d.fuelInfo && d.fuelInfo.diesel);
-        if (price === 0) {
-          return parseFloat(d.fuelInfo && d.fuelInfo.diesel) + 0.01;
-        }
-        return parseFloat(d.fuelInfo && d.fuelInfo.diesel) - 1.7;
-      },
-      onHover: (info) => updateHoverInfo(info),
-      onClick: (event) => handleClick(event),
-    }));
-    setPetrolLayer(new ColumnLayer({
-      id: "petrol-column-layer",
-      data: mapData,
-      dataComparator: (newData, oldData) => false,
-      diskResolution: 12,
-      radius: 25,
-      extruded: true,
-      pickable: true,
-      elevationScale: 5000,
-      getPosition: (d) => d.coordinates,
-      getFillColor: (d) => [48, 128, d.value * 255, 255],
-      getLineColor: [0, 0, 0],
-      getElevation: (d) => {
-        let price = parseFloat(d.fuelInfo && d.fuelInfo.petrol);
-        if (price === 0) {
-          return parseFloat(d.fuelInfo && d.fuelInfo.petrol) + 0.01;
-        }
-        return parseFloat(d.fuelInfo && d.fuelInfo.petrol) - 1.7;
-      },
-      onHover: (info) => updateHoverInfo(info),
-      onClick: (event) => handleClick(event),
-    }));
+    setDieselLayer(
+      new ColumnLayer({
+        id: "diesel-column-layer",
+        data: mapData,
+        dataComparator: (newData, oldData) => false,
+        diskResolution: 12,
+        radius: 25,
+        extruded: true,
+        pickable: true,
+        elevationScale: 5000,
+        getPosition: (d) => [
+          d.coordinates[0] + 0.0005,
+          d.coordinates[1] + 0.0005,
+        ],
+        getFillColor: (d) => [48, 128, 255, 255],
+        getLineColor: [0, 0, 0],
+        getElevation: (d) => {
+          let price = parseFloat(d.fuelInfo && d.fuelInfo.diesel);
+          if (price === 0) {
+            return parseFloat(d.fuelInfo && d.fuelInfo.diesel) + 0.01;
+          }
+          return parseFloat(d.fuelInfo && d.fuelInfo.diesel) - 1.7;
+        },
+        onHover: (info) => updateHoverInfo(info),
+        onClick: (event) => handleClick(event),
+      })
+    );
+    setPetrolLayer(
+      new ColumnLayer({
+        id: "petrol-column-layer",
+        data: mapData,
+        dataComparator: (newData, oldData) => false,
+        diskResolution: 12,
+        radius: 25,
+        extruded: true,
+        pickable: true,
+        elevationScale: 5000,
+        getPosition: (d) => d.coordinates,
+        getFillColor: (d) => [48, 128, d.value * 255, 255],
+        getLineColor: [0, 0, 0],
+        getElevation: (d) => {
+          let price = parseFloat(d.fuelInfo && d.fuelInfo.petrol);
+          if (price === 0) {
+            return parseFloat(d.fuelInfo && d.fuelInfo.petrol) + 0.01;
+          }
+          return parseFloat(d.fuelInfo && d.fuelInfo.petrol) - 1.7;
+        },
+        onHover: (info) => updateHoverInfo(info),
+        onClick: (event) => handleClick(event),
+      })
+    );
     setRunOnce(false);
   }, [mapData]);
 

@@ -2,8 +2,8 @@ import { getCookie } from "./helpers";
 
 /**
  * Sends a post request to the backend to log in user.
- * @param {string} user 
- * @param {string} pass 
+ * @param {string} user
+ * @param {string} pass
  * @returns object, promise
  */
 const login = (user, pass) => {
@@ -29,12 +29,12 @@ const login = (user, pass) => {
 
 /**
  * Sends a POST request to the backend to registers a new user.
- * @param {String} user 
- * @param {String} pass 
- * @param {String} pass2 
- * @param {String} email 
- * @param {String} firstName 
- * @param {String} lastName 
+ * @param {String} user
+ * @param {String} pass
+ * @param {String} pass2
+ * @param {String} email
+ * @param {String} firstName
+ * @param {String} lastName
  * @returns object, promise
  */
 const register = (user, pass, pass2, email, firstName, lastName) => {
@@ -57,7 +57,7 @@ const register = (user, pass, pass2, email, firstName, lastName) => {
 
       let responseJson = await response.json();
 
-      resolve(responseJson)
+      resolve(responseJson);
     } catch (error) {
       console.log(error);
       resolve(error);
@@ -90,7 +90,7 @@ const getProfile = () => {
       const response = await fetch(`/profile/`, {
         headers: {
           "Content-Type": "application/json",
-          'X-CSRFToken': getCookie(),
+          "X-CSRFToken": getCookie(),
         },
         credentials: "include",
         method: "GET",

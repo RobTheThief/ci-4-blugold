@@ -15,7 +15,7 @@ import DieselLegendDot from "./DieselLegendDot";
  * Accepts stationData, setStationData, setLongView,
  * setLatView, columnClickEvent, mapData and setMapData
  * as props.
- * @param {object} param0 
+ * @param {object} param0
  * @returns jsx
  */
 export default function UISidebar({
@@ -59,7 +59,7 @@ export default function UISidebar({
    * Makes an area search to the google places api to find and
    * set the coordinates of that area if the enter key is pressed
    * or if the 'Go' button is pressed.
-   * @param {string} goButton 
+   * @param {string} goButton
    */
   const handleSearchStationArea = (goButton) => async (e) => {
     if (e.code === "Enter" || goButton === "go") {
@@ -76,7 +76,7 @@ export default function UISidebar({
   };
 
   /**
-   * Gets the profile object and sets it to the 
+   * Gets the profile object and sets it to the
    * profile state variable.
    */
   async function getAndSetProfile() {
@@ -86,7 +86,7 @@ export default function UISidebar({
   /**
    * Sets error message and then sets isError to true
    * for 4 seconds before setting it back to false.
-   * @param {string} error 
+   * @param {string} error
    */
   const displayErrorMessage = (error) => {
     setErrorMessage(error);
@@ -108,15 +108,15 @@ export default function UISidebar({
         setStationData(stationDataDeepCopy);
         resolve();
       } catch (error) {
-        console.log(error)
-        resolve()
+        console.log(error);
+        resolve();
       }
-    })
-  }
+    });
+  };
 
   /**
    * Logs in the user if the username and password is correct.
-   * @param {object} e 
+   * @param {object} e
    * @returns promise
    */
   const handleLogin = (e) => {
@@ -124,25 +124,25 @@ export default function UISidebar({
       try {
         e && e.preventDefault();
         let result = await login(user, pass);
-        if (await result.statusText === "Bad Request") {
+        if ((await result.statusText) === "Bad Request") {
           displayErrorMessage(checkUserPass);
         } else {
           await getAndSetProfile();
           checkIfLoggedIn();
           await resetSatationData();
         }
-        resolve()
+        resolve();
       } catch (error) {
-        console.log(error)
-        resolve()
+        console.log(error);
+        resolve();
       }
-    })
+    });
   };
 
   /**
    * Registers the user if the email address has not been used already
    * and displays an error message if it has been used before.
-   * @param {object} e 
+   * @param {object} e
    */
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -222,10 +222,10 @@ export default function UISidebar({
   };
 
   /**
-   * Checks if the fuel prices entered are numbers and updates the 
+   * Checks if the fuel prices entered are numbers and updates the
    * stations in the database and on the map client side if true.
    * Displays error message if the input is not numbers.
-   * @param {object} e 
+   * @param {object} e
    */
   const handleUpdateStation = async (e) => {
     e.preventDefault();
@@ -237,7 +237,7 @@ export default function UISidebar({
         columnClickEvent.object.fuelInfo.google_id,
         profile.username,
         petrolPrice,
-        dieselPrice,
+        dieselPrice
       );
     } else {
       displayErrorMessage(updateStationErrorMsg);
@@ -264,7 +264,7 @@ export default function UISidebar({
 
   return (
     <>
-    {/* DRAWER TAB */}
+      {/* DRAWER TAB */}
       <div
         className={`drawer-tab ${
           isDrawerOpen ? "container-left" : "container-right"
@@ -292,7 +292,7 @@ export default function UISidebar({
       >
         {isDrawerOpen && (
           <>
-          {/* LOGO AND SEARCH AREA SECTION */}
+            {/* LOGO AND SEARCH AREA SECTION */}
             <div className='ui-form'>
               <div className='logo-container'>
                 <img
@@ -333,7 +333,7 @@ export default function UISidebar({
               <div className='login-ui-wrapper'>
                 {profile && profile.username ? (
                   <>
-                  {/* LOGOUT SECTION */}
+                    {/* LOGOUT SECTION */}
                     <div className='logout-section'>
                       <span>Logged in as {profile.username}</span>{" "}
                       <span className='button' onClick={handleLogout}>
