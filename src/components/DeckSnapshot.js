@@ -8,6 +8,7 @@ import {
   getAllStations,
 } from "../dbAPIRequests";
 import BluTooltip from "./BluTooltip";
+import { getProfile } from "../authRequests";
 
 export default function DeckSnapshot({
   mapData,
@@ -22,54 +23,9 @@ export default function DeckSnapshot({
 }) {
   const [hoverInfo, setHoverInfo] = useState("");
   const [runOnce, setRunOnce] = useState(false);
-
-  let petrolColumnLayer = new ColumnLayer({
-    id: "petrol-column-layer",
-    data: mapData,
-    dataComparator: (newData, oldData) => false,
-    diskResolution: 12,
-    radius: 25,
-    extruded: true,
-    pickable: true,
-    elevationScale: 5000,
-    getPosition: (d) => d.coordinates,
-    getFillColor: (d) => [48, 128, d.value * 255, 255],
-    getLineColor: [0, 0, 0],
-    getElevation: (d) => {
-      let price = parseFloat(d.fuelInfo && d.fuelInfo.petrol);
-      if (price === 0) {
-        return parseFloat(d.fuelInfo && d.fuelInfo.petrol) + 0.01;
-      }
-      return parseFloat(d.fuelInfo && d.fuelInfo.petrol) - 1.7;
-    },
-    onHover: (info) => updateHoverInfo(info),
-    onClick: (event) => handleClick(event),
-  });
-
-  let dieselColumnLayer = new ColumnLayer({
-    id: "diesel-column-layer",
-    data: mapData,
-    dataComparator: (newData, oldData) => false,
-    diskResolution: 12,
-    radius: 25,
-    extruded: true,
-    pickable: true,
-    elevationScale: 5000,
-    getPosition: (d) => [d.coordinates[0] + 0.0005, d.coordinates[1] + 0.0005],
-    getFillColor: (d) => [48, 128, 255, 255],
-    getLineColor: [0, 0, 0],
-    getElevation: (d) => {
-      let price = parseFloat(d.fuelInfo && d.fuelInfo.diesel);
-      if (price === 0) {
-        return parseFloat(d.fuelInfo && d.fuelInfo.diesel) + 0.01;
-      }
-      return parseFloat(d.fuelInfo && d.fuelInfo.diesel) - 1.7;
-    },
-    onHover: (info) => updateHoverInfo(info),
-    onClick: (event) => handleClick(event),
-  });
-
-  const layers = [petrolColumnLayer, dieselColumnLayer];
+  const [petrolLayer, setPetrolLayer] = useState();
+  const [dieselLayer, setDieselLayer] = useState();
+  const [layers, setLayers] = useState();
 
   function handleClick(event) {
     setColumnClickEvent(event);
@@ -124,7 +80,8 @@ export default function DeckSnapshot({
 
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
     return new Promise(async (resolve) => {
-      if (bluDBStation === undefined && runOnce === false) {
+      let profile = await getProfile();
+      if (bluDBStation === undefined && runOnce === false && profile.username ) { // if not in db and logged in
         await createStation(
           `${stationData.results[idx].name}`,
           0,
@@ -132,18 +89,29 @@ export default function DeckSnapshot({
           stationData.results[idx].place_id
         );
         let newbluDBStation = await findStationInDB(idx);
-        newbluDBStation !== undefined && console.log(await newbluDBStation);
         mapDataTemp[idx].fuelInfo =
           newbluDBStation !== undefined
             ? newbluDBStation
             : mapDataTemp[idx].fuelInfo;
-      } else {
+        setRunOnce(true);
+      } else if (!profile.username && runOnce === false && bluDBStation !== undefined) { // if is in db and not logged in
         mapDataTemp[idx].fuelInfo = bluDBStation;
+        setRunOnce(true);
+      } else if (profile.username && runOnce === false && bluDBStation !== undefined) { // is logged in and is in the db
+        mapDataTemp[idx].fuelInfo = bluDBStation;
+        setRunOnce(true);
+      } 
+      else if (runOnce === false){ // if not in the db and not logged in
+        mapDataTemp[idx].fuelInfo = {
+          name: stationData.results[idx].name,
+          petrol: '0',
+          diesel: '0',
+          google_id: stationData.results[idx].place_id,
+        }
       }
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapDataTemp));
-      setRunOnce(true);
-      setMapData(mapDataDeepCopy);
-      resolve();
+      
+      resolve(mapDataDeepCopy);
     });
   };
 
@@ -158,7 +126,8 @@ export default function DeckSnapshot({
       });
       stationData.results.forEach(async (item, idx) => {
         let bluDBStation = await findStationInDB(idx);
-        await checkAndAddToDB(bluDBStation, mapDataTemp, idx);
+        let updatedMapData = await checkAndAddToDB(bluDBStation, mapDataTemp, idx);
+        setMapData(updatedMapData);
       });
     }
   };
@@ -172,12 +141,60 @@ export default function DeckSnapshot({
   }, [longView, latView]);
 
   useEffect(() => {
+    setDieselLayer(new ColumnLayer({
+      id: "diesel-column-layer",
+      data: mapData,
+      dataComparator: (newData, oldData) => false,
+      diskResolution: 12,
+      radius: 25,
+      extruded: true,
+      pickable: true,
+      elevationScale: 5000,
+      getPosition: (d) => [d.coordinates[0] + 0.0005, d.coordinates[1] + 0.0005],
+      getFillColor: (d) => [48, 128, 255, 255],
+      getLineColor: [0, 0, 0],
+      getElevation: (d) => {
+        let price = parseFloat(d.fuelInfo && d.fuelInfo.diesel);
+        if (price === 0) {
+          return parseFloat(d.fuelInfo && d.fuelInfo.diesel) + 0.01;
+        }
+        return parseFloat(d.fuelInfo && d.fuelInfo.diesel) - 1.7;
+      },
+      onHover: (info) => updateHoverInfo(info),
+      onClick: (event) => handleClick(event),
+    }));
+    setPetrolLayer(new ColumnLayer({
+      id: "petrol-column-layer",
+      data: mapData,
+      dataComparator: (newData, oldData) => false,
+      diskResolution: 12,
+      radius: 25,
+      extruded: true,
+      pickable: true,
+      elevationScale: 5000,
+      getPosition: (d) => d.coordinates,
+      getFillColor: (d) => [48, 128, d.value * 255, 255],
+      getLineColor: [0, 0, 0],
+      getElevation: (d) => {
+        let price = parseFloat(d.fuelInfo && d.fuelInfo.petrol);
+        if (price === 0) {
+          return parseFloat(d.fuelInfo && d.fuelInfo.petrol) + 0.01;
+        }
+        return parseFloat(d.fuelInfo && d.fuelInfo.petrol) - 1.7;
+      },
+      onHover: (info) => updateHoverInfo(info),
+      onClick: (event) => handleClick(event),
+    }));
     setRunOnce(false);
   }, [mapData]);
 
   useEffect(() => {
     fetchAndSetStationData();
   }, []);
+
+  useEffect(() => {
+    setLayers([petrolLayer, dieselLayer]);
+  }, [dieselLayer, petrolLayer]);
 
   return (
     <>

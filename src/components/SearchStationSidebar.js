@@ -42,7 +42,6 @@ export default function SearchStationSidebar({
   const checkUserPass = "Please check your login details and try again.";
 
   const searchLocation = async (e) => {
-    console.log("yes");
     let location = `${lat},${long}`;
     location && setStationData(await getStationLocationData(location, "fuel"));
   };
@@ -52,12 +51,10 @@ export default function SearchStationSidebar({
       await getAreaData(area)
         .then((data) => {
           setLat(data.candidates[0].geometry.location.lat);
-          console.log("yes");
           return data;
         })
         .then((data) => {
           setLong(data.candidates[0].geometry.location.lng);
-          console.log("and yes");
           return data;
         })
         .catch((error) => console.log(error));
@@ -76,24 +73,49 @@ export default function SearchStationSidebar({
     }, 4000);
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    let result = await login(user, pass);
-    if (result.statusText === "Bad Request") {
-      displayErrorMessage(checkUserPass);
-    } else {
-      await getAndSetProfile();
-      checkIfLoggedIn();
-    }
+  const resetSatationData = () => {
+    return new Promise(async (resolve) => {
+      try {
+        let stationDataDeepCopy = JSON.parse(JSON.stringify(stationData));
+        setStationData(stationDataDeepCopy);
+        resolve();
+      } catch (error) {
+        console.log(error)
+        resolve()
+      }
+    })
+  }
+
+  const handleLogin = (e) => {
+    return new Promise(async (resolve) => {
+      try {
+        e && e.preventDefault();
+        let result = await login(user, pass);
+        if (await result.statusText === "Bad Request") {
+          displayErrorMessage(checkUserPass);
+        } else {
+          await getAndSetProfile();
+          checkIfLoggedIn();
+          await resetSatationData();
+        }
+        resolve()
+      } catch (error) {
+        console.log(error)
+        resolve()
+      }
+    })
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     let result = await register(user, pass, pass2, email, firstName, lastName);
+
     if (result.email[0] !== "This field must be unique.") {
-      await login(user, pass);
+      await handleLogin();
       await getAndSetProfile();
       await checkIfLoggedIn();
+      let mapDataDeepCopy = JSON.parse(JSON.stringify(mapData));
+      setMapData(mapDataDeepCopy);
     } else {
       displayErrorMessage(emailErrorMsg);
     }
@@ -132,8 +154,9 @@ export default function SearchStationSidebar({
         let mapDataTemp = mapData;
         mapDataTemp[stationIndex].fuelInfo.petrol = petrolPrice;
         mapDataTemp[stationIndex].fuelInfo.diesel = dieselPrice;
-        setMapData(mapDataTemp);
-        console.log(mapData);
+        mapDataTemp[stationIndex].fuelInfo.updated_by = profile.username;
+        let mapDataDeepCopy = JSON.parse(JSON.stringify(mapDataTemp));
+        setMapData(mapDataDeepCopy);
         resolve();
       } catch (error) {
         console.log(error);
@@ -150,9 +173,9 @@ export default function SearchStationSidebar({
         columnClickEvent.object.fuelInfo.id,
         toString(columnClickEvent.object.fuelInfo.station),
         columnClickEvent.object.fuelInfo.google_id,
-        columnClickEvent.object.fuelInfo.updated_by,
+        profile.username,
         petrolPrice,
-        dieselPrice
+        dieselPrice,
       );
     } else {
       displayErrorMessage(updateStationErrorMsg);
@@ -160,7 +183,6 @@ export default function SearchStationSidebar({
   };
 
   useEffect(() => {
-    console.log(profile);
     checkIfLoggedIn();
   }, [profile]);
 
@@ -408,7 +430,6 @@ export default function SearchStationSidebar({
                         <li>
                           Updated on: {columnClickEvent.object.fuelInfo.updated}
                         </li>
-                        <li>ID: {columnClickEvent.object.fuelInfo.id}</li>
                       </ul>
                       <input
                         className='button form-btn'

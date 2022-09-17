@@ -43,9 +43,8 @@ class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class StationList(generics.ListAPIView):
+class StationList(CsrfExemptMixin, generics.ListAPIView):
     # API endpoint that allows station to be viewed.
-    #permission_classes = (permissions.AllowAny,)
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [permissions.AllowAny]
