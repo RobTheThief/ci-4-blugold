@@ -18,56 +18,30 @@ input {
   height: auto;
 }
 
+ul li {
+  list-style-type: none;
+}
+
+.App {
+  text-align: center;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: gray; 
+  background: gray;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: gray; 
-}
-
-.search-input {
-  margin-bottom: 0;
-  height: 23px;
-}
-
-.info-icon {
-  font-size: 1.25rem;
-  position: relative;
-  top: 0.25rem;
-  left: 0.125rem;
-  font-weight: 600;
-}
-
-.info-icon-tooltip {
-  font-size: 14px;
-  position: absolute;
-  top: 8rem;
-  left: 4.5rem;
-  display: none;
-  border: solid #ffffff80 2px;
-  border-radius: 8px;
-  background-color: #000000cc;
-  padding: 1rem 2rem;
-  z-index: 1000000;
-}
-
-.info-icon:hover ~ .info-icon-tooltip {
-  display: block;
-}
-
-.App {
-  text-align: center;
+  background: gray;
 }
 
 .button {
@@ -81,57 +55,6 @@ input {
   padding: 0.25rem 0.75rem;
   border-radius: 0.5rem;
   cursor: pointer;
-}
-
-.login-btn,
-.register-btn {
-  margin-bottom: 2rem;
-}
-
-.ui-form {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
-  z-index: 100;
-  max-height: 500px;
-  width: 200px;
-  animation-name: fade-in;
-  animation-duration: 0.2s;
-}
-
-.login-ui-wrapper {
-  margin-left: 1rem;
-}
-
-.login-ui-button-group {
-  margin-top: 1rem;
-}
-
-.form-btn {
-  position: relative;
-  top: 1rem;
-  font-size: 16px;
-}
-
-.login-and-update-wrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 264px;
-}
-
-.logout-section {
-  animation-name: fade-in;
-  animation-duration: 0.2s;
-  left: 1rem;
-  margin-top: 1rem;
-}
-
-.logout-section .button {
-  padding: 0;
-  background-color: rgba(0, 0, 0, 0);
-  color: rgb(48, 128, 255, 255);
 }
 
 .logo-container {
@@ -168,6 +91,7 @@ input {
   overflow-x: visible;
 }
 
+/* DRAWER TAB */
 .drawer-tab {
   position: absolute;
   top: 0rem;
@@ -216,20 +140,93 @@ input {
   transition: all 0.2s ease-in-out;
 }
 
-.long-lat-search-group {
+/* AREA SEARCH */
+.search-input {
+  margin-bottom: 0;
+  height: 23px;
+}
+
+.info-icon {
+  font-size: 1.25rem;
+  position: relative;
+  top: 0.25rem;
+  left: 0.125rem;
+  font-weight: 600;
+}
+
+.info-icon-tooltip {
+  font-size: 14px;
+  position: absolute;
+  top: 8rem;
+  left: 4.5rem;
+  display: none;
+  border: solid #ffffff80 2px;
+  border-radius: 8px;
+  background-color: #000000cc;
+  padding: 1rem 2rem;
+  z-index: 1000000;
+}
+
+.info-icon:hover ~ .info-icon-tooltip {
+  display: block;
+}
+
+.go-btn {
+  max-height: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+/* LOGIN SECTION */
+.login-btn,
+.register-btn {
+  margin-bottom: 2rem;
+}
+
+.ui-form {
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  z-index: 100;
+  max-height: 500px;
+  width: 200px;
+  animation-name: fade-in;
+  animation-duration: 0.2s;
 }
 
-.coord-input,
-.long-lat-search-group label {
-  max-width: 60px;
+.form-btn {
+  position: relative;
+  top: 1rem;
+  font-size: 16px;
 }
 
-.long-lat-search-group label {
-  margin-right: 1rem;
+.login-and-update-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 264px;
+}
+
+.login-ui-wrapper {
+  margin-left: 1rem;
+}
+
+.login-ui-button-group {
+  margin-top: 1rem;
+}
+
+/* LOGOUT SECTION */
+.logout-section {
+  animation-name: fade-in;
+  animation-duration: 0.2s;
+  left: 1rem;
+  margin-top: 1rem;
+}
+
+.logout-section .button {
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(48, 128, 255, 255);
 }
 
 .btn-input-container {
@@ -241,11 +238,7 @@ input {
   margin-top: 5rem;
 }
 
-.go-btn {
-  max-height: 1.5rem;
-  margin-left: 0.5rem;
-}
-
+/* MAP TOOLTIP */
 .tooltip {
   padding: 1rem;
   margin: 0;
@@ -255,10 +248,12 @@ input {
   background-color: #00000080;
 }
 
-ul li {
-  list-style-type: none;
+.tooltip-list-item {
+  display: flex;
+  align-items: center;
 }
 
+/* UPDATE STATION UI */
 .station-info input {
   max-width: 2rem;
   color: white;
@@ -306,11 +301,7 @@ ul li {
   margin-left: 0.35rem;
 }
 
-.tooltip-list-item {
-  display: flex;
-  align-items: center;
-}
-
+/* ERROR MESSAGE MODAL */
 .update-error-message {
   display: flex;
   flex-direction: column;
