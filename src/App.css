@@ -18,8 +18,27 @@ input {
   height: auto;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: gray; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: gray; 
+}
+
 .search-input {
   margin-bottom: 0;
+  height: 23px;
 }
 
 .info-icon {
@@ -52,6 +71,7 @@ input {
 }
 
 .button {
+  font-weight: 400;
   border: none;
   margin: 0 1rem 0 0;
   z-index: 1000;
@@ -63,8 +83,9 @@ input {
   cursor: pointer;
 }
 
-.button.login {
-  margin-bottom: 1rem;
+.login-btn,
+.register-btn {
+  margin-bottom: 2rem;
 }
 
 .ui-form {
@@ -142,8 +163,8 @@ input {
   border-bottom: 2px solid rgb(48, 128, 255, 255);
   border-radius: 0 0 0.5rem 0;
   z-index: 100;
-  padding: 0rem;
-  overflow-y: scroll;
+  padding-bottom: 2rem;
+  overflow-y: auto;
   overflow-x: visible;
 }
 

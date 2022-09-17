@@ -228,7 +228,7 @@ export default function SearchStationSidebar({
       >
         {isDrawerOpen && (
           <>
-            <div className='search-form ui-form'>
+            <div className='ui-form'>
               <div className='logo-container'>
                 <img
                   src={bloGoldLogo}
@@ -308,7 +308,7 @@ export default function SearchStationSidebar({
                         <input
                           type='submit'
                           value='Login'
-                          className='button form-btn login'
+                          className='button form-btn login-btn'
                         />
                       </form>
                       <form onSubmit={(e) => handleRegister(e)}>
@@ -369,7 +369,7 @@ export default function SearchStationSidebar({
                         <input
                           type='submit'
                           value='Register'
-                          className='button form-btn'
+                          className='button form-btn register-btn'
                         />
                       </form>
                     </div>
