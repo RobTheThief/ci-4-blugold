@@ -73,7 +73,7 @@ function updateStation(
       formdata.append("google_id", google_id);
       formdata.append("updated_by", updated_by);
 
-      const response = await fetch(`/api/update/${id}/`, {
+      await fetch(`/api/update/${id}/`, {
         headers: { "X-CSRFToken": getCookie() },
         method: "PUT",
         redirect: "follow",

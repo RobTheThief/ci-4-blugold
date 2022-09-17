@@ -31,7 +31,8 @@ class Assets(View):
 
         if os.path.isfile(path):
             with open(path, 'rb') as file:
-                return HttpResponse(file.read(), content_type='application/javascript')
+                return HttpResponse(file.read(),
+                                    content_type='application/javascript')
         else:
             return HttpResponseNotFound()
 
@@ -82,8 +83,9 @@ class LoginView(CsrfExemptMixin, views.APIView):
     authentication_classes = []
 
     def post(self, request, format=None):
-        serializer = serializers.LoginSerializer(data=self.request.data,
-                                                 context={'request': self.request})
+        serializer = serializers.LoginSerializer(
+            data=self.request.data,
+            context={'request': self.request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
@@ -121,10 +123,15 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
 
     def get(self, request, name, location):
         response = {}
-        payload = {'location': location, 'radius': 3000, 'types': 'gas_station convenience_store store supermarket atm cafe car_repair car_wash',
-                   'name': 'gas station', 'key': str(os.getenv('GOOGLE_API_KEY'))}
+        payload = {
+            'location': location,
+            'radius': 3000, 'types': 'gas_station convenience_store store'
+            'supermarket atm cafe car_repair car_wash',
+            'name': 'gas station',
+            'key': str(os.getenv('GOOGLE_API_KEY'))}
         r = requests.get(
-            'https://maps.googleapis.com/maps/api/place/nearbysearch/json', payload)
+            'https://maps.googleapis.com/maps/'
+            'api/place/nearbysearch/json', payload)
         r_status = r.status_code
         if r_status == 200:
             json_res = r.text
@@ -143,10 +150,14 @@ class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
 
     def get(self, request, area):
         response = {}
-        payload = {'input': area, 'inputtype': 'textquery', 'fields': 'geometry',
-                   'key': str(os.getenv('GOOGLE_API_KEY'))}
+        payload = {
+            'input': area,
+            'inputtype': 'textquery',
+            'fields': 'geometry',
+            'key': str(os.getenv('GOOGLE_API_KEY'))}
         r = requests.get(
-            'https://maps.googleapis.com/maps/api/place/findplacefromtext/json', payload)
+            'https://maps.googleapis.com/maps/api/'
+            'place/findplacefromtext/json', payload)
 
         r_status = r.status_code
         if r_status == 200:
