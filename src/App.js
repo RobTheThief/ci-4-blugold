@@ -2,7 +2,7 @@ import './App.css';
 import { useState } from 'react';
 
 import DeckSnapshot from './components/DeckSnapshot';
-import SearchStationSidebar from './components/SearchStationSidebar';
+import UISidebar from './components/UISidebar';
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-      <SearchStationSidebar
+      <UISidebar
         setLongView={setLongView}
         setLatView={setLatView}
         stationData={stationData}

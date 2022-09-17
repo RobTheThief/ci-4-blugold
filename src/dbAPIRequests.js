@@ -1,5 +1,14 @@
 import { getCookie } from "./helpers";
 
+/**
+ * Makes a POST request to create a station in the database.
+ * @param {string} station 
+ * @param {string} petrolPrice 
+ * @param {string} dieselPrice 
+ * @param {string} googleId 
+ * @param {string} updatedBy 
+ * @returns promise
+ */
 function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 'me-dev') {
   return new Promise(async resolve => {
     try {
@@ -32,6 +41,16 @@ function createStation(station, petrolPrice, dieselPrice, googleId, updatedBy = 
   })
 }
 
+/**
+ * 
+ * @param {int} id 
+ * @param {string} station 
+ * @param {string} google_id 
+ * @param {string} updated_by 
+ * @param {string} petrolPrice 
+ * @param {string} dieselPrice 
+ * @returns promise
+ */
 function updateStation(id, station, google_id, updated_by, petrolPrice, dieselPrice) {
   return new Promise(async resolve => {
     try {
@@ -49,9 +68,7 @@ function updateStation(id, station, google_id, updated_by, petrolPrice, dieselPr
         body: formdata,
       })
 
-      const responseJson = await response.json(); //extract JSON from the http response
-
-      resolve(responseJson);
+      resolve();
     } catch (error) {
       console.log(error);
       resolve();
@@ -59,6 +76,11 @@ function updateStation(id, station, google_id, updated_by, petrolPrice, dieselPr
   })
 }
 
+/**
+ * Deletes a station using the id.
+ * If ok returns object.
+ * @param {int} id 
+ */
 function deleteStation(id) {
   fetch(`/api/delete/${id}/`, {
     method: 'DELETE',
@@ -75,6 +97,11 @@ function deleteStation(id) {
     })
 }
 
+/**
+ * Finds a station using the id.
+ * If ok returns the station object.
+ * @param {int} id 
+ */
 function getStation(id) {
   fetch(`/api/${id}/`, {
     method: 'GET',
@@ -90,6 +117,10 @@ function getStation(id) {
     })
 }
 
+/**
+ * Gets an array of all stations in the database.
+ * @returns promise, array
+ */
 const getAllStations = () => {
   return new Promise(async resolve => {
     try {
@@ -111,7 +142,14 @@ const getAllStations = () => {
   })
 };
 
-/* location in format of: '53.46473616374262,-10.688388878528719' radius in meters, name of place as a string, default='fuel' */
+/**
+ * Makes a request to the middleware which makes a request
+ * to google places api to find fuel stations in a given coordinate
+ * in a 3km radius.
+ * @param {string} location 
+ * @param {string} name 
+ * @returns array, promise
+ */
 const getStationLocationData = (location, name = 'fuel') => {
   return new Promise(async resolve => {
     try {
@@ -126,13 +164,18 @@ const getStationLocationData = (location, name = 'fuel') => {
 
       resolve(responseJson);
     } catch (error) {
-      alert(error);
+      console.log(error);
       resolve();
     }
   })
 };
 
-/*  area as a string */
+/**
+ * Makes a request to the middleware which makes a request
+ * to google places api to find coordinates of a given area
+ * @param {string} area 
+ * @returns array, promise
+ */
 const getAreaData = (area) => {
   return new Promise(async resolve => {
     try {

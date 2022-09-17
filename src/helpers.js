@@ -1,3 +1,9 @@
+
+/**
+ * Finds csrf token and returns as string in format csrftoken=TOKEN
+ * to be used in header of fetch requests.
+ * @returns string
+ */
 const getCookie = () => {
     if (!document.cookie) {
       return null;

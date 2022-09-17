@@ -61,7 +61,6 @@ ul li {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-
   position: absolute;
   left: 1rem;
   top: 2rem;
@@ -69,8 +68,9 @@ ul li {
 
 .logo-text {
   height: 1.45rem;
-  margin-left: 1rem;
+  margin: 0 0 0 1rem;
   font-size: larger;
+  color: rgb(48, 128, 255, 255);
 }
 
 .sidebar-ui {
@@ -209,10 +209,6 @@ ul li {
 
 .login-ui-wrapper {
   margin-left: 1rem;
-}
-
-.login-ui-button-group {
-  margin-top: 1rem;
 }
 
 /* LOGOUT SECTION */

@@ -1,5 +1,11 @@
 import { getCookie } from "./helpers";
 
+/**
+ * Sends a post request to the backend to log in user.
+ * @param {string} user 
+ * @param {string} pass 
+ * @returns object, promise
+ */
 const login = (user, pass) => {
   return new Promise(async (resolve) => {
     var formdata = new FormData();
@@ -21,6 +27,16 @@ const login = (user, pass) => {
   });
 };
 
+/**
+ * Sends a POST request to the backend to registers a new user.
+ * @param {String} user 
+ * @param {String} pass 
+ * @param {String} pass2 
+ * @param {String} email 
+ * @param {String} firstName 
+ * @param {String} lastName 
+ * @returns object, promise
+ */
 const register = (user, pass, pass2, email, firstName, lastName) => {
   return new Promise(async (resolve) => {
     var formdata = new FormData();
@@ -49,6 +65,9 @@ const register = (user, pass, pass2, email, firstName, lastName) => {
   });
 };
 
+/**
+ * Sends a POST request to the backend to logout user
+ */
 const logout = () => {
   var requestOptions = {
     credentials: "include",
@@ -60,6 +79,11 @@ const logout = () => {
     .catch((error) => console.log("error", error));
 };
 
+/**
+ * Sends a GET request to the backend to get profile
+ * information about the user.
+ * @returns object, promise
+ */
 const getProfile = () => {
   return new Promise(async (resolve) => {
     try {

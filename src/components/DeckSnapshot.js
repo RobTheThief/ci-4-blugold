@@ -10,6 +10,13 @@ import {
 import BluTooltip from "./BluTooltip";
 import { getProfile } from "../authRequests";
 
+/**
+ * Renders the map with column layers to visualize station price.
+ * Accepts mapData, setMapData, stationData, setStationData, longView,
+  latView, viewState, setViewState, setColumnClickEvent, as props.
+ * @param {object} param0 
+ * @returns jsx
+ */
 export default function DeckSnapshot({
   mapData,
   setMapData,
@@ -31,6 +38,10 @@ export default function DeckSnapshot({
     setColumnClickEvent(event);
   }
 
+  /**
+   * Sets the viewState variable for deckgl whicj transitions
+   * to the new coordinates on the map.
+   */
   function focusView() {
     if (longView && latView) {
       setViewState({
@@ -45,10 +56,23 @@ export default function DeckSnapshot({
     }
   }
 
+  /**
+   * Sets the hoverInfo state variable to the event 
+   * object returned from the onHover event from the
+   * colmn layer for the the tooltip. 
+   * @param {object} info 
+   */
   const updateHoverInfo = (info) => {
     setHoverInfo(info);
   };
 
+  /**
+   * Fetches station data form the google places api throught
+   * the middleware and sets it to the stationData state variable.
+   * Defaults to coordinates in Dublin city centre.
+   * @param {string} long 
+   * @param {string} lat 
+   */
   const fetchAndSetStationData = async (
     long = "53.34523915464418",
     lat = "-6.267469638550943"
@@ -57,6 +81,13 @@ export default function DeckSnapshot({
     setStationData(await getStationLocationData(location, "fuel"));
   };
 
+  /**
+   * Checks the database for a station that matches the google referencs
+   * in stationData for a given index in the stationData array and returns
+   * the station object.
+   * @param {int} idx 
+   * @returns object, promise
+   */
   const handleFindStationInDBAsync = (idx) => {
     return new Promise(async (resolve) => {
       let dbStations = await getAllStations();
@@ -67,6 +98,13 @@ export default function DeckSnapshot({
     });
   };
 
+  /**
+   * Uses a promise to control the flow of the script using 
+   * handleFindStationInDBAsync to find a station that matches
+   * the google references in stationData.
+   * @param {int} idx 
+   * @returns object, promise
+   */
   const findStationInDB = async (idx) => {
     return new Promise(async (resolve) => {
       try {
@@ -78,10 +116,20 @@ export default function DeckSnapshot({
     });
   };
 
+  /**
+   * Checks if a station from google places api mapped to mapDataTemp is in the database
+   * and adds it to the station object as the key fuelInfo. If not found it will either create it in the database
+   * and add it from the database if user is logged in or it will add the data to fuelInfo if not logged in
+   * ecept without the database object id.  
+   * @param {object} bluDBStation 
+   * @param {array} mapDataTemp 
+   * @param {int} idx 
+   * @returns array, promise
+   */
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
     return new Promise(async (resolve) => {
       let profile = await getProfile();
-      if (bluDBStation === undefined && runOnce === false && profile.username ) { // if not in db and logged in
+      if (bluDBStation === undefined && runOnce === false && profile.username ) { 
         await createStation(
           `${stationData.results[idx].name}`,
           0,
@@ -94,14 +142,14 @@ export default function DeckSnapshot({
             ? newbluDBStation
             : mapDataTemp[idx].fuelInfo;
         setRunOnce(true);
-      } else if (!profile.username && runOnce === false && bluDBStation !== undefined) { // if is in db and not logged in
+      } else if (!profile.username && runOnce === false && bluDBStation !== undefined) {
         mapDataTemp[idx].fuelInfo = bluDBStation;
         setRunOnce(true);
-      } else if (profile.username && runOnce === false && bluDBStation !== undefined) { // is logged in and is in the db
+      } else if (profile.username && runOnce === false && bluDBStation !== undefined) { 
         mapDataTemp[idx].fuelInfo = bluDBStation;
         setRunOnce(true);
       } 
-      else if (runOnce === false){ // if not in the db and not logged in
+      else if (runOnce === false){
         mapDataTemp[idx].fuelInfo = {
           name: stationData.results[idx].name,
           petrol: '0',
@@ -115,6 +163,10 @@ export default function DeckSnapshot({
     });
   };
 
+  /**
+   * Creates and and sets an array to mapData to be used for the map layer
+   * and station data.
+   */
   const createMapData = () => {
     if (stationData) {
       let mapDataTemp = stationData.results.map((station, idx) => {
@@ -140,6 +192,9 @@ export default function DeckSnapshot({
     focusView();
   }, [longView, latView]);
 
+  /* Sets the dieselLayer and petrolLayer state variables from the deckgl
+     ColumnLayer class.
+  */
   useEffect(() => {
     setDieselLayer(new ColumnLayer({
       id: "diesel-column-layer",
@@ -199,6 +254,7 @@ export default function DeckSnapshot({
   return (
     <>
       {hoverInfo && (
+        /* MAP TOOLTIP */
         <div
           style={{
             position: "absolute",
@@ -215,6 +271,7 @@ export default function DeckSnapshot({
         </div>
       )}
       {layers && (
+        /* DECKGL AND MAPBOX MAP COMPONENTS */
         <DeckGL
           initialViewState={viewState}
           onViewportChange={setViewState}

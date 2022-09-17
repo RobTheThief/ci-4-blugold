@@ -2,6 +2,12 @@ import React from "react";
 import PetrolLegendDot from "./PetrolLegendDot";
 import DieselLegendDot from "./DieselLegendDot";
 
+/**
+ * Renders the map tooltip for the stations that show on hover. 
+ * Accepts hoverInfo as a prop.
+ * @param {object} param0 
+ * @returns jsx
+ */
 export default function BluTooltip({ hoverInfo }) {
   return (
     <ul className='tooltip'>
