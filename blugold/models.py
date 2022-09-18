@@ -1,7 +1,12 @@
+""" Contains the station model that maps to the database station"""
+
 from django.db import models
 
 
 class Station(models.Model):
+    """ Extends from the Django Model class. CharField and DateField
+    data types are used for the fields for the stations object in the
+    database"""
     station = models.CharField("Station", max_length=240)
     petrol = models.CharField("Petrol", max_length=240)
     diesel = models.CharField("Diesel", max_length=240)

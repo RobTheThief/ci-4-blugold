@@ -1,3 +1,7 @@
+""" Views for the blugold app to make CRUD operations on the
+database, login, regester, logout user, get profile and to make
+external API requests to Google places API """
+
 from django.shortcuts import render
 from rest_framework import viewsets, generics
 from django.views import View
@@ -20,25 +24,8 @@ import requests
 import json
 
 
-class BlugoldView(viewsets.ModelViewSet):
-    serializer_class = StationSerializer
-    queryset = Station.objects.all()
-
-
-class Assets(View):
-    def get(self, _request, filename):
-        path = os.path.join(os.path.dirname(__file__), 'static', filename)
-
-        if os.path.isfile(path):
-            with open(path, 'rb') as file:
-                return HttpResponse(file.read(),
-                                    content_type='application/javascript')
-        else:
-            return HttpResponseNotFound()
-
-
 class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
-    # API endpoint that allows creation of a new station
+    """ API endpoint that allows creation of a new station """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     authentication_classes = [authentication.SessionAuthentication]
@@ -46,7 +33,7 @@ class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
 
 
 class StationList(CsrfExemptMixin, generics.ListAPIView):
-    # API endpoint that allows station to be viewed.
+    """ API endpoint that allows station to be viewed. """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -54,7 +41,7 @@ class StationList(CsrfExemptMixin, generics.ListAPIView):
 
 
 class StationDetail(generics.RetrieveAPIView):
-    # API endpoint that returns a single station by id.
+    """ API endpoint that returns a single station by id. """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -62,7 +49,8 @@ class StationDetail(generics.RetrieveAPIView):
 
 
 class StationUpdate(CsrfExemptMixin, generics.RetrieveUpdateAPIView):
-    # API endpoint that allows a Station record to be updated.
+    """ API endpoint that allows a Station record to be updated if a
+    user is logged in. """
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = StationSerializer
@@ -70,7 +58,8 @@ class StationUpdate(CsrfExemptMixin, generics.RetrieveUpdateAPIView):
 
 
 class StationDelete(generics.RetrieveDestroyAPIView):
-    # API endpoint that allows a Station record to be deleted.
+    """ API endpoint that allows a Station record to be deleted if a
+    user is logged in. """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     authentication_classes = [authentication.SessionAuthentication]
@@ -78,11 +67,13 @@ class StationDelete(generics.RetrieveDestroyAPIView):
 
 
 class LoginView(CsrfExemptMixin, views.APIView):
-    # This view should be accessible also for unauthenticated users.
+    """ API endpoint that logs in a regestered user """
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
     def post(self, request, format=None):
+        """ Makes a POST request to the backend and returns the
+        response status """
         serializer = serializers.LoginSerializer(
             data=self.request.data,
             context={'request': self.request})
@@ -93,24 +84,32 @@ class LoginView(CsrfExemptMixin, views.APIView):
 
 
 class LogoutView(views.APIView):
+    """ API endpoint that logs out a user """
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
     def post(self, request, format=None):
+        """ Makes a POST request to the backend and
+        returns the status response """
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
 class ProfileView(generics.RetrieveAPIView):
+    """ API endpoint that gets profile information on a logged in user
+    if a user is logged in"""
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.UserSerializer
 
     def get_object(self):
+        """ Makes a GET request to the backend and
+        returns the reponse object """
         return self.request.user
 
 
 class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
+    """ API endpoint that registeres a new user """
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
     queryset = User.objects.all()
@@ -118,10 +117,15 @@ class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
 
 
 class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
+    """ API endpoint that acts as middleware to make a request
+    to the google places API to find stations in 3km radius of
+    given coordinates"""
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
     def get(self, request, name, location):
+        """ Makes a GET request to the google places api and
+        returns the response as json """
         response = {}
         payload = {
             'location': location,
@@ -145,10 +149,15 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
 
 
 class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
+    """ API endpoint that acts as middleware to make a request
+    to the google places API to find coordinates of an address
+    or place name"""
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
     def get(self, request, area):
+        """ Makes a GET request to the google places api and
+        returns the response as json """
         response = {}
         payload = {
             'input': area,

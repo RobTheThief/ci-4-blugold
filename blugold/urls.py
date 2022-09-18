@@ -1,3 +1,6 @@
+"""These `urlpatterns` list routes URLs to views for the CRUD operations
+on the database """
+
 from django.urls import include, path
 from .views import StationCreate, \
     StationList, StationDetail, StationUpdate, StationDelete

@@ -1,3 +1,7 @@
+""" Serializers for fields in supporting CRUD operations to database,
+validating input for authentication/registration/login and creating
+users """
+
 from rest_framework import serializers
 from .models import Station
 from django.contrib.auth import authenticate
@@ -7,6 +11,7 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class StationSerializer(serializers.ModelSerializer):
+    """ This model serializer is used for the station API views """
     class Meta:
         model = Station
         fields = ['id', 'station', 'petrol', 'diesel',
@@ -14,12 +19,9 @@ class StationSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    """
-    This serializer defines two fields for authentication:
-      * username
-      * password.
-    It will try to authenticate the user with when validated.
-    """
+    """ This serializer defines two fields for authentication:
+    username and password. It will try to authenticate the
+    user when validated. """
     username = serializers.CharField(
         label="Username",
         write_only=True
@@ -32,29 +34,30 @@ class LoginSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        # Take username and password from request
+        """ Takes username and password from request
+        to authenticate using the Django authentication framework.
+        If the user is valid, put it in the serializer's validated_data
+        to be used in the view. If we don't have a registered user of
+        missing username or password, raise a ValidationError. """
         username = attrs.get('username')
         password = attrs.get('password')
 
         if username and password:
-            # Try to authenticate the user using Django auth framework.
             user = authenticate(request=self.context.get('request'),
                                 username=username, password=password)
             if not user:
-                # If we don't have a regular user, raise a ValidationError
                 msg = 'Access denied: wrong username or password.'
                 raise serializers.ValidationError(msg, code='authorization')
         else:
             msg = 'Both "username" and "password" are required.'
             raise serializers.ValidationError(msg, code='authorization')
-        # We have a valid user, put it in the serializer's validated_data.
-        # It will be used in the view.
         attrs['user'] = user
         return attrs
 
 
 class UserSerializer(serializers.ModelSerializer):
-
+    """ Used for the ProfileView view to create an
+    object with user information"""
     class Meta:
         model = User
         fields = [
@@ -66,7 +69,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
-
+    """ Sets the user field attributes, validates the input,
+    creates and saves user object """
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
@@ -86,6 +90,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
+        """ Validates that password fields are the same """
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError(
                 {"password": "Password fields didn't match."})
@@ -93,6 +98,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        """ POST request to register endpoint which
+        saves user object """
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
