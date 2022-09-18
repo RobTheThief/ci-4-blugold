@@ -18,7 +18,7 @@ function createStation(
 ) {
   return new Promise(async (resolve) => {
     try {
-      fetch(`/api/create/`, {
+     let response = fetch(`/api/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +38,7 @@ function createStation(
         .catch((error) => {
           console.log(error);
         });
-      resolve();
+      resolve(response);
     } catch (error) {
       resolve();
       console.log(error);
@@ -90,23 +90,26 @@ function updateStation(
 
 /**
  * Deletes a station using the id.
- * If ok returns object.
- * @param {int} id
+ * @param {int} id 
+ * @returns promise
  */
 function deleteStation(id) {
-  fetch(`/api/delete/${id}/`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": getCookie(),
-    },
-  })
-    .then((res) => {
-      if (res.ok) return res.json();
-    })
-    .catch((error) => {
+  return new Promise(async (resolve) => {
+    try {
+      await fetch(`/api/delete/${id}/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie(),
+        },
+      });
+
+      resolve();
+    } catch (error) {
       console.log(error);
-    });
+      resolve();
+    }
+  });
 }
 
 /**

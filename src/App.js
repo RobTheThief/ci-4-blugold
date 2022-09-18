@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import DeckSnapshot from "./components/DeckSnapshot";
 import UISidebar from "./components/UISidebar";
+import { getStationLocationData } from "./dbAPIRequests";
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
@@ -21,6 +22,29 @@ function App() {
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [columnClickEvent, setColumnClickEvent] = useState();
 
+  /**
+   * Fetches station data form the google places api throught
+   * the middleware and sets it to the stationData state variable.
+   * Defaults to coordinates in Dublin city centre.
+   * @param {string} long
+   * @param {string} lat
+   */
+  const fetchAndSetStationData = async (
+    long = "53.34523915464418",
+    lat = "-6.267469638550943"
+  ) => {
+    return new Promise(async (resolve) => {
+      try {
+        let location = `${long},${lat}`;
+        setStationData(await getStationLocationData(location, "fuel"));
+        resolve();
+      } catch (error) {
+        console.log(error);
+        resolve();
+      }
+    });
+  };
+
   return (
     <>
       <UISidebar
@@ -32,6 +56,7 @@ function App() {
         columnClickEvent={columnClickEvent}
         mapData={mapData}
         setMapData={setMapData}
+        fetchAndSetStationData={fetchAndSetStationData}
       />
       <DeckSnapshot
         columnClickEvent={columnClickEvent}
@@ -44,6 +69,7 @@ function App() {
         setMapData={setMapData}
         viewState={viewState}
         setViewState={setViewState}
+        fetchAndSetStationData={fetchAndSetStationData}
       />
     </>
   );

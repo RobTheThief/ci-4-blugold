@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import DeckGL, { ColumnLayer, FlyToInterpolator } from "deck.gl";
 import Map from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import {
-  getStationLocationData,
-  createStation,
-  getAllStations,
-} from "../dbAPIRequests";
+import { createStation, getAllStations } from "../dbAPIRequests";
 import BluTooltip from "./BluTooltip";
 import { getProfile } from "../authRequests";
 
@@ -21,12 +17,12 @@ export default function DeckSnapshot({
   mapData,
   setMapData,
   stationData,
-  setStationData,
   longView,
   latView,
   viewState,
   setViewState,
   setColumnClickEvent,
+  fetchAndSetStationData,
 }) {
   const [hoverInfo, setHoverInfo] = useState("");
   const [runOnce, setRunOnce] = useState(false);
@@ -64,21 +60,6 @@ export default function DeckSnapshot({
    */
   const updateHoverInfo = (info) => {
     setHoverInfo(info);
-  };
-
-  /**
-   * Fetches station data form the google places api throught
-   * the middleware and sets it to the stationData state variable.
-   * Defaults to coordinates in Dublin city centre.
-   * @param {string} long
-   * @param {string} lat
-   */
-  const fetchAndSetStationData = async (
-    long = "53.34523915464418",
-    lat = "-6.267469638550943"
-  ) => {
-    let location = `${long},${lat}`;
-    setStationData(await getStationLocationData(location, "fuel"));
   };
 
   /**
@@ -135,12 +116,8 @@ export default function DeckSnapshot({
           0,
           0,
           stationData.results[idx].place_id
-        );
-        let newbluDBStation = await findStationInDB(idx);
-        mapDataTemp[idx].fuelInfo =
-          newbluDBStation !== undefined
-            ? newbluDBStation
-            : mapDataTemp[idx].fuelInfo;
+        ).then((station) => (mapDataTemp[idx].fuelInfo = station));
+
         setRunOnce(true);
       } else if (
         !profile.username &&
@@ -163,9 +140,9 @@ export default function DeckSnapshot({
           diesel: "0",
           google_id: stationData.results[idx].place_id,
         };
+        setRunOnce(true);
       }
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapDataTemp));
-
       resolve(mapDataDeepCopy);
     });
   };
@@ -175,6 +152,7 @@ export default function DeckSnapshot({
    * and station data.
    */
   const createMapData = () => {
+    console.log("createMapData");
     if (stationData) {
       let mapDataTemp = stationData.results.map((station, idx) => {
         station.coordinates = [
@@ -190,6 +168,7 @@ export default function DeckSnapshot({
           mapDataTemp,
           idx
         );
+        console.log({ updatedMapData });
         setMapData(updatedMapData);
       });
     }

@@ -3,6 +3,7 @@ import {
   getStationLocationData,
   getAreaData,
   updateStation,
+  deleteStation,
 } from "../dbAPIRequests";
 import { getProfile, logout, register, login } from "../authRequests";
 import bloGoldLogo from "../assets/img/blu-gold-logo.png";
@@ -24,8 +25,10 @@ export default function UISidebar({
   setLongView,
   setLatView,
   columnClickEvent,
+  setColumnClickEvent,
   mapData,
   setMapData,
+  fetchAndSetStationData,
 }) {
   const [area, setArea] = useState();
   const [long, setLong] = useState();
@@ -43,12 +46,14 @@ export default function UISidebar({
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDeleteMessage, setIsDeleteMessage] = useState(false);
 
   const updateStationErrorMsg =
     "Price input must be a number and there must be both a Diesel and Petrol price.";
   const emailErrorMsg =
     "This email address has already been used to create an account.";
   const checkUserPass = "Please check your login details and try again.";
+  const checkDelete = "Are you sure you want to reset the price? This will delete the station from the database and a new station will be created with '0' price values.";
 
   const searchLocation = async (e) => {
     let location = `${lat},${long}`;
@@ -83,17 +88,16 @@ export default function UISidebar({
     setProfile(await getProfile());
   }
 
-  /**
-   * Sets error message and then sets isError to true
-   * for 4 seconds before setting it back to false.
-   * @param {string} error
-   */
-  const displayErrorMessage = (error) => {
+ /**
+  * Sets error message, sets booleaen for isDelete message and 
+  * then sets isError to true.
+  * @param {string} error 
+  * @param {boolean} options 
+  */
+  const displayErrorMessage = (error, options) => {
+    setIsDeleteMessage(options);
     setErrorMessage(error);
     setIsError(true);
-    setTimeout(() => {
-      setIsError(false);
-    }, 4000);
   };
 
   /**
@@ -106,6 +110,7 @@ export default function UISidebar({
       try {
         let stationDataDeepCopy = JSON.parse(JSON.stringify(stationData));
         setStationData(stationDataDeepCopy);
+        console.log("resetting staion data", "mapData: ", mapData);
         resolve();
       } catch (error) {
         console.log(error);
@@ -125,7 +130,7 @@ export default function UISidebar({
         e && e.preventDefault();
         let result = await login(user, pass);
         if ((await result.statusText) === "Bad Request") {
-          displayErrorMessage(checkUserPass);
+          displayErrorMessage(checkUserPass, false);
         } else {
           await getAndSetProfile();
           checkIfLoggedIn();
@@ -155,7 +160,7 @@ export default function UISidebar({
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapData));
       setMapData(mapDataDeepCopy);
     } else {
-      displayErrorMessage(emailErrorMsg);
+      displayErrorMessage(emailErrorMsg, false);
     }
   };
 
@@ -240,8 +245,17 @@ export default function UISidebar({
         dieselPrice
       );
     } else {
-      displayErrorMessage(updateStationErrorMsg);
+      displayErrorMessage(updateStationErrorMsg, false);
     }
+  };
+
+  const handleDeleteStation = async (e) => {
+    setColumnClickEvent(null);
+    setMapData([])
+    await deleteStation(columnClickEvent.object.fuelInfo.id);
+    await fetchAndSetStationData();
+    setIsDeleteMessage(false);
+    setIsError(false);
   };
 
   useEffect(() => {
@@ -283,8 +297,17 @@ export default function UISidebar({
       {/* ERROR MESSAGE MODAL */}
       <div className={`tooltip ${isError ? "update-error-message" : "hidden"}`}>
         <div className='material-symbols-outlined warning-icon'>warning</div>{" "}
-        {errorMessage}
+        <p>{errorMessage}</p>
+        {isDeleteMessage && (
+          <input type='button' value='OK' onClick={handleDeleteStation} />
+        )}
+        <input
+          type='button'
+          value='CANCEL'
+          onClick={(e) => setIsError(false)}
+        />
       </div>
+      {/* SIDEBAR */}
       <div
         className={`sidebar-ui ${
           isDrawerOpen ? "open-drawer" : "close-drawer"
@@ -501,7 +524,13 @@ export default function UISidebar({
                       <input
                         className='button form-btn'
                         type='submit'
-                        value='Update Station'
+                        value='Update'
+                      />
+                      <input
+                        className='button form-btn'
+                        type='button'
+                        value='Delete Prices'
+                        onClick={() => displayErrorMessage(checkDelete, true)}
                       />
                     </form>
                   </div>
