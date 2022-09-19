@@ -4,7 +4,6 @@ import Map from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { createStation, getAllStations } from "../dbAPIRequests";
 import BluTooltip from "./BluTooltip";
-import { getProfile } from "../authRequests";
 
 /**
  * Renders the map with column layers to visualize station price.
@@ -31,6 +30,9 @@ export default function DeckSnapshot({
   const [petrolLayer, setPetrolLayer] = useState();
   const [dieselLayer, setDieselLayer] = useState();
   const [layers, setLayers] = useState();
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth <= 1024 ? true : false
+  );
 
   /**
    * sets columnClickEvent state variable to the click
@@ -39,6 +41,7 @@ export default function DeckSnapshot({
    * @param {object} event
    */
   function handleClick(event) {
+    console.log(isMobile);
     setColumnClickEvent(event);
     profile.username && setIsDrawerOpen(true);
   }
@@ -118,7 +121,6 @@ export default function DeckSnapshot({
    */
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
     return new Promise(async (resolve) => {
-      //let currentProfile = profile ? profile : await getProfile();
       if (bluDBStation === undefined && runOnce === false && profile.username) {
         await createStation(
           `${stationData.results[idx].name}`,
@@ -257,7 +259,7 @@ export default function DeckSnapshot({
 
   return (
     <>
-      {hoverInfo && (
+      {hoverInfo && ((isMobile && !profile.username) || !isMobile) && (
         /* MAP TOOLTIP */
         <div
           style={{
