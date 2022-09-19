@@ -5,7 +5,7 @@ import {
   updateStation,
   deleteStation,
 } from "../dbAPIRequests";
-import { getProfile, logout, register, login } from "../authRequests";
+import { logout, register, login } from "../authRequests";
 import bloGoldLogo from "../assets/img/blu-gold-logo.png";
 import PetrolLegendDot from "./PetrolLegendDot";
 import DieselLegendDot from "./DieselLegendDot";
@@ -29,6 +29,12 @@ export default function UISidebar({
   mapData,
   setMapData,
   fetchAndSetStationData,
+  setIsDrawerOpen,
+  isDrawerOpen,
+  profile,
+  getAndSetProfile,
+  loggedIn,
+  checkIfLoggedIn,
 }) {
   const [area, setArea] = useState();
   const [long, setLong] = useState();
@@ -39,11 +45,8 @@ export default function UISidebar({
   const [email, setEmail] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
-  const [profile, setProfile] = useState();
-  const [loggedIn, setLoggedIn] = useState(false);
   const [dieselPrice, setDieselPrice] = useState();
   const [petrolPrice, setPetrolPrice] = useState();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isDeleteMessage, setIsDeleteMessage] = useState(false);
@@ -53,7 +56,8 @@ export default function UISidebar({
   const emailErrorMsg =
     "This email address has already been used to create an account.";
   const checkUserPass = "Please check your login details and try again.";
-  const checkDelete = "Are you sure you want to reset the price? This will delete the station from the database and a new station will be created with '0' price values.";
+  const checkDelete =
+    "Are you sure you want to reset the price? This will delete the station from the database and a new station will be created with '0' price values.";
 
   const searchLocation = async (e) => {
     let location = `${lat},${long}`;
@@ -68,6 +72,7 @@ export default function UISidebar({
    */
   const handleSearchStationArea = (goButton) => async (e) => {
     if (e.code === "Enter" || goButton === "go") {
+      setIsDrawerOpen(false);
       await getAreaData(area)
         .then((data) => {
           setLat(data.candidates[0].geometry.location.lat);
@@ -81,42 +86,15 @@ export default function UISidebar({
   };
 
   /**
-   * Gets the profile object and sets it to the
-   * profile state variable.
+   * Sets error message, sets booleaen for isDelete message and
+   * then sets isError to true.
+   * @param {string} error
+   * @param {boolean} options
    */
-  async function getAndSetProfile() {
-    setProfile(await getProfile());
-  }
-
- /**
-  * Sets error message, sets booleaen for isDelete message and 
-  * then sets isError to true.
-  * @param {string} error 
-  * @param {boolean} options 
-  */
   const displayErrorMessage = (error, options) => {
     setIsDeleteMessage(options);
     setErrorMessage(error);
     setIsError(true);
-  };
-
-  /**
-   * Resets the stations data in order to force a state
-   * change and re render the map layer.
-   * @returns promise
-   */
-  const resetSatationData = () => {
-    return new Promise(async (resolve) => {
-      try {
-        let stationDataDeepCopy = JSON.parse(JSON.stringify(stationData));
-        setStationData(stationDataDeepCopy);
-        console.log("resetting staion data", "mapData: ", mapData);
-        resolve();
-      } catch (error) {
-        console.log(error);
-        resolve();
-      }
-    });
   };
 
   /**
@@ -134,7 +112,6 @@ export default function UISidebar({
         } else {
           await getAndSetProfile();
           checkIfLoggedIn();
-          await resetSatationData();
         }
         resolve();
       } catch (error) {
@@ -169,9 +146,13 @@ export default function UISidebar({
    * and then checks that the user has been logged out.
    */
   function handleLogout() {
-    logout();
-    getAndSetProfile();
-    checkIfLoggedIn();
+    logout()
+      .then((response) => {
+        getAndSetProfile();
+      })
+      .then((response) => {
+        checkIfLoggedIn();
+      });
   }
 
   /**
@@ -181,23 +162,6 @@ export default function UISidebar({
   const handleOpenCloseDrawer = () => {
     setIsDrawerOpen(isDrawerOpen ? false : true);
   };
-
-  /**
-   * Checks if the user is loggen is and then sets the loggedIn
-   * state variable.
-   * @returns promise
-   */
-  async function checkIfLoggedIn() {
-    return new Promise(async (resolve) => {
-      if (profile && profile.username) {
-        setLoggedIn(true);
-        resolve();
-      } else {
-        setLoggedIn(false);
-        resolve();
-      }
-    });
-  }
 
   /**
    * Updates the mapData for a particular station after
@@ -251,16 +215,12 @@ export default function UISidebar({
 
   const handleDeleteStation = async (e) => {
     setColumnClickEvent(null);
-    setMapData([])
+    setMapData([]);
     await deleteStation(columnClickEvent.object.fuelInfo.id);
     await fetchAndSetStationData();
     setIsDeleteMessage(false);
     setIsError(false);
   };
-
-  useEffect(() => {
-    checkIfLoggedIn();
-  }, [profile]);
 
   useEffect(() => {
     setLongView(long);
@@ -270,11 +230,6 @@ export default function UISidebar({
   useEffect(() => {
     lat && long && searchLocation();
   }, [long]);
-
-  useEffect(() => {
-    getAndSetProfile();
-    checkIfLoggedIn();
-  }, []);
 
   return (
     <>

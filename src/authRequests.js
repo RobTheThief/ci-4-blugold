@@ -67,16 +67,24 @@ const register = (user, pass, pass2, email, firstName, lastName) => {
 
 /**
  * Sends a POST request to the backend to logout user
+ * @returns promise
  */
 const logout = () => {
-  var requestOptions = {
-    credentials: "include",
-    method: "POST",
-  };
+  return new Promise(async (resolve) => {
+    try {
+      var requestOptions = {
+        credentials: "include",
+        method: "POST",
+      };
 
-  fetch(`/logout/`, requestOptions)
-    .then((response) => response)
-    .catch((error) => console.log("error", error));
+      let response = await fetch(`/logout/`, requestOptions);
+
+      resolve(response);
+    } catch (error) {
+      console.log(error);
+      resolve(error);
+    }
+  });
 };
 
 /**
@@ -100,6 +108,7 @@ const getProfile = () => {
 
       resolve(responseJson);
     } catch (error) {
+      console.log(error);
       resolve(error);
     }
   });

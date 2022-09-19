@@ -23,6 +23,8 @@ export default function DeckSnapshot({
   setViewState,
   setColumnClickEvent,
   fetchAndSetStationData,
+  setIsDrawerOpen,
+  profile,
 }) {
   const [hoverInfo, setHoverInfo] = useState("");
   const [runOnce, setRunOnce] = useState(false);
@@ -30,8 +32,15 @@ export default function DeckSnapshot({
   const [dieselLayer, setDieselLayer] = useState();
   const [layers, setLayers] = useState();
 
+  /**
+   * sets columnClickEvent state variable to the click
+   * event object and sets the isDrawerOpen state variable
+   * to true if user is loggeed in.
+   * @param {object} event
+   */
   function handleClick(event) {
     setColumnClickEvent(event);
+    profile.username && setIsDrawerOpen(true);
   }
 
   /**
@@ -109,7 +118,7 @@ export default function DeckSnapshot({
    */
   const checkAndAddToDB = (bluDBStation, mapDataTemp, idx) => {
     return new Promise(async (resolve) => {
-      let profile = await getProfile();
+      //let currentProfile = profile ? profile : await getProfile();
       if (bluDBStation === undefined && runOnce === false && profile.username) {
         await createStation(
           `${stationData.results[idx].name}`,
@@ -152,7 +161,6 @@ export default function DeckSnapshot({
    * and station data.
    */
   const createMapData = () => {
-    console.log("createMapData");
     if (stationData) {
       let mapDataTemp = stationData.results.map((station, idx) => {
         station.coordinates = [
@@ -168,7 +176,6 @@ export default function DeckSnapshot({
           mapDataTemp,
           idx
         );
-        console.log({ updatedMapData });
         setMapData(updatedMapData);
       });
     }

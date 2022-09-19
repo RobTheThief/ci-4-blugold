@@ -18,7 +18,7 @@ function createStation(
 ) {
   return new Promise(async (resolve) => {
     try {
-     let response = fetch(`/api/create/`, {
+      let response = fetch(`/api/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ function updateStation(
 
 /**
  * Deletes a station using the id.
- * @param {int} id 
+ * @param {int} id
  * @returns promise
  */
 function deleteStation(id) {

@@ -1,9 +1,10 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DeckSnapshot from "./components/DeckSnapshot";
 import UISidebar from "./components/UISidebar";
 import { getStationLocationData } from "./dbAPIRequests";
+import { getProfile } from "./authRequests";
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
@@ -21,6 +22,65 @@ function App() {
   const [latView, setLatView] = useState();
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [columnClickEvent, setColumnClickEvent] = useState();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [profile, setProfile] = useState();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  /**
+   * Resets the stations data in order to force a state
+   * change and re render the map layer.
+   * @returns promise
+   */
+  const resetSatationData = () => {
+    return new Promise(async (resolve) => {
+      try {
+        if (stationData) {
+          let stationDataDeepCopy = JSON.parse(JSON.stringify(stationData));
+          setStationData(stationDataDeepCopy);
+        }
+        resolve();
+      } catch (error) {
+        console.log(error);
+        resolve();
+      }
+    });
+  };
+
+  /**
+   * Gets the profile object and sets it to the
+   * profile state variable.
+   * @returns promise
+   */
+  async function getAndSetProfile() {
+    return new Promise(async (resolve) => {
+      try {
+        setProfile(await getProfile());
+        await resetSatationData();
+        resolve();
+      } catch (error) {
+        console.log(error);
+        setProfile(error);
+        resolve();
+      }
+    });
+  }
+
+  /**
+   * Checks if the user is logged in and then sets the loggedIn
+   * state variable.
+   * @returns promise
+   */
+  async function checkIfLoggedIn() {
+    return new Promise(async (resolve) => {
+      if (profile && profile.username) {
+        setLoggedIn(true);
+        resolve();
+      } else {
+        setLoggedIn(false);
+        resolve();
+      }
+    });
+  }
 
   /**
    * Fetches station data form the google places api throught
@@ -45,6 +105,15 @@ function App() {
     });
   };
 
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, [profile]);
+
+  useEffect(() => {
+    getAndSetProfile();
+    checkIfLoggedIn();
+  }, []);
+
   return (
     <>
       <UISidebar
@@ -57,6 +126,12 @@ function App() {
         mapData={mapData}
         setMapData={setMapData}
         fetchAndSetStationData={fetchAndSetStationData}
+        isDrawerOpen={isDrawerOpen}
+        setIsDrawerOpen={setIsDrawerOpen}
+        profile={profile}
+        getAndSetProfile={getAndSetProfile}
+        loggedIn={loggedIn}
+        checkIfLoggedIn={checkIfLoggedIn}
       />
       <DeckSnapshot
         columnClickEvent={columnClickEvent}
@@ -70,6 +145,9 @@ function App() {
         viewState={viewState}
         setViewState={setViewState}
         fetchAndSetStationData={fetchAndSetStationData}
+        setIsDrawerOpen={setIsDrawerOpen}
+        profile={profile}
+        setProfile={setProfile}
       />
     </>
   );
