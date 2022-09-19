@@ -38,10 +38,13 @@ export default function DeckSnapshot({
    * sets columnClickEvent state variable to the click
    * event object and sets the isDrawerOpen state variable
    * to true if user is loggeed in.
+   * If user is not logged in and is on a mobile device then
+   * the drawer will be set to closed.
    * @param {object} event
    */
   function handleClick(event) {
     console.log(isMobile);
+    isMobile && !profile.username && setIsDrawerOpen(false)
     setColumnClickEvent(event);
     profile.username && setIsDrawerOpen(true);
   }
