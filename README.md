@@ -3,7 +3,7 @@
 A web app for finding the cheapest fuel prices in your area. It uses a Geo visualization of the fuel stations and their prices to display the information the user is lookng for. The database is kept up to date by the users.
 The main technologies used are [React](https://reactjs.org/), [Django](https://www.djangoproject.com/), [Djangorestframwork](https://www.django-rest-framework.org/), [Postgresql](https://www.postgresql.org/) and [Deck.gl](https://deck.gl/).
 
-![Responsive Mockup](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/responsive-mockup-blugold.png)
+![Responsive Mockup](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/responsive-mockup-blugold.png)
 
 ## User Experience (UX)
 
@@ -113,15 +113,15 @@ After the csrf token was added to the headers in the frontend fetch requests the
 
 - Python
   - I confirm that all python files were run through the pep8 online validator and all errors were corrected. Errors only consisted of E501: line too long errors.
-  ![PEP8](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/pep8-blugold.png)
+  ![PEP8](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/pep8-blugold.png)
 - CSS
   - No errors were found when passing through the official(Jigsaw) validator.
-  ![CSS VALIDATOR](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/css-jigsaw-blugold.png)
+  ![CSS VALIDATOR](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/css-jigsaw-blugold.png)
 - Accessibility
 
   - I confirm that the colours and fonts are easy to read and accessible by running it through the lighthouse in devtools.
 
-  ![LIGHTHOUSE METRICS](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/lighthouse-blugold.png)
+  ![LIGHTHOUSE METRICS](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/lighthouse-blugold.png)
 
 ## Deployment
 
