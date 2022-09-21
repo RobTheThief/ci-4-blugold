@@ -4,7 +4,6 @@ external API requests to Google places API """
 
 from django.shortcuts import render
 from rest_framework import viewsets, generics
-from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
 import os
 from .serializers import StationSerializer, CreateUserSerializer
