@@ -34,11 +34,56 @@ The main technologies used are [React](https://reactjs.org/), [Django](https://w
 
 ### EXISTING FEATURES
 
-- **Feature**
+- **Deckgl layered map**
 
-  - description
+- Mapbox was used for the map and Deckgl rendered the station column layers and to control the view state.
 
-  ![Feature](Feature.png)
+![Deckgl layered map](./assets/images/deckgl-layered-map.png)
+
+- **Expandable Sidebar UI**
+
+- Most of the User Interface is contained in the sidebar to give as much screen space to the map as possible. It contains the login, register, logout, station update, and search interfaces.  
+
+![Expandable Sidebar UI](./assets/images/sidebar-ui.png)
+
+- **Search Area Input**
+
+- The search function uses the Google Places Api to find coordinates of a given address, place name or post code and then makes another Google Places API request to find fuel stations within 3km of those coordinates. When the user makes a search deckgl will geo locate to that area of the map and close the sidebar.
+There is an information icon there to explain the function with an onHover tooltip.
+
+![Search Area Input](./assets/images/search-area-input.png)
+
+- **Login and register section**
+
+- If the user has not logged in or the session expires the UI will display the login and register section with a message to tell the user that they will need to register and login if they want to update fuel prices. The user is automatically logged in when they are registered.
+
+![Login and register section](./assets/images/login-register.png)
+
+- **Username and logout section**
+
+- Once the user is logged in the UI will display a message prompting them to click on a station on the map to view details and update. Above this is the current username logged in and a logout button.
+
+![Username and logout section](./assets/images/username-and-logout-section.png)
+
+- **Update station section**
+
+- When the user clicks on a station and they are logged in the update station section appears below the logout section in the sidebar. Here the user can update prices or delete the station price information.
+This will also show the station name, address and if it is currently open according to the Google places API.
+
+![Update station section](./assets/images/update-station.png)
+
+- **Map Tooltip**
+
+- On hover over a station a tooltip will show with Station name, address, if it is open according to Google Places, the most recent fuel price, when it was updated and by who.
+
+![Map Tooltip](./assets/images/map-tooltip.png)
+
+- **Modal error and warning message**
+
+- A modal is shown when the a station is being deleted as a warning, when an email address that has already been used to register is input, when the username or password is incorrect at login, or when incorrect input is used to update a station fuel price.   
+
+![Error modal](./assets/images/error-modal.png)
+![Warning modal](./assets/images/warning-modal.png)
 
 ## Technologies Used
 
@@ -69,9 +114,13 @@ The main technologies used are [React](https://reactjs.org/), [Django](https://w
 1. [React:](https://reactjs.org/)
    - The React library was used to create the frontend.
 1. [Deckgl:](https://deck.gl/)
-   - Deckgl was used for the map geo visualisation and station column layers.
+   - Deckgl was used for the station column layers.
+1. [Mapbox:](https://www.mapbox.com/)
+   - Mapbox was used for the map geo visualisation.
 
 ### FUTURE FEATURES
+
+- Link to Google maps directions for each station.
 
 ## TESTING
 
