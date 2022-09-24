@@ -24,7 +24,7 @@ import json
 
 
 class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
-    """ API endpoint that allows creation of a new station """
+    """ Endpoint that allows creation of a new station """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     authentication_classes = [authentication.SessionAuthentication]
@@ -32,7 +32,7 @@ class StationCreate(CsrfExemptMixin, generics.CreateAPIView):
 
 
 class StationList(CsrfExemptMixin, generics.ListAPIView):
-    """ API endpoint that allows station to be viewed. """
+    """ Endpoint that allows station to be viewed. """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -40,7 +40,7 @@ class StationList(CsrfExemptMixin, generics.ListAPIView):
 
 
 class StationDetail(generics.RetrieveAPIView):
-    """ API endpoint that returns a single station by id. """
+    """ Endpoint that returns a single station by id. """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -48,7 +48,7 @@ class StationDetail(generics.RetrieveAPIView):
 
 
 class StationUpdate(CsrfExemptMixin, generics.RetrieveUpdateAPIView):
-    """ API endpoint that allows a Station record to be updated if a
+    """ Endpoint that allows a Station record to be updated if a
     user is logged in. """
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -57,7 +57,7 @@ class StationUpdate(CsrfExemptMixin, generics.RetrieveUpdateAPIView):
 
 
 class StationDelete(generics.RetrieveDestroyAPIView):
-    """ API endpoint that allows a Station record to be deleted if a
+    """ Endpoint that allows a Station record to be deleted if a
     user is logged in. """
     serializer_class = StationSerializer
     queryset = Station.objects.all()
@@ -66,7 +66,7 @@ class StationDelete(generics.RetrieveDestroyAPIView):
 
 
 class LoginView(CsrfExemptMixin, views.APIView):
-    """ API endpoint that logs in a regestered user """
+    """ Endpoint that logs in a regestered user """
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
@@ -83,7 +83,7 @@ class LoginView(CsrfExemptMixin, views.APIView):
 
 
 class LogoutView(views.APIView):
-    """ API endpoint that logs out a user """
+    """ Endpoint that logs out a user """
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
 
@@ -95,7 +95,7 @@ class LogoutView(views.APIView):
 
 
 class ProfileView(generics.RetrieveAPIView):
-    """ API endpoint that gets profile information on a logged in user
+    """ Endpoint that gets profile information on a logged in user
     if a user is logged in"""
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -108,7 +108,7 @@ class ProfileView(generics.RetrieveAPIView):
 
 
 class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
-    """ API endpoint that registeres a new user """
+    """ Endpoint that registeres a new user """
     permission_classes = [permissions.AllowAny]
     authentication_classes = []
     queryset = User.objects.all()
@@ -116,7 +116,7 @@ class CreateUserView(CsrfExemptMixin, generics.CreateAPIView):
 
 
 class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
-    """ API endpoint that acts as middleware to make a request
+    """ Endpoint that acts as middleware to make a request
     to the google places API to find stations in 3km radius of
     given coordinates"""
     permission_classes = [permissions.AllowAny]
@@ -148,7 +148,7 @@ class PlacesApiLocationRequest(CsrfExemptMixin, views.APIView):
 
 
 class PlacesApiAreaRequest (CsrfExemptMixin, views.APIView):
-    """ API endpoint that acts as middleware to make a request
+    """ Endpoint that acts as middleware to make a request
     to the google places API to find coordinates of an address
     or place name"""
     permission_classes = [permissions.AllowAny]

@@ -3,7 +3,7 @@
 A web app for finding the cheapest fuel prices in your area. It uses a Geo visualization of the fuel stations and their prices to display the information the user is lookng for. The database is kept up to date by the users.
 The main technologies used are [React](https://reactjs.org/), [Django](https://www.djangoproject.com/), [Djangorestframwork](https://www.django-rest-framework.org/), [Postgresql](https://www.postgresql.org/) and [Deck.gl](https://deck.gl/).
 
-![Responsive Mockup](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/responsive-mockup-blugold.png)
+![Responsive Mockup](./assets/images/responsive-mockup-blugold.png)
 
 ## User Experience (UX)
 
@@ -28,7 +28,7 @@ The main technologies used are [React](https://reactjs.org/), [Django](https://w
     - Imagery used to make up the logo was taken from unsplash.com which was a side view of water through glass and then using GIMP a letter 'B' was imposed on the image.
   - #### Wireframe
     - This wireframe was used initially to get an idea of the style and layout of the app would be:
-      ![Wireframe Screenshot](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/ci-4-blugold.png)
+![Wireframe Screenshot](./assets/images/ci-4-blugold.png)
 
 ## FEATURES
 
@@ -96,7 +96,7 @@ This will also show the station name, address and if it is currently open accord
 ### Frameworks, Libraries & Programs Used
 
 1. [Google Fonts:](https://fonts.google.com/)
-   - Google fonts were used to import the 'Open Sans' font into the style.css file which is used in all text on the page. Google fonts icons was also used for the search information icon and the drawer tab double arrow icon.
+   - Google fonts Material symbols were used to import the 'Open Sans' font into the style.css file which is used in all text on the page. Google fonts Material symbols icons was also used for the search information icon and the drawer tab double arrow icon.
 1. [Git](https://git-scm.com/)
    - Git was used for version control by utilizing the Gitpod terminal to commit to Git and Push to GitHub.
 1. [GitHub:](https://github.com/)
@@ -174,26 +174,53 @@ After the csrf token was added to the headers in the frontend fetch requests the
 
 ## Deployment
 
-- Local deployment was achieved with with Python from the console. The game was developed on a Ubuntu OS and so was already installed. Steps are as follows:
+- Local deployment during development was achieved by writing an catchall view that proxies requests for index.html to the React development server using this tutorial: [Making React and Django play well together](https://fractalideas.com/blog/making-react-and-django-play-well-together-hybrid-app-model/).
+This was done to avoid having to do a build every time a change was made in the fronend during development.
+The changes made to the project based on this tutorial were undone before deployment due to issues with the catchall view.
 
-  - Run `python3 run.py` in the terminal with root directory of the project.
+Steps for local deploy during development:
+  - in the project root directory terminal enter:
+    1. `sudo service postgresql start`  
+    1. `source venv/bin/activate` -  to start the virtual environment.  
+    1. `python manage.py runserver`  
+    1. `npm start` - to run the development server for the frontendt so that the catchall view could make proxy requests to it and saved changes could be reflected immediatly.  
+
+<br/>
 
 - Heroku Deployment:
   - Create a new Heroku app.
   - Set the build packs to `Python` and `NodeJS` in that order.
   - Set Config Vars key value pairs for:
-    1. `PORT`: `8000`
-    1. `CREDS`: `{CREDS Object}` where {CREDS Object} is from the credentials file
-       dowoloaded from Google Cloud Platform.
+    1. `ALLOWED_HOSTS`: `APP_NAME.herokuapp.com`
+    1. `DATABASE_URL`: `postgres://MYSECRETLINK`
+    1. `HEROKU_POSTGRESQL_ONYX_URL`: `postgres://MYSECRETLINK`
+    1. `DB_PASSWORD`: `MYSECRETPASSWORD` 
+    1. `DISABLE_COLLECTSTATIC`: `1`
+    1. `GOOGLE_API_KEY`: `MYSECRETGOOGLEAPIKEY`
+    1. `REACT_APP_MAPBOX_ACCESS_TOKEN` : `MYSECRETMAPBOXTOKEN`
+    1. `SECRET_KEY`: `DJANGO_SECRET_KEY`
+    1. `WEB_CONCURRENCY`: `1`
+
   - Enter `heroku login -i` command in the terminal with root directory of the project.
   - Enter Heroku username and password.
-  - Enter `git push --set-upstream https://git.heroku.com/ci-4-blugold.git` to deploy.
-  - Enter `git push --set-upstream https://github.com/RobTheThief/ci-4-blugold.git main` to reset upstream to github.
+  - Enter `heroku git:remote -a blugold` to set the heroku remote.
+  - Enter `git push heroku main` to push changes to the heroku app.
 
 The live link can be found here - https://blugold.herokuapp.com//
 
 ## Credits
 
+For local deployment: [Making React and Django play well together](https://fractalideas.com/blog/making-react-and-django-play-well-together-hybrid-app-model/)
+
+This tutorial was used as a guide to set up the app initially and to get the Django backend to serve the frontend. It was also helpful as an additionl guide to deploying to Heroku: [Deploying React-Django App using Heroku](https://dev.to/mdrhmn/deploying-react-django-app-using-heroku-2gfa)
+
+The login and registration for the app was based on this tutorial by Emre Cevik: [Login and Register User — Django Rest Framework](https://dev.to/mdrhmn/deploying-react-django-app-using-heroku-2gfa) 
+
+For authentication with the Django Rest Framwork views and serializers were used from this tutorial from Augusto Destrero: [Django Rest Framework authentication: the easy way](https://www.guguweb.com/2022/01/23/django-rest-framework-authentication-the-easy-way/)
+
 ### Content
 
-### Media
+All icons used were form Google fonts Material Symbols [Google fonts Material Symbols](https://fonts.google.com/knowledge/glossary/material_symbols).
+
+
+The image of water throught glass used to make the logo came from a free [Unsplash](https://unsplash.com) stock photo. 
