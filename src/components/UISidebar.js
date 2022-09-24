@@ -72,16 +72,20 @@ export default function UISidebar({
    */
   const handleSearchStationArea = (goButton) => async (e) => {
     if (e.code === "Enter" || goButton === "go") {
-      setIsDrawerOpen(false);
-      await getAreaData(area)
-        .then((data) => {
-          setLat(data.candidates[0].geometry.location.lat);
-          return data;
-        })
-        .then((data) => {
-          setLong(data.candidates[0].geometry.location.lng);
-        })
-        .catch((error) => displayErrorMessage('Cannot find place or address. Check input and try again.', false));
+      if (area !== undefined) {
+        setIsDrawerOpen(false);
+        await getAreaData(area)
+          .then((data) => {
+            setLat(data.candidates[0].geometry.location.lat);
+            return data;
+          })
+          .then((data) => {
+            setLong(data.candidates[0].geometry.location.lng);
+          })
+          .catch((error) => displayErrorMessage('Cannot find place or address. Check input and try again.', false));
+      } else {
+        displayErrorMessage('Enter place name, address, or post code and try again.', false)
+      }
     }
   };
 

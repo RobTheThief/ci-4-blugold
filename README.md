@@ -143,6 +143,13 @@ This will also show the station name, address and if it is currently open accord
      1. If the user is not logged in and the previous sessions is expired the user will be shown the login and register section i the UI.
      2. When the user is logged in they can now click on the fuel stations and an update station UI will be shown in the sidebar.
 
+### Manual Testing
+| Test                                                                             | Expected outcome                                                                                                                                                                                             | Actual outcome |
+|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
+| Check search area responds when user clicks go with correct/incorrect/no input.  | Sidebar will close upon hitting go and the map will move to the place entered and display any fuels stations that may be with 3km. An error message should be displayed if there is no or incorrect input.   | As expected    |
+|                                                                                  |                                                                                                                                                                                                              |                |
+|                                                                                  |                                                                                                                                                                                                              |                | 
+
 ### Known Bugs
 
 - There are no known remianing bugs.
