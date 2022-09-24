@@ -174,15 +174,18 @@ After the csrf token was added to the headers in the frontend fetch requests the
 
 - Python
   - I confirm that all python files were run through the pep8 online validator and all errors were corrected. Errors only consisted of E501: line too long errors.
-  ![PEP8](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/pep8-blugold.png)
+  ![PEP8](./assets/images/pep8-blugold.png)
 - CSS
   - No errors were found when passing through the official(Jigsaw) validator.
-  ![CSS VALIDATOR](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/css-jigsaw-blugold.png)
+  ![CSS VALIDATOR](./assets/images/css-jigsaw-blugold.png)
+- Javascript
+  - I can confirm that there were no ESLint errors. Warnings were only related to useEffect dependencies which would cause an infine rerendering of the components if the suggestions was followed.
+  ![ESLint](./assets/images/eslint.png)
 - Accessibility
 
   - I confirm that the colours and fonts are easy to read and accessible by running it through the lighthouse in devtools.
 
-  ![LIGHTHOUSE METRICS](https://github.com/RobTheThief/ci-4-blugold/blob/main/assets/images/lighthouse-blugold.png)
+  ![LIGHTHOUSE METRICS](./assets/images/lighthouse-blugold.png)
 
 ## Deployment
 
