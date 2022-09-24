@@ -91,7 +91,8 @@ This will also show the station name, address and if it is currently open accord
 
 - [CSS3](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)
 - [Javascript](https://en.wikipedia.org/wiki/JavaScript)
-- [JSX](https://reactjs.org/docs/introducing-jsx.html) is used in [React](https://reactjs.org/) which generates the html used in the project.
+- [JSX](https://reactjs.org/docs/introducing-jsx.html) is used in [React](https://reactjs.org/), a Javascript library,
+  which generates the html used in the project.
 - [Python](https://en.wikipedia.org/wiki/Python_(programming_language))
 
 ### Frameworks, Libraries & Programs Used
