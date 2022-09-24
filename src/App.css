@@ -79,6 +79,7 @@ ul li {
   align-items: flex-start;
   flex-direction: column;
   height: 80%;
+  max-height: 900px;
   position: absolute;
   top: 0;
   background-color: rgba(0, 0, 0, 0.692);
