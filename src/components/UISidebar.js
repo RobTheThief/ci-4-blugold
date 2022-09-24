@@ -81,7 +81,7 @@ export default function UISidebar({
         .then((data) => {
           setLong(data.candidates[0].geometry.location.lng);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => displayErrorMessage('Cannot find place or address. Check input and try again.', false));
     }
   };
 
@@ -130,14 +130,17 @@ export default function UISidebar({
     e.preventDefault();
     let result = await register(user, pass, pass2, email, firstName, lastName);
 
-    if (result.email[0] !== "This field must be unique.") {
+    if (result.email && result.email[0] !== "This field must be unique.") {
       await handleLogin();
       await getAndSetProfile();
       await checkIfLoggedIn();
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapData));
       setMapData(mapDataDeepCopy);
-    } else {
+    } else if (result.email) {
       displayErrorMessage(emailErrorMsg, false);
+    } else {
+      console.log(result)
+      displayErrorMessage(result.username ? result.username[0] : result.password[0], false);
     }
   };
 
