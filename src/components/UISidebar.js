@@ -139,7 +139,6 @@ export default function UISidebar({
     } else if (result.email) {
       displayErrorMessage(emailErrorMsg, false);
     } else {
-      console.log(result)
       displayErrorMessage(result.username ? result.username[0] : result.password[0], false);
     }
   };
