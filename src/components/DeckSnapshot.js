@@ -43,7 +43,6 @@ export default function DeckSnapshot({
    * @param {object} event
    */
   function handleClick(event) {
-    console.log(isMobile);
     isMobile && !profile.username && setIsDrawerOpen(false)
     setColumnClickEvent(event);
     profile.username && setIsDrawerOpen(true);
