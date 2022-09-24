@@ -80,7 +80,7 @@ This will also show the station name, address and if it is currently open accord
 
 - **Modal error and warning message**
 
-- A modal is shown when the a station is being deleted as a warning, when an email address that has already been used to register is input, when the username or password is incorrect at login, or when incorrect input is used to update a station fuel price.   
+- A modal is shown when the a station is being deleted as a warning, when an email address, or username has already been used to register is input, when the username or password is incorrect at login, when incorrect input is used to update a station fuel price, or when a search area attempt in not successful.   
 
 ![Error modal](./assets/images/error-modal.png)
 ![Warning modal](./assets/images/warning-modal.png)
@@ -91,6 +91,7 @@ This will also show the station name, address and if it is currently open accord
 
 - [CSS3](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)
 - [Javascript](https://en.wikipedia.org/wiki/JavaScript)
+- Jsx is used in react which generates the html used in the project.
 - [Python](https://en.wikipedia.org/wiki/Python_(programming_language))
 
 ### Frameworks, Libraries & Programs Used
