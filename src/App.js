@@ -83,6 +83,18 @@ function App() {
   }
 
   /**
+   * Sets an interval of 5 seconds and checks if valid session
+   * cookies present, then sets the profile accordingly and
+   * the isLoggedIn state variable.
+   */
+  const checkForAuthenticationInterval = () => {
+    setInterval(() => {
+      getAndSetProfile();
+      checkIfLoggedIn();
+    }, 5000);
+  }
+
+  /**
    * Fetches station data form the google places api throught
    * the middleware and sets it to the stationData state variable.
    * Defaults to coordinates in Dublin city centre.
@@ -112,6 +124,7 @@ function App() {
   useEffect(() => {
     getAndSetProfile();
     checkIfLoggedIn();
+    checkForAuthenticationInterval();
   }, []);
 
   return (
