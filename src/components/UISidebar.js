@@ -33,8 +33,6 @@ export default function UISidebar({
   isDrawerOpen,
   profile,
   getAndSetProfile,
-  loggedIn,
-  checkIfLoggedIn,
 }) {
   const [area, setArea] = useState();
   const [long, setLong] = useState();
@@ -115,7 +113,6 @@ export default function UISidebar({
           displayErrorMessage(checkUserPass, false);
         } else {
           await getAndSetProfile();
-          checkIfLoggedIn();
         }
         resolve();
       } catch (error) {
@@ -137,7 +134,6 @@ export default function UISidebar({
     if (result.email && result.email[0] !== "This field must be unique.") {
       await handleLogin();
       await getAndSetProfile();
-      await checkIfLoggedIn();
       let mapDataDeepCopy = JSON.parse(JSON.stringify(mapData));
       setMapData(mapDataDeepCopy);
     } else if (result.email) {
@@ -156,9 +152,6 @@ export default function UISidebar({
     logout()
       .then((response) => {
         getAndSetProfile();
-      })
-      .then((response) => {
-        checkIfLoggedIn();
       });
   }
 
@@ -428,7 +421,7 @@ export default function UISidebar({
                   </>
                 )}
                 {/* UPDATE STATION SECTION */}
-                {columnClickEvent && loggedIn && (
+                {columnClickEvent && profile.username && (
                   <div className='update-station-section'>
                     <form onSubmit={(e) => handleUpdateStation(e)}>
                       <ul className='station-info'>

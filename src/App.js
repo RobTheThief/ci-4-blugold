@@ -66,23 +66,6 @@ function App() {
   }
 
   /**
-   * Checks if the user is logged in and then sets the loggedIn
-   * state variable.
-   * @returns promise
-   */
-  async function checkIfLoggedIn() {
-    return new Promise(async (resolve) => {
-      if (profile && profile.username) {
-        setLoggedIn(true);
-        resolve();
-      } else {
-        setLoggedIn(false);
-        resolve();
-      }
-    });
-  }
-
-  /**
    * Sets an interval of 5 seconds and checks if valid session
    * cookies present, then sets the profile accordingly and
    * the isLoggedIn state variable.
@@ -90,7 +73,6 @@ function App() {
   const checkForAuthenticationInterval = () => {
     setInterval(() => {
       getAndSetProfile();
-      checkIfLoggedIn();
     }, 5000);
   }
 
@@ -118,12 +100,10 @@ function App() {
   };
 
   useEffect(() => {
-    checkIfLoggedIn();
   }, [profile]);
 
   useEffect(() => {
     getAndSetProfile();
-    checkIfLoggedIn();
     checkForAuthenticationInterval();
   }, []);
 
@@ -144,7 +124,6 @@ function App() {
         profile={profile}
         getAndSetProfile={getAndSetProfile}
         loggedIn={loggedIn}
-        checkIfLoggedIn={checkIfLoggedIn}
       />
       <DeckSnapshot
         columnClickEvent={columnClickEvent}
