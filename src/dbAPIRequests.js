@@ -151,7 +151,7 @@ const getAllStations = () => {
 
       resolve(responseJson);
     } catch (error) {
-      alert(error);
+      console.log(error);
       resolve();
     }
   });
@@ -208,7 +208,7 @@ const getAreaData = (area) => {
 
       resolve(responseJson);
     } catch (error) {
-      alert(error);
+      console.log(error);
       resolve();
     }
   });
