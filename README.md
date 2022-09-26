@@ -165,6 +165,7 @@ This will also show the station name, address and if it is currently open accord
 
 - Because Django enforces CSRF protection when making an API request to protected endpoints ( POST, PUT ) a 403 Forbidden error was returned even though a CsrfExemptMixin was added to the views and the correct hosts added to CSRF_TRUSTED_ORIGINS in settings in the backend.
 After the csrf token was added to the headers in the frontend fetch requests the these requests were then authorised.
+- When setting the project to `DEBUG=False` for production in `settings.py` and running `python manage.py collectstatic` it produced an error `rest_framework/static/rest_framework/css/bootstrap-theme.min.css.map not found`. After some research it was found that this was related to an issue with the DjangoRestFramework: [Github issue](https://github.com/encode/django-rest-framework/issues/8608). This issue was fixed soon after this project was started and so updating to the latest version solved the problem.
 
 ### Further Testing
 
