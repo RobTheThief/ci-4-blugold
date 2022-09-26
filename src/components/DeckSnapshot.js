@@ -133,7 +133,7 @@ export default function DeckSnapshot({
 
         setRunOnce(true);
       } else if (
-        !profile.username &&
+        profile && !profile.username &&
         runOnce === false &&
         bluDBStation !== undefined
       ) {
