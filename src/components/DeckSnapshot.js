@@ -43,7 +43,7 @@ export default function DeckSnapshot({
    * @param {object} event
    */
   function handleClick(event) {
-    isMobile && !profile.username && setIsDrawerOpen(false)
+    isMobile && !profile.username && setIsDrawerOpen(false);
     setColumnClickEvent(event);
     profile.username && setIsDrawerOpen(true);
   }
@@ -185,6 +185,15 @@ export default function DeckSnapshot({
     }
   };
 
+  /**
+   * Handles resize event by setting isMobile state variable
+   * to boolian depending on weather the width is less than
+   * or equal to 1024px. 
+   */
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 1024 ? true : false)
+  }
+
   useEffect(() => {
     createMapData();
   }, [stationData]);
@@ -192,6 +201,13 @@ export default function DeckSnapshot({
   useEffect(() => {
     focusView();
   }, [longView, latView]);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return (_) => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   /* Sets the dieselLayer and petrolLayer state variables from the deckgl
      ColumnLayer class.
