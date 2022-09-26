@@ -15,10 +15,6 @@ from pathlib import Path
 import os
 import dotenv
 import dj_database_url
-import mimetypes
-
-mimetypes.add_type("text/css", ".js", True)
-mimetypes.add_type("text/css", ".css", True)
 
 ORIGINS_TO_ALLOW = [
     'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu67.gitpod.io',
@@ -166,7 +162,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
 
-ALLOWED_HOSTS = ['https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu67.gitpod.io/']
+ALLOWED_HOSTS = [
+    'https://8000-robthethief-ci4blugold-gsro7huqcm1.ws-eu67.gitpod.io', 'https://blugold.herokuapp.com']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
