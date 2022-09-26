@@ -458,6 +458,7 @@ export default function UISidebar({
                             onChange={(e) => setPetrolPrice(e.target.value)}
                             required
                           ></input>
+                          <span>(€{columnClickEvent.object.fuelInfo.petrol})</span>
                         </li>
                         <li className='tooltip-list-item'>
                           <DieselLegendDot />
@@ -471,6 +472,7 @@ export default function UISidebar({
                             onChange={(e) => setDieselPrice(e.target.value)}
                             required
                           ></input>
+                          <span>(€{columnClickEvent.object.fuelInfo.diesel})</span>
                         </li>
                         <br />
                         {columnClickEvent.object.fuelInfo.petrol !== "0" ? (

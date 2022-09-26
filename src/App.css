@@ -295,7 +295,7 @@ ul li {
 }
 
 .update-price-input {
-  margin-left: 0.35rem;
+  margin: 0 0.35rem 0 0.35rem;
 }
 
 /* ERROR MESSAGE MODAL */
