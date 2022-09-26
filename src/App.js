@@ -24,7 +24,6 @@ function App() {
   const [columnClickEvent, setColumnClickEvent] = useState();
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [profile, setProfile] = useState();
-  const [loggedIn, setLoggedIn] = useState(false);
 
   /**
    * Resets the stations data in order to force a state
@@ -74,7 +73,7 @@ function App() {
     setInterval(() => {
       getAndSetProfile();
     }, 5000);
-  }
+  };
 
   /**
    * Fetches station data form the google places api throught
@@ -99,8 +98,7 @@ function App() {
     });
   };
 
-  useEffect(() => {
-  }, [profile]);
+  useEffect(() => {}, [profile]);
 
   useEffect(() => {
     getAndSetProfile();
@@ -123,7 +121,6 @@ function App() {
         setIsDrawerOpen={setIsDrawerOpen}
         profile={profile}
         getAndSetProfile={getAndSetProfile}
-        loggedIn={loggedIn}
       />
       <DeckSnapshot
         columnClickEvent={columnClickEvent}

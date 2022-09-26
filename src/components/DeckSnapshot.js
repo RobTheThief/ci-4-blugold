@@ -133,7 +133,8 @@ export default function DeckSnapshot({
 
         setRunOnce(true);
       } else if (
-        profile && !profile.username &&
+        profile &&
+        !profile.username &&
         runOnce === false &&
         bluDBStation !== undefined
       ) {
@@ -188,11 +189,11 @@ export default function DeckSnapshot({
   /**
    * Handles resize event by setting isMobile state variable
    * to boolian depending on weather the width is less than
-   * or equal to 1024px. 
+   * or equal to 1024px.
    */
   const handleResize = () => {
-    setIsMobile(window.innerWidth <= 1024 ? true : false)
-  }
+    setIsMobile(window.innerWidth <= 1024 ? true : false);
+  };
 
   useEffect(() => {
     createMapData();

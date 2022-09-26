@@ -80,9 +80,17 @@ export default function UISidebar({
           .then((data) => {
             setLong(data.candidates[0].geometry.location.lng);
           })
-          .catch((error) => displayErrorMessage('Cannot find place or address. Check input and try again.', false));
+          .catch((error) =>
+            displayErrorMessage(
+              "Cannot find place or address. Check input and try again.",
+              false
+            )
+          );
       } else {
-        displayErrorMessage('Enter place name, address, or post code and try again.', false)
+        displayErrorMessage(
+          "Enter place name, address, or post code and try again.",
+          false
+        );
       }
     }
   };
@@ -139,7 +147,10 @@ export default function UISidebar({
     } else if (result.email) {
       displayErrorMessage(emailErrorMsg, false);
     } else {
-      displayErrorMessage(result.username ? result.username[0] : result.password[0], false);
+      displayErrorMessage(
+        result.username ? result.username[0] : result.password[0],
+        false
+      );
     }
   };
 
@@ -148,10 +159,9 @@ export default function UISidebar({
    * and then checks that the user has been logged out.
    */
   function handleLogout() {
-    logout()
-      .then((response) => {
-        getAndSetProfile();
-      });
+    logout().then((response) => {
+      getAndSetProfile();
+    });
   }
 
   /**
