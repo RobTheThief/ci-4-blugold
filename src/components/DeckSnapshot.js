@@ -218,7 +218,7 @@ export default function DeckSnapshot({
           if (price === 0) {
             return parseFloat(d.fuelInfo && d.fuelInfo.diesel) + 0.01;
           }
-          return parseFloat(d.fuelInfo && d.fuelInfo.diesel) - 1.7;
+          return parseFloat(d.fuelInfo && d.fuelInfo.diesel) - 1.45;
         },
         onHover: (info) => updateHoverInfo(info),
         onClick: (event) => handleClick(event),
@@ -242,7 +242,7 @@ export default function DeckSnapshot({
           if (price === 0) {
             return parseFloat(d.fuelInfo && d.fuelInfo.petrol) + 0.01;
           }
-          return parseFloat(d.fuelInfo && d.fuelInfo.petrol) - 1.7;
+          return parseFloat(d.fuelInfo && d.fuelInfo.petrol) - 1.45;
         },
         onHover: (info) => updateHoverInfo(info),
         onClick: (event) => handleClick(event),
